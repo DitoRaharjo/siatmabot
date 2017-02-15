@@ -16,4 +16,3 @@ Route::get('/', function () {
 });
 
 Route::post('updates', 'BotController@updates')->name('bot.updates');
-Route::post('cetak', 'BotController@updates')->name('bot.cetak');
