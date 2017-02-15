@@ -12,6 +12,9 @@ class BotController extends Controller
     {
       $updates = Telegram::getWebhookUpdates();
 
-      return 'ok';
+      $text = $updates["message"]["text"];
+
+      echo $text;
+
     }
 }
