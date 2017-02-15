@@ -24,4 +24,17 @@ class BotController extends Controller
         ]);
       }
     }
+
+    public function cetak()
+    {
+      $updates = Telegram::getWebhookUpdates();
+
+
+      $text = $updates["message"]["text"];
+      $chatId = $updates["message"]["chat"]["id"];
+
+      echo $text;
+      echo "</br>";
+      echo $chatId;
+    }
 }
