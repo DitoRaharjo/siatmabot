@@ -8,10 +8,20 @@ use Telegram;
 
 class BotController extends Controller
 {
-    public function webhook()
+    public function updates()
     {
-      $response = Telegram::setWebhook(['url' => 'https://ditoraharjo.co/siatmabot/300623684:AAGw6xd1e-caYMpzlucNosb8Nncg-2AMilw/webhook']);
+      $updates = Telegram::getWebhookUpdates();
 
-      echo $response;
+
+      $text = $updates["message"]["text"];
+      $chatId = $updates["message"]["chat"]["id"];
+
+      if($text == "hai")
+      {
+        $response = Telegram::sendMessage([
+          'chat_id' => $chatId,
+          'text' => 'Hai juga :D'
+        ]);
+      }
     }
 }
