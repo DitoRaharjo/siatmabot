@@ -11,6 +11,8 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
+
+Route::post('300623684:AAGw6xd1e-caYMpzlucNosb8Nncg-2AMilw/webhook', 'BotController@updates')->name('bot.updates');
