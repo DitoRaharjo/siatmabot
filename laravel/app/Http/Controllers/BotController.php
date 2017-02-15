@@ -16,25 +16,23 @@ class BotController extends Controller
       $text = $updates["message"]["text"];
       $chatId = $updates["message"]["chat"]["id"];
 
-      if($text == "hai")
+      if(strcasecmp($text, "hai")==0)
       {
         $response = Telegram::sendMessage([
           'chat_id' => $chatId,
           'text' => 'Hai juga :D'
         ]);
       }
+      if(strcasecmp($text, "salam kenal")==0)
+      {
+        $response = Telegram::sendMessage([
+          'chat_id' => $chatId,
+          'text' => 'Salam kenal, namaku SIATMA Bot'
+        ]);
+      }
     }
 
     public function cetak()
     {
-      $updates = Telegram::getWebhookUpdates();
-
-
-      $text = $updates["message"]["text"];
-      $chatId = $updates["message"]["chat"]["id"];
-
-      echo $text;
-      echo "</br>";
-      echo $chatId;
     }
 }
