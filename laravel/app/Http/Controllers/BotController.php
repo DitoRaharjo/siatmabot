@@ -27,7 +27,7 @@ class BotController extends Controller
 
       $userId = User::select('id')->where('telegram_username', 'LIKE', $chatId)->get();
 
-      if($userId == NULL) {
+      if(!empty($userId)) {
         $response = Telegram::sendMessage([
           'chat_id' => $chatId,
           'text' => 'Halo kamu belum daftar lo, daftar dulu yuk di
