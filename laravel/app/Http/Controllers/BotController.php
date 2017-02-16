@@ -45,10 +45,11 @@ class BotController extends Controller
         ]);
       }
       if(strcasecmp($text, "npm dong")==0) {
+        $userId = User::select('id')->where('telegram_username', 'LIKE', $chatName)->get();
         $npmUser = User::find($userId)->npm;
         $response = Telegram::sendMessage([
           'chat_id' => $chatId,
-          'text' => 'NPM kamu '.$npmUser
+          'text' => 'NPM kamu '.$userId
         ]);
       }
 
