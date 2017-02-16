@@ -25,7 +25,7 @@ class BotController extends Controller
       $chatName = $updates["message"]["chat"]["first_name"] . " " . $updates["message"]["chat"]["last_name"];
       $username = $updates["message"]["chat"]["username"] ;
 
-      $userId = User::select('id')->where('telegram_username', 'LIKE', $chatId)->get();
+      $userId = User::select('id')->where('telegram_username', 'LIKE', $username)->get();
 
       if(!empty($userId)) {
         $response = Telegram::sendMessage([
