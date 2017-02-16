@@ -31,7 +31,7 @@ class BotController extends Controller
         $response = Telegram::sendMessage([
           'chat_id' => $chatId,
           'text' => 'Halo kamu belum daftar lo, daftar dulu yuk di
-          \n http://ditoraharjo.co/siatmabot/register'
+           ("URL WEB :p ")'
         ]);
       } else {
         if(strcasecmp($text, "/start")==0) {
