@@ -19,10 +19,9 @@ class FakultasController extends Controller
 {
   public function index()
   {
-    echo env('TELEGRAM_BOT_TOKEN');
-    // $semuaFakultas = Fakultas::all();
-    //
-    // return view('front.fakultas.index', compact('semuaFakultas'));
+    $semuaFakultas = Fakultas::all();
+
+    return view('front.fakultas.index', compact('semuaFakultas'));
   }
 
   public function store($input)
