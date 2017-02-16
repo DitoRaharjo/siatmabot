@@ -10,11 +10,8 @@ class BotController extends Controller
 {
     public function updates()
     {
-      //$updates = Telegram::getWebhookUpdates();
-
-      $updates = file_get_contents("php://input");
-      $updates = json_decode($updates, TRUE);
-
+      $updates = Telegram::getWebhookUpdates();
+      
       $text = $updates["message"]["text"];
       $chatId = $updates["message"]["chat"]["id"];
       $chatName = $updates["message"]["chat"]["first_name"] . " " . $updates["message"]["chat"]["last_name"];
