@@ -26,12 +26,13 @@ class BotController extends Controller
       $username = $updates["message"]["chat"]["username"] ;
 
       $userId = User::select('id')->where('telegram_username', 'LIKE', $username)->get();
+      $count = $userId->count();
 
-      if(!empty($userId)) {
+      if($count == 0) {
         $response = Telegram::sendMessage([
           'chat_id' => $chatId,
           'text' => 'Halo kamu belum daftar lo, daftar dulu yuk di
-           ("URL WEB :p ")'
+          ("URL WEB :p ")'
         ]);
       } else {
         if(strcasecmp($text, "/start")==0) {
