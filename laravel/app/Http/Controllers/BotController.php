@@ -23,8 +23,9 @@ class BotController extends Controller
       $text = $updates["message"]["text"];
       $chatId = $updates["message"]["chat"]["id"];
       $chatName = $updates["message"]["chat"]["first_name"] . " " . $updates["message"]["chat"]["last_name"];
+      $username = $updates["message"]["chat"]["username"] ;
 
-      $userId = User::select('id')->where('telegram_username', 'LIKE', $chatName)->get();
+      $userId = User::select('id')->where('telegram_username', 'LIKE', $username)->get();
 
       if(strcasecmp($text, "/start")==0) {
         $response = Telegram::sendMessage([
@@ -45,11 +46,10 @@ class BotController extends Controller
         ]);
       }
       if(strcasecmp($text, "npm dong")==0) {
-        $userId = User::select('id')->where('telegram_username', 'LIKE', $chatName)->get();
         $npmUser = User::find($userId)->npm;
         $response = Telegram::sendMessage([
           'chat_id' => $chatId,
-          'text' => 'NPM kamu '.$userId
+          'text' => 'NPM kamu '.$npmUser
         ]);
       }
 
