@@ -22,7 +22,15 @@ class BotController extends Controller
 
       $text = $updates["message"]["text"];
       $chatId = $updates["message"]["chat"]["id"];
-      $chatName = $updates["message"]["chat"]["first_name"] . " " . $updates["message"]["chat"]["last_name"];
+      $first_name = "-";
+      $last_name = "-";
+      if(isset($updates["message"]["chat"]["first_name"])) {
+        $first_name = $updates["message"]["chat"]["first_name"];
+      }
+      if(isset($updates["message"]["chat"]["last_name"])) {
+        $last_name = $updates["message"]["chat"]["last_name"];
+      }
+      $chatName = $first_name . " " . $last_name;
       $username = $updates["message"]["chat"]["username"] ;
 
       $userId = User::select('id')->where('telegram_username', 'LIKE', $username)->get();
@@ -66,6 +74,22 @@ class BotController extends Controller
             'text' => 'Chat ID : '.$chatId
           ]);
         }
+      }
+    }
+
+    public function checkUser($updates) {
+      $user_data['chat_id'] = $updates["message"]["chat"]["id"];
+      // $user_data['first_name'] = NULL;
+      // $user_data['last_name'] = NULL;
+      // $user_data['username'] = NULL;
+      if(isset($updates["message"]["chat"]["first_name"])) {
+        $user_data['first_name'] = $updates["message"]["chat"]["first_name"];
+      }
+      if(isset($updates["message"]["chat"]["last_name"])) {
+        $user_data['last_name'] = $updates["message"]["chat"]["last_name"];
+      }
+      if(isset($updates["message"]["chat"]["username"])) {
+        $user_data['username'] = $updates["message"]["chat"]["username"];
       }
     }
 }

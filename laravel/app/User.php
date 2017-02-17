@@ -25,7 +25,7 @@ class User extends Authenticatable
         'role',
         'email',
         'telegram_username',
-        'chatid',
+        'chat_id',
         'status',
         'registerdate',
         'created_at',
@@ -44,6 +44,11 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    public function chatlog()
+    {
+        return $this->hasOne('App\ChatLog');
+    }
 
     public function jadwal() {
       return $this->hasMany('App\Jadwal');
