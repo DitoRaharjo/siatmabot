@@ -25,6 +25,7 @@ class User extends Authenticatable
         'role',
         'email',
         'telegram_username',
+        'chatid',
         'status',
         'registerdate',
         'created_at',

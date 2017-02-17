@@ -60,6 +60,12 @@ class BotController extends Controller
             'text' => 'NPM kamu '.$npmUser
           ]);
         }
+        if(strcasecmp($text, "npm dong")==0) {
+          $response = Telegram::sendMessage([
+            'chat_id' => $chatId,
+            'text' => 'Chat ID : '.$chatId
+          ]);
+        }
       }
     }
 }
