@@ -41,8 +41,8 @@ class BotController extends Controller
 
       if($this->checkAll($responses) == false) {
         $linkRegister = "https://google.com";
-        $text = " Maaf sepertinya anda belum terdaftar, silahkan daftarkan diri anda pada link dibawah " . PHP_EOL .
-          "<a href=".$linkRegister.">LINK</a>";
+        $text = "Maaf sepertinya anda belum terdaftar, silahkan daftarkan diri anda pada link dibawah " . PHP_EOL .
+          "<a href='".$linkRegister."'>LINK</a>";
         Telegram::sendMessage([
           'chat_id' => $chatId,
           'text' => $text,
