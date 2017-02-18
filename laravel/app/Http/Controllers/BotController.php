@@ -21,7 +21,36 @@ class BotController extends Controller
     {
       $responses = Telegram::getWebhookUpdates();
 
-      $this->getUser($responses);
+      $user_data['chat_id'] = $responses["message"]["chat"]["id"];
+      if(isset($responses["message"]["chat"]["first_name"])) {
+        $user_data['first_name'] = $responses["message"]["chat"]["first_name"];
+      }
+      if(isset($responses["message"]["chat"]["last_name"])) {
+        $user_data['last_name'] = $responses["message"]["chat"]["last_name"];
+      }
+      if(isset($responses["message"]["chat"]["username"])) {
+        $user_data['username'] = $responses["message"]["chat"]["username"];
+      }
+
+      DB::beginTransaction();
+
+      try {
+        ChatLog::create($user_data);
+
+        DB::commit();
+      } catch (\Exception $e) {
+        DB::rollback();
+
+        throw $e;
+      }
+
+      $text = "berhasil save";
+      Telegram::sendMessage([
+        'chat_id' => $chatId,
+        'text' => $text,
+      ]);
+
+      // $this->getUser($responses);
 
       // $text = $responses["message"]["text"];
       // $chatId = $responses["message"]["chat"]["id"];
