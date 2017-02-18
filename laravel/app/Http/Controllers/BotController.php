@@ -93,34 +93,23 @@ class BotController extends Controller
       $checkCount = $check->count();
 
       if($checkCount == 0) {
+        $text = "chat log baru dan berhasil disimpan";
+        Telegram::sendMessage([
+          'chat_id' => $chatId,
+          'text' => $text,
+        ]);
+
         DB::beginTransaction();
 
         try {
           ChatLog::create($user_data);
 
-          $text = "sampe sini";
-          Telegram::sendMessage([
-            'chat_id' => $chatId,
-            'text' => $text,
-          ]);
-
           DB::commit();
         } catch (\Exception $e) {
           DB::rollback();
-          
-          $text = "gagal " . $e;
-          Telegram::sendMessage([
-            'chat_id' => $chatId,
-            'text' => $text,
-          ]);
 
           throw $e;
         }
-        // $text = "chat log baru dan berhasil disimpan";
-        // Telegram::sendMessage([
-        //   'chat_id' => $chatId,
-        //   'text' => $text,
-        // ]);
       } else {
         $text = "chat log sudah ada";
         Telegram::sendMessage([
