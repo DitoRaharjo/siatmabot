@@ -16,6 +16,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
+        'chat_log_id',
         'prodi_id',
         'fakultas_id',
         'fullname',
@@ -47,7 +48,7 @@ class User extends Authenticatable
 
     public function chatlog()
     {
-        return $this->hasOne('App\ChatLog');
+        return $this->hasOne('App\ChatLog', 'chat_log_id');
     }
 
     public function jadwal() {

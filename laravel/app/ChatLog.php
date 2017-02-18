@@ -9,6 +9,7 @@ class ChatLog extends Model
   protected $table = 'chat_log';
 
   protected $fillable = [
+    'user_id',
     'chat_id',
     'first_name',
     'last_name',
@@ -17,6 +18,6 @@ class ChatLog extends Model
 
   public function user()
   {
-      return $this->hasOne('App\User');
+      return $this->hasOne('App\User', 'user_id');
   }
 }

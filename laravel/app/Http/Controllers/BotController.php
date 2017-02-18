@@ -12,84 +12,203 @@ use DB;
 use App\User;
 use App\Prodi;
 use App\Fakultas;
+use App\ChatLog;
 use Telegram;
 
 class BotController extends Controller
 {
     public function updates()
     {
-      $updates = Telegram::getWebhookUpdates();
+      $responses = Telegram::getWebhookUpdates();
 
-      $text = $updates["message"]["text"];
-      $chatId = $updates["message"]["chat"]["id"];
-      $first_name = "-";
-      $last_name = "-";
-      if(isset($updates["message"]["chat"]["first_name"])) {
-        $first_name = $updates["message"]["chat"]["first_name"];
+      // $this->getUser($responses);
+
+      $text = $responses["message"]["text"];
+      $chatId = $responses["message"]["chat"]["id"];
+      $first_name = "";
+      $last_name = "";
+      $username = "";
+      if(isset($responses["message"]["chat"]["first_name"])) {
+        $first_name = $responses["message"]["chat"]["first_name"];
       }
-      if(isset($updates["message"]["chat"]["last_name"])) {
-        $last_name = $updates["message"]["chat"]["last_name"];
+      if(isset($responses["message"]["chat"]["last_name"])) {
+        $last_name = $responses["message"]["chat"]["last_name"];
+      }
+      if(isset($responses["message"]["chat"]["username"])) {
+        $username = $responses["message"]["chat"]["username"];
       }
       $chatName = $first_name . " " . $last_name;
-      $username = $updates["message"]["chat"]["username"] ;
 
-      $userId = User::select('id')->where('telegram_username', 'LIKE', $username)->get();
-      $count = $userId->count();
+      Telegram::sendMessage([
+            'chat_id' => $chatId,
+            'text' => "coba bisa gak",
+          ]);
 
-      if($count == 0) {
-        $response = Telegram::sendMessage([
-          'chat_id' => $chatId,
-          'text' => 'Halo kamu belum daftar lo, daftar dulu yuk di
-          ("URL WEB :p ")'
-        ]);
+      // if($this->checkUserChatId($responses) == false) {
+      //   if($this->checkUserUsername($responses) == true) {
+      //     $this->updateChatId($responses);
+      //   } else if($this->checkUserUsername($responses) == false) {
+      //     $text = "Maaf sepertinya anda belum terdaftar, silahkan daftarkan diri anda pada link dibawah";
+      //     $parseMode = "<a href='https://www.google.co.id'>LINK</a>";
+      //     Telegram::sendMessage([
+      //       'chat_id' => $chatId,
+      //       'text' => $text,
+      //       'parse_mode' => $parseMode,
+      //     ]);
+      //     // Apakah anda sudah mendaftar? Kalau belum silahkan daftar
+      //     // atau apakah anda mengganti username? silahkan update username anda di aplikasi
+      //   }
+      // } else {
+      //   if(strcasecmp($text, "/start")==0) {
+      //     $text = 'Halo salam kenal ' . $chatName . ', saya SIATMA BOT';
+      //   } else if(strcasecmp($text, "hai")==0) {
+      //     $text = "Hai juga :D";
+      //
+      //   } else if(strcasecmp($text, "salam kenal")==0) {
+      //     $text = "Salam kenal ". $chatName;
+      //   } else if(strcasecmp($text, "npm dong")==0) {
+      //     $text = "Under maintenance, please be patient";
+      //   } else if(strcasecmp($text, "chat id dong")==0) {
+      //     $text = "Chat ID : ".$chatId;
+      //   }
+      //   $parseMode = "<a href='https://www.google.co.id'>LINK</a>";
+      //   Telegram::sendMessage([
+      //     'chat_id' => $chatId,
+      //     'text' => $text,
+      //     'parse_mode' => $parseMode,
+      //   ]);
+      // }
+    }
+
+    public function getUser($responses) {
+      $user_data['chat_id'] = $responses["message"]["chat"]["id"];
+      if(isset($responses["message"]["chat"]["first_name"])) {
+        $user_data['first_name'] = $responses["message"]["chat"]["first_name"];
+      }
+      if(isset($responses["message"]["chat"]["last_name"])) {
+        $user_data['last_name'] = $responses["message"]["chat"]["last_name"];
+      }
+      if(isset($responses["message"]["chat"]["username"])) {
+        $user_data['username'] = $responses["message"]["chat"]["username"];
+      }
+
+      $check = ChatLog::select('id')->where('chat_id', $user_data['chat_id'])->get();
+      $checkCount = $check->count();
+
+      if($checkCount == 0) {
+        DB::beginTransaction();
+
+        try {
+          ChatLog::create($user_data);
+
+          DB::commit();
+        } catch (\Exception $e) {
+          DB::rollback();
+
+          throw $e;
+        }
+      }
+    }
+
+    public function checkUserChatId($response) {
+      $chatId = $responses["message"]["chat"]["id"];
+      $check = User::select('id')->where('chat_id', $chatId)->get();
+      $checkCount = $check->count();
+
+      if($checkCount == 0) {
+        return false;
       } else {
-        if(strcasecmp($text, "/start")==0) {
-          $response = Telegram::sendMessage([
-            'chat_id' => $chatId,
-            'text' => 'Halo salam kenal ' . $chatName . ', saya SIATMA BOT'
-          ]);
-        }
-        if(strcasecmp($text, "hai")==0) {
-          $response = Telegram::sendMessage([
-            'chat_id' => $chatId,
-            'text' => 'Hai juga :D'
-          ]);
-        }
-        if(strcasecmp($text, "salam kenal")==0) {
-          $response = Telegram::sendMessage([
-            'chat_id' => $chatId,
-            'text' => 'Salam kenal, namaku SIATMA Bot'
-          ]);
-        }
-        if(strcasecmp($text, "npm dong")==0) {
-          $npmUser = User::find($userId)->npm;
-          $response = Telegram::sendMessage([
-            'chat_id' => $chatId,
-            'text' => 'NPM kamu '.$npmUser
-          ]);
-        }
-        if(strcasecmp($text, "npm dong")==0) {
-          $response = Telegram::sendMessage([
-            'chat_id' => $chatId,
-            'text' => 'Chat ID : '.$chatId
-          ]);
-        }
+        return true;
       }
     }
 
-    public function checkUser($updates) {
-      $user_data['chat_id'] = $updates["message"]["chat"]["id"];
-      // $user_data['first_name'] = NULL;
-      // $user_data['last_name'] = NULL;
-      // $user_data['username'] = NULL;
-      if(isset($updates["message"]["chat"]["first_name"])) {
-        $user_data['first_name'] = $updates["message"]["chat"]["first_name"];
+    public function checkUserUsername($responses) {
+      $username = "-";
+      if(isset($responses["message"]["chat"]["username"])) {
+        $username = $responses["message"]["chat"]["username"];
       }
-      if(isset($updates["message"]["chat"]["last_name"])) {
-        $user_data['last_name'] = $updates["message"]["chat"]["last_name"];
-      }
-      if(isset($updates["message"]["chat"]["username"])) {
-        $user_data['username'] = $updates["message"]["chat"]["username"];
+
+      $check = User::select('id')->where('telegram_username', $username)->get();
+      $checkCount = $check->count();
+
+      if($checkCount == 0) {
+        return false;
+      } else {
+        return true;
       }
     }
+
+    public function updateChatId($responses) {
+      $chatId = $responses["message"]["chat"]["id"];
+      $username = "-";
+      if(isset($responses["message"]["chat"]["username"])) {
+        $username = $responses["message"]["chat"]["username"];
+      }
+      $userId = User::select('id')->where('telegram_username', $username)->get();
+      $checkCount = $userId->count();
+
+      if($checkCount == 1) {
+
+        DB::beginTransaction();
+
+        try {
+          $userUpdate = User::find($userId);
+          $chatId = $responses["message"]["chat"]["id"];
+
+          if($userUpdate->chat_log_id == NULL) {
+            $chatLogId = ChatLog::select('id')->where('chat_id', $chatId)->get();
+            $chatLogCount = $chatLogId->count();
+
+            if($chatLogCount == 1) {
+              $chatLogUpdate = ChatLog::find($chatLogId);
+              $chatLogUpdate->user_id = $userUpdate->id;
+              $chatLogUpdate->save();
+
+              $userUpdate->chat_log_id = $chatLogUpdate->id;
+              $userUpdate->chat_id = $chatId;
+              $userUpdate->save();
+            } else {
+              $userUpdate->chat_id = $chatId;
+              $userUpdate->save();
+            }
+          } else {
+            $userUpdate->chat_id = $chatId;
+            $userUpdate->save();
+          }
+
+          DB::commit();
+        } catch (\Exception $e) {
+          DB::rollback();
+
+          throw $e;
+        }
+      } else {
+        $text = "Gagal update chat_id";
+        Telegram::sendMessage([
+          'chat_id' => $chatId,
+          'text' => $text,
+        ]);
+      }
+    }
+
+    // $username = "";
+    // $first_name = "";
+    // $last_name = "";
+    // if(isset($responses["message"]["chat"]["username"])) {
+    //   $username = $responses["message"]["chat"]["username"];
+    // }
+    // if(isset($responses["message"]["chat"]["first_name"])) {
+    //   $first_name = $responses["message"]["chat"]["first_name"];
+    // }
+    // if(isset($responses["message"]["chat"]["last_name"])) {
+    //   $last_name = $responses["message"]["chat"]["last_name"];
+    // }
+    //
+    // if(User::select('id')->where('telegram_username', $username)->count() != 0) {
+    //   $this->saveChatId("username", $username);
+    // } else if(User::select('id')->where('first_name', $first_name)->count() != 0) {
+    //   $this->saveChatId("firstname", $first_name);
+    // } else if(User::select('id')->where('last_name', $last_name)->count() != 0) {
+    //   $this->saveChatId("lastname", $last_name);
+    // } else {
 }

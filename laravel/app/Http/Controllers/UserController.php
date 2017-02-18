@@ -12,6 +12,7 @@ use DB;
 use App\User;
 use App\Prodi;
 use App\Fakultas;
+use App\ChatLog;
 
 class UserController extends Controller
 {
@@ -59,10 +60,25 @@ class UserController extends Controller
       $user_data['role'] = "Mahasiswa";
       $user_data['registerdate'] = Carbon::now();
 
+      $checkChatLog = ChatLog::select('id')->where('username', $user_data['telegram_username'])->get();
+      $checkCount = $checkChatLog->count();
+      if($checkCount != 0) {
+        $chatLogId = ChatLog::find($checkChatLog)->id;
+        $chatId = ChatLog::find($checkChatLog)->chat_id;
+        $user_data['chat_log_id'] = $chatLogId;
+        $user_data['chat_id'] = $chatId;
+      }
+
       DB::beginTransaction();
 
       try {
-        User::create($user_data);
+        $userId = User::create($user_data)->id;
+
+        if($checkCount != 0) {
+          $chatLog = ChatLog::find($checkChatLog);
+          $chatLog->user_id = $userId;
+          $chatLog->save();
+        }
 
         DB::commit();
 
