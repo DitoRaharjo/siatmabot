@@ -61,6 +61,8 @@ class BotController extends Controller
           $text = "Under maintenance, please be patient";
         } else if(strcasecmp($textResponse, "chat id dong")==0) {
           $text = "Chat ID : ".$chatId;
+        } else {
+          $text = "Perintah tidak ditemukan";
         }
         Telegram::sendMessage([
           'chat_id' => $chatId,
