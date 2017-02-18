@@ -50,28 +50,22 @@ class BotController extends Controller
         // Apakah anda sudah mendaftar? Kalau belum silahkan daftar
         // atau apakah anda mengganti username? silahkan update username anda di aplikasi
       } else {
-        $text = "test masuk sini";
+        if(strcasecmp($textResponse, "/start")==0) {
+          $text = 'Halo salam kenal ' . $chatName . ', saya SIATMA BOT';
+        } else if(strcasecmp($textResponse, "hai")==0) {
+          $text = "Hai juga :D";
+        } else if(strcasecmp($textResponse, "salam kenal")==0) {
+          $text = "Salam kenal ". $chatName;
+        } else if(strcasecmp($textResponse, "npm dong")==0) {
+          $text = "Under maintenance, please be patient";
+        } else if(strcasecmp($textResponse, "chat id dong")==0) {
+          $text = "Chat ID : ".$chatId;
+        }
+        // $parseMode = "<a href='https://www.google.co.id'>LINK</a>";
         Telegram::sendMessage([
           'chat_id' => $chatId,
           'text' => $text,
         ]);
-        // if(strcasecmp($textResponse, "/start")==0) {
-        //   $text = 'Halo salam kenal ' . $chatName . ', saya SIATMA BOT';
-        // } else if(strcasecmp($textResponse, "hai")==0) {
-        //   $text = "Hai juga :D";
-        // } else if(strcasecmp($textResponse, "salam kenal")==0) {
-        //   $text = "Salam kenal ". $chatName;
-        // } else if(strcasecmp($textResponse, "npm dong")==0) {
-        //   $text = "Under maintenance, please be patient";
-        // } else if(strcasecmp($textResponse, "chat id dong")==0) {
-        //   $text = "Chat ID : ".$chatId;
-        // }
-        // $parseMode = "<a href='https://www.google.co.id'>LINK</a>";
-        // Telegram::sendMessage([
-        //   'chat_id' => $chatId,
-        //   'text' => $text,
-        //   'parse_mode' => $parseMode,
-        // ]);
       }
     }
 
