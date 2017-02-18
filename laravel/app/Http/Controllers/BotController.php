@@ -21,7 +21,7 @@ class BotController extends Controller
     {
       $responses = Telegram::getWebhookUpdates();
 
-      // $this->getUser($responses);
+      $this->getUser($responses);
 
       $text = $responses["message"]["text"];
       $chatId = $responses["message"]["chat"]["id"];
@@ -39,48 +39,45 @@ class BotController extends Controller
       }
       $chatName = $first_name . " " . $last_name;
 
-      Telegram::sendMessage([
+      if($this->checkUserChatId($responses) == false) {
+        if($this->checkUserUsername($responses) == true) {
+          $this->updateChatId($responses);
+        } else if($this->checkUserUsername($responses) == false) {
+          $text = "Maaf sepertinya anda belum terdaftar, silahkan daftarkan diri anda pada link dibawah";
+          $parseMode = "<a href='https://www.google.co.id'>LINK</a>";
+          Telegram::sendMessage([
             'chat_id' => $chatId,
-            'text' => "coba bisa gak",
+            'text' => $text,
+            'parse_mode' => $parseMode,
           ]);
+          // Apakah anda sudah mendaftar? Kalau belum silahkan daftar
+          // atau apakah anda mengganti username? silahkan update username anda di aplikasi
+        }
+      } else {
+        if(strcasecmp($text, "/start")==0) {
+          $text = 'Halo salam kenal ' . $chatName . ', saya SIATMA BOT';
+        } else if(strcasecmp($text, "hai")==0) {
+          $text = "Hai juga :D";
 
-      // if($this->checkUserChatId($responses) == false) {
-      //   if($this->checkUserUsername($responses) == true) {
-      //     $this->updateChatId($responses);
-      //   } else if($this->checkUserUsername($responses) == false) {
-      //     $text = "Maaf sepertinya anda belum terdaftar, silahkan daftarkan diri anda pada link dibawah";
-      //     $parseMode = "<a href='https://www.google.co.id'>LINK</a>";
-      //     Telegram::sendMessage([
-      //       'chat_id' => $chatId,
-      //       'text' => $text,
-      //       'parse_mode' => $parseMode,
-      //     ]);
-      //     // Apakah anda sudah mendaftar? Kalau belum silahkan daftar
-      //     // atau apakah anda mengganti username? silahkan update username anda di aplikasi
-      //   }
-      // } else {
-      //   if(strcasecmp($text, "/start")==0) {
-      //     $text = 'Halo salam kenal ' . $chatName . ', saya SIATMA BOT';
-      //   } else if(strcasecmp($text, "hai")==0) {
-      //     $text = "Hai juga :D";
-      //
-      //   } else if(strcasecmp($text, "salam kenal")==0) {
-      //     $text = "Salam kenal ". $chatName;
-      //   } else if(strcasecmp($text, "npm dong")==0) {
-      //     $text = "Under maintenance, please be patient";
-      //   } else if(strcasecmp($text, "chat id dong")==0) {
-      //     $text = "Chat ID : ".$chatId;
-      //   }
-      //   $parseMode = "<a href='https://www.google.co.id'>LINK</a>";
-      //   Telegram::sendMessage([
-      //     'chat_id' => $chatId,
-      //     'text' => $text,
-      //     'parse_mode' => $parseMode,
-      //   ]);
-      // }
+        } else if(strcasecmp($text, "salam kenal")==0) {
+          $text = "Salam kenal ". $chatName;
+        } else if(strcasecmp($text, "npm dong")==0) {
+          $text = "Under maintenance, please be patient";
+        } else if(strcasecmp($text, "chat id dong")==0) {
+          $text = "Chat ID : ".$chatId;
+        }
+        $parseMode = "<a href='https://www.google.co.id'>LINK</a>";
+        Telegram::sendMessage([
+          'chat_id' => $chatId,
+          'text' => $text,
+          'parse_mode' => $parseMode,
+        ]);
+      }
     }
 
     public function getUser($responses) {
+      $chatId = $responses["message"]["chat"]["id"]; ///////////////////////////////////////////
+
       $user_data['chat_id'] = $responses["message"]["chat"]["id"];
       if(isset($responses["message"]["chat"]["first_name"])) {
         $user_data['first_name'] = $responses["message"]["chat"]["first_name"];
@@ -107,6 +104,17 @@ class BotController extends Controller
 
           throw $e;
         }
+        $text = "chat log baru dan berhasil disimpan";
+        Telegram::sendMessage([
+          'chat_id' => $chatId,
+          'text' => $text,
+        ]);
+      } else {
+        $text = "chat log sudah ada";
+        Telegram::sendMessage([
+          'chat_id' => $chatId,
+          'text' => $text,
+        ]);
       }
     }
 
@@ -116,13 +124,25 @@ class BotController extends Controller
       $checkCount = $check->count();
 
       if($checkCount == 0) {
+        $text = "chat_id tidak ditemukan";
+        Telegram::sendMessage([
+          'chat_id' => $chatId,
+          'text' => $text,
+        ]);
         return false;
       } else {
+        $text = "chat_id id ditemukan";
+        Telegram::sendMessage([
+          'chat_id' => $chatId,
+          'text' => $text,
+        ]);
         return true;
       }
     }
 
     public function checkUserUsername($responses) {
+      $chatId = $responses["message"]["chat"]["id"]; //////////////////////////////////////////////
+      
       $username = "-";
       if(isset($responses["message"]["chat"]["username"])) {
         $username = $responses["message"]["chat"]["username"];
@@ -132,8 +152,18 @@ class BotController extends Controller
       $checkCount = $check->count();
 
       if($checkCount == 0) {
+        $text = "username tidak ditemukan";
+        Telegram::sendMessage([
+          'chat_id' => $chatId,
+          'text' => $text,
+        ]);
         return false;
       } else {
+        $text = "username ditemukan";
+        Telegram::sendMessage([
+          'chat_id' => $chatId,
+          'text' => $text,
+        ]);
         return true;
       }
     }
@@ -167,13 +197,28 @@ class BotController extends Controller
               $userUpdate->chat_log_id = $chatLogUpdate->id;
               $userUpdate->chat_id = $chatId;
               $userUpdate->save();
+              $text = "Berhasil Update chat_log_id, Berhasil update chat_id";
+              Telegram::sendMessage([
+                'chat_id' => $chatId,
+                'text' => $text,
+              ]);
             } else {
               $userUpdate->chat_id = $chatId;
               $userUpdate->save();
+              $text = "Gagal Update chat_log_id, Berhasil update chat_id";
+              Telegram::sendMessage([
+                'chat_id' => $chatId,
+                'text' => $text,
+              ]);
             }
           } else {
             $userUpdate->chat_id = $chatId;
             $userUpdate->save();
+            $text = "Chat Log ID sudah ada, Berhasil update chat_id";
+            Telegram::sendMessage([
+              'chat_id' => $chatId,
+              'text' => $text,
+            ]);
           }
 
           DB::commit();
@@ -190,25 +235,4 @@ class BotController extends Controller
         ]);
       }
     }
-
-    // $username = "";
-    // $first_name = "";
-    // $last_name = "";
-    // if(isset($responses["message"]["chat"]["username"])) {
-    //   $username = $responses["message"]["chat"]["username"];
-    // }
-    // if(isset($responses["message"]["chat"]["first_name"])) {
-    //   $first_name = $responses["message"]["chat"]["first_name"];
-    // }
-    // if(isset($responses["message"]["chat"]["last_name"])) {
-    //   $last_name = $responses["message"]["chat"]["last_name"];
-    // }
-    //
-    // if(User::select('id')->where('telegram_username', $username)->count() != 0) {
-    //   $this->saveChatId("username", $username);
-    // } else if(User::select('id')->where('first_name', $first_name)->count() != 0) {
-    //   $this->saveChatId("firstname", $first_name);
-    // } else if(User::select('id')->where('last_name', $last_name)->count() != 0) {
-    //   $this->saveChatId("lastname", $last_name);
-    // } else {
 }
