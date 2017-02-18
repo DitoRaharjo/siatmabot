@@ -63,10 +63,8 @@ class BotController extends Controller
         } else if(strcasecmp($textResponse, "chat id dong")==0) {
           $text = "Chat ID : ".$chatId;
         }
-        $textBaru = urlencode(
-          "\n Maaf sepertinya anda belum terdaftar, silahkan daftarkan diri anda pada link dibawah \n
-          <a href='https://google.com'>LINK</a>"
-        );
+        $textBaru = PHP_EOL . " Maaf sepertinya anda belum terdaftar, silahkan daftarkan diri anda pada link dibawah " . PHP_EOL .
+          "<a href='https://google.com'>LINK</a>";
         Telegram::sendMessage([
           'chat_id' => $chatId,
           'text' => $text . $textBaru,
