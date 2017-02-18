@@ -22,7 +22,7 @@ class BotController extends Controller
       $responses = Telegram::getWebhookUpdates();
 
       $this->getUser($responses);
-      
+
       $textResponse = $responses["message"]["text"];
       $chatId = $responses["message"]["chat"]["id"];
       $first_name = "";
@@ -39,31 +39,21 @@ class BotController extends Controller
       }
       $chatName = $first_name . " " . $last_name;
 
-      if($this->checkUserChatId($responses) == false) {
-        $text = "test masuk gak";
+      if($this->checkAll($responses) == false) {
+        $text = "Maaf sepertinya anda belum terdaftar, silahkan daftarkan diri anda pada link dibawah";
+        $parseMode = "<a href='https://www.google.co.id'>LINK</a>";
         Telegram::sendMessage([
           'chat_id' => $chatId,
           'text' => $text,
+          'parse_mode' => $parseMode,
         ]);
-        if($this->checkUserUsername($responses) == true) {
-          $this->updateChatId($responses);
-        } else if($this->checkUserUsername($responses) == false) {
-          $text = "Maaf sepertinya anda belum terdaftar, silahkan daftarkan diri anda pada link dibawah";
-          $parseMode = "<a href='https://www.google.co.id'>LINK</a>";
-          Telegram::sendMessage([
-            'chat_id' => $chatId,
-            'text' => $text,
-            'parse_mode' => $parseMode,
-          ]);
-          // Apakah anda sudah mendaftar? Kalau belum silahkan daftar
-          // atau apakah anda mengganti username? silahkan update username anda di aplikasi
-        }
+        // Apakah anda sudah mendaftar? Kalau belum silahkan daftar
+        // atau apakah anda mengganti username? silahkan update username anda di aplikasi
       } else {
         if(strcasecmp($textResponse, "/start")==0) {
           $text = 'Halo salam kenal ' . $chatName . ', saya SIATMA BOT';
         } else if(strcasecmp($text, "hai")==0) {
           $text = "Hai juga :D";
-
         } else if(strcasecmp($textResponse, "salam kenal")==0) {
           $text = "Salam kenal ". $chatName;
         } else if(strcasecmp($textResponse, "npm dong")==0) {
@@ -120,6 +110,19 @@ class BotController extends Controller
           'chat_id' => $chatId,
           'text' => $text,
         ]);
+      }
+    }
+
+    public function checkAll($responses) {
+      if($this->checkUserChatId($responses) == false) {
+        if($this->checkUserUsername($responses) == true) {
+          $this->updateChatId($responses);
+          return true;
+        } else if($this->checkUserUsername($responses) == false) {
+          return false;
+        }
+      } else {
+        return true;
       }
     }
 
