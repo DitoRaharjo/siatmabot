@@ -29,43 +29,43 @@ class BotController extends Controller
         'text' => $text,
       ]);
 
-      $test['ayo'] = "hublaaa";
-
-      $user_data['chat_id'] = $responses["message"]["chat"]["id"];
-      if(isset($responses["message"]["chat"]["first_name"])) {
-        $user_data['first_name'] = $responses["message"]["chat"]["first_name"];
-      }
-      if(isset($responses["message"]["chat"]["last_name"])) {
-        $user_data['last_name'] = $responses["message"]["chat"]["last_name"];
-      }
-      if(isset($responses["message"]["chat"]["username"])) {
-        $user_data['username'] = $responses["message"]["chat"]["username"];
-      }
-
-      $text = "chat id : " . $user_data['chat_id'] . " username : " . $user_data['username'] . " first_name : " . $user_data['first_name'] . " last_name : " . $user_data['last_name'] ;
-
-      Telegram::sendMessage([
-        'chat_id' => $chatId,
-        'text' => $text,
-      ]);
-
-      DB::beginTransaction();
-
-      try {
-        ChatLog::create($user_data);
-
-        DB::commit();
-      } catch (\Exception $e) {
-        DB::rollback();
-
-        throw $e;
-      }
-
-      $text = "berhasil save";
-      Telegram::sendMessage([
-        'chat_id' => $chatId,
-        'text' => $text,
-      ]);
+      // $test['ayo'] = "hublaaa";
+      //
+      // $user_data['chat_id'] = $responses["message"]["chat"]["id"];
+      // if(isset($responses["message"]["chat"]["first_name"])) {
+      //   $user_data['first_name'] = $responses["message"]["chat"]["first_name"];
+      // }
+      // if(isset($responses["message"]["chat"]["last_name"])) {
+      //   $user_data['last_name'] = $responses["message"]["chat"]["last_name"];
+      // }
+      // if(isset($responses["message"]["chat"]["username"])) {
+      //   $user_data['username'] = $responses["message"]["chat"]["username"];
+      // }
+      //
+      // $text = "chat id : " . $user_data['chat_id'] . " username : " . $user_data['username'] . " first_name : " . $user_data['first_name'] . " last_name : " . $user_data['last_name'] ;
+      //
+      // Telegram::sendMessage([
+      //   'chat_id' => $chatId,
+      //   'text' => $text,
+      // ]);
+      //
+      // DB::beginTransaction();
+      //
+      // try {
+      //   ChatLog::create($user_data);
+      //
+      //   DB::commit();
+      // } catch (\Exception $e) {
+      //   DB::rollback();
+      //
+      //   throw $e;
+      // }
+      //
+      // $text = "berhasil save";
+      // Telegram::sendMessage([
+      //   'chat_id' => $chatId,
+      //   'text' => $text,
+      // ]);
 
       // $this->getUser($responses);
 
