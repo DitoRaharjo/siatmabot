@@ -14,6 +14,7 @@ use Auth;
 use App\Http\Requests;
 use App\Fakultas;
 use App\User;
+use App\ChatLog;
 
 class FakultasController extends Controller
 {
