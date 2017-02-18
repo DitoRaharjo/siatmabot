@@ -21,6 +21,13 @@ class BotController extends Controller
     {
       $responses = Telegram::getWebhookUpdates();
 
+      $text = "ayo 1"; //"chat id : " . $test['ayo']; //. " username : " . $user_data['username'] . " first_name : " . $user_data['first_name'] . " last_name : " . $user_data['last_name'] ;
+
+      Telegram::sendMessage([
+        'chat_id' => $chatId,
+        'text' => $text,
+      ]);
+
       $test['ayo'] = "hublaaa";
 
       $user_data['chat_id'] = $responses["message"]["chat"]["id"];
@@ -34,7 +41,7 @@ class BotController extends Controller
         $user_data['username'] = $responses["message"]["chat"]["username"];
       }
 
-      $text = "chat id : " . $test['ayo']; //. " username : " . $user_data['username'] . " first_name : " . $user_data['first_name'] . " last_name : " . $user_data['last_name'] ;
+      $text = "ayo 2"; //"chat id : " . $test['ayo']; //. " username : " . $user_data['username'] . " first_name : " . $user_data['first_name'] . " last_name : " . $user_data['last_name'] ;
 
       Telegram::sendMessage([
         'chat_id' => $chatId,
