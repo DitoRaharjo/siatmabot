@@ -32,11 +32,8 @@ class BotController extends Controller
         $user_data['username'] = $responses["message"]["chat"]["username"];
       }
 
-      $text = "chat id : " . $user_data['chat_id'] .
-      " username : " . $user_data['username'] .
-      " first_name : " . $user_data['first_name'] .
-      " last_name : " .$user_data['last_name'] ;
-      
+      $text = "chat id : " . $user_data['chat_id']; //. " username : " . $user_data['username'] . " first_name : " . $user_data['first_name'] . " last_name : " . $user_data['last_name'] ;
+
       Telegram::sendMessage([
         'chat_id' => $chatId,
         'text' => $text,
