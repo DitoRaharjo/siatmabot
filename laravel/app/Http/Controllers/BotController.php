@@ -21,58 +21,7 @@ class BotController extends Controller
     {
       $responses = Telegram::getWebhookUpdates();
 
-      $chatId = $responses["message"]["chat"]["id"];
-
-      $text = "ayo 1";
-      Telegram::sendMessage([
-        'chat_id' => $chatId,
-        'text' => $text,
-      ]);
-
-      $user_data['chat_id'] = $responses["message"]["chat"]["id"];
-      if(isset($responses["message"]["chat"]["first_name"])) {
-        $user_data['first_name'] = $responses["message"]["chat"]["first_name"];
-      }
-      if(isset($responses["message"]["chat"]["last_name"])) {
-        $user_data['last_name'] = $responses["message"]["chat"]["last_name"];
-      }
-      if(isset($responses["message"]["chat"]["username"])) {
-        $user_data['username'] = $responses["message"]["chat"]["username"];
-      }
-
-      // $text = "chat id : " . $user_data['chat_id'] . " username : " . $user_data['username'] . " first_name : " . $user_data['first_name'] . " last_name : " . $user_data['last_name'] ;
-      //
-      // Telegram::sendMessage([
-      //   'chat_id' => $chatId,
-      //   'text' => $text,
-      // ]);
-      //
-
-      DB::beginTransaction();
-
-      try {
-        ChatLog::create($user_data);
-
-        DB::commit();
-      } catch (\Exception $e) {
-        DB::rollback();
-
-        throw $e;
-      }
-
-      $text = "berhasil";
-      Telegram::sendMessage([
-        'chat_id' => $chatId,
-        'text' => $text,
-      ]);
-      //
-      // $text = "berhasil save";
-      // Telegram::sendMessage([
-      //   'chat_id' => $chatId,
-      //   'text' => $text,
-      // ]);
-
-      // $this->getUser($responses);
+      $this->getUser($responses);
 
       // $text = $responses["message"]["text"];
       // $chatId = $responses["message"]["chat"]["id"];
@@ -144,12 +93,6 @@ class BotController extends Controller
       $checkCount = $check->count();
 
       if($checkCount == 0) {
-        $text = "chat log baru dan berhasil disimpan";
-        Telegram::sendMessage([
-          'chat_id' => $chatId,
-          'text' => $text,
-        ]);
-
         DB::beginTransaction();
 
         try {
@@ -161,6 +104,11 @@ class BotController extends Controller
 
           throw $e;
         }
+        $text = "chat log baru dan berhasil disimpan";
+        Telegram::sendMessage([
+          'chat_id' => $chatId,
+          'text' => $text,
+        ]);
       } else {
         $text = "chat log sudah ada";
         Telegram::sendMessage([
