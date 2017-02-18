@@ -40,12 +40,14 @@ class BotController extends Controller
       $chatName = $first_name . " " . $last_name;
 
       if($this->checkAll($responses) == false) {
-        $text = "Maaf sepertinya anda belum terdaftar, silahkan daftarkan diri anda pada link dibawah";
-        $parseMode = "<a href='https://www.google.co.id'>LINK</a>";
+        $text = urlencode(
+          "Maaf sepertinya anda belum terdaftar, silahkan daftarkan diri anda pada link dibawah \n
+          <a href='https://google.com'>LINK</a>"
+        );
         Telegram::sendMessage([
           'chat_id' => $chatId,
           'text' => $text,
-          'parse_mode' => $parseMode,
+          'parse_mode' => "HTML",
         ]);
         // Apakah anda sudah mendaftar? Kalau belum silahkan daftar
         // atau apakah anda mengganti username? silahkan update username anda di aplikasi
@@ -61,10 +63,14 @@ class BotController extends Controller
         } else if(strcasecmp($textResponse, "chat id dong")==0) {
           $text = "Chat ID : ".$chatId;
         }
-        // $parseMode = "<a href='https://www.google.co.id'>LINK</a>";
+        $textBaru = urlencode(
+          "\n Maaf sepertinya anda belum terdaftar, silahkan daftarkan diri anda pada link dibawah \n
+          <a href='https://google.com'>LINK</a>"
+        );
         Telegram::sendMessage([
           'chat_id' => $chatId,
-          'text' => $text,
+          'text' => $text . $textBaru,
+          'parse_mode' => "HTML",
         ]);
       }
     }
