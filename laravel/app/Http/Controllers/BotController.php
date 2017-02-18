@@ -21,8 +21,9 @@ class BotController extends Controller
     {
       $responses = Telegram::getWebhookUpdates();
 
-      $text = "ayo 1"; //"chat id : " . $test['ayo']; //. " username : " . $user_data['username'] . " first_name : " . $user_data['first_name'] . " last_name : " . $user_data['last_name'] ;
+      $chatId = $responses["message"]["chat"]["id"];
 
+      $text = "ayo 1";
       Telegram::sendMessage([
         'chat_id' => $chatId,
         'text' => $text,
@@ -41,30 +42,30 @@ class BotController extends Controller
         $user_data['username'] = $responses["message"]["chat"]["username"];
       }
 
-      $text = "ayo 2"; //"chat id : " . $test['ayo']; //. " username : " . $user_data['username'] . " first_name : " . $user_data['first_name'] . " last_name : " . $user_data['last_name'] ;
+      $text = "chat id : " . $user_data['chat_id'] . " username : " . $user_data['username'] . " first_name : " . $user_data['first_name'] . " last_name : " . $user_data['last_name'] ;
 
       Telegram::sendMessage([
         'chat_id' => $chatId,
         'text' => $text,
       ]);
 
-      // DB::beginTransaction();
-      //
-      // try {
-      //   ChatLog::create($user_data);
-      //
-      //   DB::commit();
-      // } catch (\Exception $e) {
-      //   DB::rollback();
-      //
-      //   throw $e;
-      // }
-      //
-      // $text = "berhasil save";
-      // Telegram::sendMessage([
-      //   'chat_id' => $chatId,
-      //   'text' => $text,
-      // ]);
+      DB::beginTransaction();
+
+      try {
+        ChatLog::create($user_data);
+
+        DB::commit();
+      } catch (\Exception $e) {
+        DB::rollback();
+
+        throw $e;
+      }
+
+      $text = "berhasil save";
+      Telegram::sendMessage([
+        'chat_id' => $chatId,
+        'text' => $text,
+      ]);
 
       // $this->getUser($responses);
 
