@@ -13,8 +13,8 @@ use Response;
 use Auth;
 use App\Http\Requests;
 use App\Fakultas;
+use App\Prodi;
 use App\User;
-use App\ChatLog;
 
 class FakultasController extends Controller
 {
@@ -75,9 +75,11 @@ class FakultasController extends Controller
 
     try{
         $fakultas = Fakultas::find($id);
-        $fakultas->deleted_at = date("Y-m-d H:i:s");
+        $fakultas->deleted_at = Carbon::now();
         $fakultas->deleted_by = Auth::user()->id;
         $fakultas->save();
+
+        Prodi::where('fakultas_id', $id)->update(['deleted_at' => Carbon::now(), 'deleted_by' => Auth::user()->id]);
 
         DB::commit();
 
@@ -101,6 +103,8 @@ class FakultasController extends Controller
         $fakultas->deleted_by = NULL;
         $fakultas->updated_by = Auth::user()->id;
         $fakultas->save();
+
+        Prodi::where('fakultas_id', $id)->update(['deleted_at' => NULL, 'deleted_by' => NULL, 'updated_by' => Auth::user()->id]);
 
         DB::commit();
 

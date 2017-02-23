@@ -59,13 +59,15 @@
               <div>
                 <select class="select2_group form-control" required="" name="prodi_id">
                   @foreach($semuaFakultas as $fakultas)
-                  <optgroup label="{{ $fakultas->nama }}">
-                            @foreach($semuaProdi as $prodi)
-                              @if($prodi->fakultas_id == $fakultas->id)
-                              <option value="{{ $prodi->id }}">{{ $prodi->nama }}</option>
-                              @endif
-                            @endforeach
-                  </optgroup>
+                    @if($fakultas->deleted_at == NULL)
+                    <optgroup label="{{ $fakultas->nama }}">
+                              @foreach($semuaProdi as $prodi)
+                                @if($prodi->fakultas_id == $fakultas->id)
+                                <option value="{{ $prodi->id }}">{{ $prodi->nama }}</option>
+                                @endif
+                              @endforeach
+                    </optgroup>
+                    @endif
                   @endforeach
                 </select>
               </div>
