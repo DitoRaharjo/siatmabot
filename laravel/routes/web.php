@@ -45,4 +45,30 @@ Route::group(['middleware'=>'checkUser', 'auth'], function() {
   Route::get('fakultasTerhapus-restore/{id}', 'FakultasController@terhapusRestore')->name('fakultasTerhapus.restore');
   Route::get('fakultasTerhapus-destroy/{id}', 'FakultasController@terhapusDestroy')->name('fakultasTerhapus.destroy');
 });
+
+//Program Studi - Prodi
+Route::group(['middleware'=>'checkUser', 'auth'], function() {
+  Route::get('prodi-index', 'ProdiController@index')->name('prodi.index');
+  Route::get('prodi-create', 'ProdiController@create')->name('prodi.create');
+  Route::post('prodi-store', 'ProdiController@store')->name('prodi.store');
+  Route::get('prodi-edit/{id}', 'ProdiController@edit')->name('prodi.edit');
+  Route::patch('prodi-update/{id}', 'ProdiController@update')->name('prodi.update');
+  Route::get('prodi-delete/{id}', 'ProdiController@destroy')->name('prodi.destroy');
+
+  Route::get('prodiTerhapus-restore/{id}', 'ProdiController@terhapusRestore')->name('prodiTerhapus.restore');
+  Route::get('prodiTerhapus-destroy/{id}', 'ProdiController@terhapusDestroy')->name('prodiTerhapus.destroy');
+});
+
+//Sesi
+Route::group(['middleware'=>'checkUser', 'auth'], function() {
+  Route::get('sesi-index', 'SesiController@index')->name('sesi.index');
+  Route::get('sesi-create', 'SesiController@create')->name('sesi.create');
+  Route::post('sesi-store', 'SesiController@store')->name('sesi.store');
+  Route::get('sesi-edit/{id}', 'SesiController@edit')->name('sesi.edit');
+  Route::patch('sesi-update/{id}', 'SesiController@update')->name('sesi.update');
+  Route::get('sesi-delete/{id}', 'SesiController@destroy')->name('sesi.destroy');
+
+  Route::get('sesiTerhapus-restore/{id}', 'SesiController@terhapusRestore')->name('sesiTerhapus.restore');
+  Route::get('sesiTerhapus-destroy/{id}', 'SesiController@terhapusDestroy')->name('sesiTerhapus.destroy');
+});
 /* ----------- End of Front End Routes -------------  */

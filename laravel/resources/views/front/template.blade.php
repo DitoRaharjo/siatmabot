@@ -146,9 +146,9 @@
                   @endif
                   <li><a href="{{ Route('dashboard.mahasiswa') }}"><i class="fa fa-desktop"></i> Dashboard</a></li>
                   <li><a href="{{ Route('fakultas.index') }}"><i class="fa fa-home"></i> Fakultas</a></li>
-                  <li><a><i class="fa fa-exchange"></i> Program Studi</a>
+                  <li><a href="{{ Route('prodi.index') }}"><i class="fa fa-exchange"></i> Program Studi</a>
                   </li>
-                  <li><a><i class="fa fa-users"></i> Kelola Sesi </a>
+                  <li><a href="{{ Route('sesi.index') }}"><i class="fa fa-users"></i> Kelola Sesi </a>
                   </li>
                   <li><a href="#"><i class="fa fa-list-ol"></i> Kelola Sesi-Prodi </a>
                   </li>
