@@ -45,22 +45,22 @@
                 <option value="Senin">Senin</option>
                 @endif
                 @if($sesi->hari != "Selasa")
-                <option value="Senin">Selasa</option>
+                <option value="Selasa">Selasa</option>
                 @endif
                 @if($sesi->hari != "Rabu")
-                <option value="Senin">Rabu</option>
+                <option value="Rabu">Rabu</option>
                 @endif
                 @if($sesi->hari != "Kamis")
-                <option value="Senin">Kamis</option>
+                <option value="Kamis">Kamis</option>
                 @endif
                 @if($sesi->hari != "Jumat")
-                <option value="Senin">Jumat</option>
+                <option value="Jumat">Jumat</option>
                 @endif
                 @if($sesi->hari != "Sabtu")
-                <option value="Senin">Sabtu</option>
+                <option value="Sabtu">Sabtu</option>
                 @endif
                 @if($sesi->hari != "Minggu")
-                <option value="Senin">Minggu</option>
+                <option value="Minggu">Minggu</option>
                 @endif
               </select>
             </div>
