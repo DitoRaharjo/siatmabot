@@ -48,7 +48,8 @@
               <label class="control-label col-md-3 col-sm-3 col-xs-12">Fakultas
               </label>
               <div class="col-md-6 col-sm-6 col-xs-12">
-                <select class="form-control" required="" name="fakultas_id">
+                <select class="select2_single form-control" required="" name="fakultas_id">
+                  <option></option>
                   @foreach($semuaFakultas as $fakultas)
                     @if($fakultas->deleted_at == NULL)
                       <option value="{{ $fakultas->id }}">{{ $fakultas->nama }}</option>
@@ -96,10 +97,8 @@
 <!-- Select2 -->
 <script>
   $(document).ready(function() {
-    $(".select2_group").select2({});
-    $(".select2_multiple").select2({
-      maximumSelectionLength: 0,
-      placeholder: "Silahkan pilih kategori yang sesuai dengan artikel",
+    $(".select2_single").select2({
+      placeholder: "Pilih fakultas",
       allowClear: true
     });
   });

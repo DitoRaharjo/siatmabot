@@ -38,14 +38,13 @@
             <label class="control-label col-md-3 col-sm-3 col-xs-12">Hari
             </label>
             <div class="col-md-6 col-sm-6 col-xs-12">
-              <select class="form-control" required="" name="hari">
+              <select class="select2_singleHari form-control" required="" name="hari">
+                <option></option>
                 <option value="Senin">Senin</option>
                 <option value="Selasa">Selasa</option>
                 <option value="Rabu">Rabu</option>
                 <option value="Kamis">Kamis</option>
                 <option value="Jumat">Jumat</option>
-                <option value="Sabtu">Sabtu</option>
-                <option value="Minggu">Minggu</option>
               </select>
             </div>
           </div>
@@ -53,7 +52,12 @@
           <div class="form-group">
             <label class="control-label col-md-3 col-sm-3 col-xs-12">Sesi</label>
             <div class="col-md-6 col-sm-6 col-xs-12">
-              <input type="number" name="sesi" class="form-control" placeholder="Sesi" required="">
+              <select class="select2_singleSesi form-control" required="" name="sesi">
+                <option></option>
+                @for($counter = 1;$counter<=5;$counter++)
+                  <option value="{{ $counter }}">{{ $counter }}</option>
+                @endfor
+              </select>
             </div>
           </div>
 
@@ -96,10 +100,12 @@
 <!-- Select2 -->
 <script>
   $(document).ready(function() {
-    $(".select2_group").select2({});
-    $(".select2_multiple").select2({
-      maximumSelectionLength: 0,
-      placeholder: "Silahkan pilih kategori yang sesuai dengan artikel",
+    $(".select2_singleHari").select2({
+      placeholder: "Pilih hari",
+      allowClear: true
+    });
+    $(".select2_singleSesi").select2({
+      placeholder: "Pilih sesi",
       allowClear: true
     });
   });

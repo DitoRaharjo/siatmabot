@@ -7,7 +7,7 @@
           <div class="">
             <div class="page-title">
               <div class="title_left">
-                <h3> Data Sesi </h3>
+                <h3> Data Sesi-Prodi </h3>
               </div>
             </div>
 
@@ -20,9 +20,9 @@
 
                     <div class="" role="tabpanel" data-example-id="togglable-tabs">
                       <ul id="myTab1" class="nav nav-tabs bar_tabs left" role="tablist">
-                        <li role="presentation" class="active"><a href="#tab_content11" id="home-tab" role="tab" data-toggle="tab" aria-expanded="true"><span class="fa fa-archive"></span> Data Sesi</a>
+                        <li role="presentation" class="active"><a href="#tab_content11" id="home-tab" role="tab" data-toggle="tab" aria-expanded="true"><span class="fa fa-archive"></span> Data Sesi-Prodi</a>
                         </li>
-                        <li role="presentation" class=""><a href="#tab_content22" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="false"><span class="fa fa-trash"></span> Data Sesi Sudah Dihapus</a>
+                        <li role="presentation" class=""><a href="#tab_content22" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="false"><span class="fa fa-trash"></span> Data Sesi-Prodi Sudah Dihapus</a>
                         </li>
                       </ul>
                       <div id="myTabContent2" class="tab-content">
@@ -31,18 +31,19 @@
                           <!-------------------------------------------------------------------ARTIKEL INDEX--------------------------->
                           <div class="x_panel">
                             <div class="x_title">
-                              <h2> Tabel Sesi <small>Daftar sesi yang telah dimasukkan</small></h2>
+                              <h2> Tabel Sesi-Prodi <small>Daftar sesi-prodi yang telah dimasukkan</small></h2>
                               <ul class="nav navbar-right panel_toolbox">
-                                <a href="{{ route('sesi.create') }}" class="btn btn-success"><label class="fa fa-plus-circle"></label>  Tambah Sesi Baru</a>
+                                <a href="{{ route('sesiProdi.create') }}" class="btn btn-success"><label class="fa fa-plus-circle"></label>  Tambah Sesi-Prodi Baru</a>
                               </ul>
                               <div class="clearfix"></div>
                             </div>
                             <div class="x_content">
-                              <table id="tabel-sesi" class="table table-striped table-bordered">
+                              <table id="tabel-sesiProdi" class="table table-striped table-bordered">
                                 <thead>
                                   <tr>
-                                    <th align="center">Hari</th>
+                                    <th align="center">Program Studi</th>
                                     <th align="center">Sesi</th>
+                                    <th align="center">Waktu</th>
                                     <th align="center">Dibuat pada</th>
                                     <th align="center">Dibuat oleh</th>
                                     <th align="center">Diupdate Pada</th>
@@ -53,23 +54,24 @@
 
 
                                 <tbody>
-                                  @foreach($semuaSesi as $sesi)
-                                  @if( $sesi->deleted_at == NULL)
+                                  @foreach($semuaSesiProdi as $sesiProdi)
+                                  @if( $sesiProdi->deleted_at == NULL)
                                   <tr>
-                                    <td valign="middle" >{{ $sesi->hari }}</td>
-                                    <td valign="middle" >{{ $sesi->sesi }}</td>
-                                    <td align="center" valign="middle">{{ $sesi->created_at }}</td>
-                                    <td valign="middle">{{ $sesi->userCreate->fullname }}</td>
-                                    <td align="center" valign="middle">{{ $sesi->updated_at }}</td>
-                                    @if($sesi->updated_by == NULL)
+                                    <td valign="middle" >{{ $sesiProdi->prodi->nama }}</td>
+                                    <td valign="middle" >{{ $sesiProdi->sesi->hari }}-{{ $sesiProdi->sesi->sesi }}</td>
+                                    <td valign="middle" >{{ $sesiProdi->waktu }}</td>
+                                    <td align="center" valign="middle">{{ $sesiProdi->created_at }}</td>
+                                    <td valign="middle">{{ $sesiProdi->userCreate->fullname }}</td>
+                                    <td align="center" valign="middle">{{ $sesiProdi->updated_at }}</td>
+                                    @if($sesiProdi->updated_by == NULL)
                                     <td align="center" valign="middle"> - </td>
                                     @else
-                                    <td valign="middle"> {{ $sesi->userUpdate->fullname }}</td>
+                                    <td valign="middle"> {{ $sesiProdi->userUpdate->fullname }}</td>
                                     @endif
 
                                     <td valign="middle">
-                                      <a id="edit-btn" class="btn btn-warning btn-xs" href="{{ route('sesi.edit', $sesi->id) }}"><span class="fa fa-pencil-square-o"></span> Edit</a>
-                                      <a id="delete-btn" class="btn btn-danger btn-xs" customParam="{{ route('sesi.destroy', $sesi->id) }}" href="#"><span class="fa fa-trash"></span> Hapus</a>
+                                      <a id="edit-btn" class="btn btn-warning btn-xs" href="{{ route('sesiProdi.edit', $sesiProdi->id) }}"><span class="fa fa-pencil-square-o"></span> Edit</a>
+                                      <a id="delete-btn" class="btn btn-danger btn-xs" customParam="{{ route('sesiProdi.destroy', $sesiProdi->id) }}" href="#"><span class="fa fa-trash"></span> Hapus</a>
                                     </td>
                                   </tr>
                                   @endif
@@ -87,15 +89,16 @@
                           <!-------------------------------------------------------------------ARTIKEL TERHAPUS INDEX--------------------------->
                           <div class="x_panel">
                             <div class="x_title">
-                              <h2> Tabel Sesi Terhapus <small>Daftar sesi yang telah dihapus</small></h2>
+                              <h2> Tabel Sesi-Prodi Terhapus <small>Daftar sesi-prodi yang telah dihapus</small></h2>
                               <div class="clearfix"></div>
                             </div>
                             <div class="x_content">
-                              <table id="tabel-sesiTerhapus" class="table table-striped table-bordered">
+                              <table id="tabel-sesiProdiTerhapus" class="table table-striped table-bordered">
                                 <thead>
                                   <tr>
-                                    <th align="center">Hari</th>
+                                    <th align="center">Program Studi</th>
                                     <th align="center">Sesi</th>
+                                    <th align="center">Waktu</th>
                                     <th align="center">Dihapus Pada</th>
                                     <th align="center">Dihapus oleh</th>
                                     <th align="center">Aksi</th>
@@ -104,15 +107,16 @@
 
 
                                 <tbody>
-                                  @foreach($semuaSesi as $sesi)
-                                  @if( $sesi->deleted_at != NULL)
+                                  @foreach($semuaSesiProdi as $sesiProdi)
+                                  @if( $sesiProdi->deleted_at != NULL)
                                   <tr>
-                                    <td valign="middle" >{{ $sesi->hari }}</td>
-                                    <td valign="middle" >{{ $sesi->sesi }}</td>
-                                    <td align="center" valign="middle">{{ $sesi->deleted_at }}</td>
-                                    <td valign="middle">{{ $sesi->userDelete->fullname }}</td>
+                                    <td valign="middle" >{{ $sesiProdi->prodi->nama }}</td>
+                                    <td valign="middle" >{{ $sesiProdi->sesi->hari }}-{{ $sesiProdi->sesi->sesi }}</td>
+                                    <td valign="middle" >{{ $sesiProdi->waktu }}</td>
+                                    <td align="center" valign="middle">{{ $sesiProdi->deleted_at }}</td>
+                                    <td valign="middle">{{ $sesiProdi->userDelete->fullname }}</td>
                                     <td valign="middle">
-                                      <a id="restore-btn" class="btn btn-warning btn-xs" customParam="{{ route('sesiTerhapus.restore', $sesi->id) }}" href="#"><span class="fa fa-retweet"></span> Kembalikan Data</a>
+                                      <a id="restore-btn" class="btn btn-warning btn-xs" customParam="{{ route('sesiProdiTerhapus.restore', $sesiProdi->id) }}" href="#"><span class="fa fa-retweet"></span> Kembalikan Data</a>
                                     </td>
                                   </tr>
                                   @endif
@@ -237,7 +241,7 @@
 
 <!-- Datatables Artikel Terhapus Index -->
 <script>
-    $('#tabel-sesiTerhapus').dataTable();
+    $('#tabel-sesiProdiTerhapus').dataTable();
 </script>
 <!-- /Datatables Artikel Terhapus Index -->
 
@@ -291,15 +295,15 @@
 
 <!-- Datatables Artikel Index -->
 <script>
-    $('#tabel-sesi').dataTable({
+    $('#tabel-sesiProdi').dataTable({
       "columnDefs" : [
         {
-        "targets": [4],
+        "targets": [5],
         "visible": false,
         "searchable" : false
         }
       ],
-      "order": [[ 4, 'desc'  ]]
+      "order": [[ 5, 'desc'  ]]
     });
 </script>
 <!-- /Datatables Artikel Index -->

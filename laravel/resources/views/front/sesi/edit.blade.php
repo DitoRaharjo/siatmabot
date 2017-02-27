@@ -39,7 +39,7 @@
             <label class="control-label col-md-3 col-sm-3 col-xs-12">Hari
             </label>
             <div class="col-md-6 col-sm-6 col-xs-12">
-              <select class="form-control" required="" name="hari">
+              <select class="select2_singleHari form-control" required="" name="hari">
                 <option value="{{ $sesi->hari }}">{{ $sesi->hari }}</option>
                 @if($sesi->hari != "Senin")
                 <option value="Senin">Senin</option>
@@ -56,20 +56,20 @@
                 @if($sesi->hari != "Jumat")
                 <option value="Jumat">Jumat</option>
                 @endif
-                @if($sesi->hari != "Sabtu")
-                <option value="Sabtu">Sabtu</option>
-                @endif
-                @if($sesi->hari != "Minggu")
-                <option value="Minggu">Minggu</option>
-                @endif
               </select>
             </div>
           </div>
 
           <div class="form-group">
             <label class="control-label col-md-3 col-sm-3 col-xs-12">Sesi</label>
-            <div class="col-md-6 col-sm-6 col-xs-12">
-              <input type="number" name="sesi" class="form-control" placeholder="Sesi" required="" value="{{ $sesi->sesi }}">
+            <div class="col-md-6 col-sm-6 col-xs-12"><select class="select2_singleSesi form-control" required="" name="sesi">
+                <option value="{{ $sesi->sesi }}">{{ $sesi->sesi }}</option>
+                @for($counter = 1;$counter<=5;$counter++)
+                  @if($counter != $sesi->sesi)
+                  <option value="{{ $counter }}">{{ $counter }}</option>
+                  @endif
+                @endfor
+              </select>
             </div>
           </div>
 
@@ -112,10 +112,12 @@
 <!-- Select2 -->
 <script>
   $(document).ready(function() {
-    $(".select2_group").select2({});
-    $(".select2_multiple").select2({
-      maximumSelectionLength: 0,
-      placeholder: "Silahkan pilih kategori yang sesuai dengan artikel",
+    $(".select2_singleHari").select2({
+      placeholder: "Pilih hari",
+      allowClear: true
+    });
+    $(".select2_singleSesi").select2({
+      placeholder: "Pilih sesi",
       allowClear: true
     });
   });
