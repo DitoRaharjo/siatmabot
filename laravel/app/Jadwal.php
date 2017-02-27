@@ -11,8 +11,10 @@ class Jadwal extends Model
     protected $fillable = [
       'user_id',
       'makul',
+      'keyword',
       'kelas',
       'sesi_prodi_id',
+      'sesi_prodi_id_selesai',
       'ruangan',
       'pengingat',
       'created_at',
@@ -29,6 +31,10 @@ class Jadwal extends Model
 
   public function sesi() {
     return $this->belongsTo('App\SesiProdi', 'sesi_prodi_id');
+  }
+
+  public function sesiSelesai() {
+    return $this->belongsTo('App\SesiProdi', 'sesi_prodi_id_selesai');
   }
 
   public function userCreate()

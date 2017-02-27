@@ -11,7 +11,7 @@ class SesiProdi extends Model
   protected $fillable = [
     'prodi_id',
     'sesi_id',
-    'jam',
+    'waktu',
     'created_at',
     'updated_at',
     'deleted_at',
@@ -30,6 +30,10 @@ class SesiProdi extends Model
 
   public function jadwal() {
     return $this->hasMany('App\Jadwal', 'sesi_prodi_id');
+  }
+
+  public function jadwalSelesai() {
+    return $this->hasMany('App\Jadwal', 'sesi_prodi_id_selesai');
   }
 
   public function userCreate()
