@@ -71,4 +71,27 @@ Route::group(['middleware'=>'checkUser', 'auth'], function() {
   Route::get('sesiTerhapus-restore/{id}', 'SesiController@terhapusRestore')->name('sesiTerhapus.restore');
   Route::get('sesiTerhapus-destroy/{id}', 'SesiController@terhapusDestroy')->name('sesiTerhapus.destroy');
 });
+
+//Sesi-Prodi
+Route::group(['middleware'=>'checkUser', 'auth'], function() {
+  Route::get('sesiProdi-index', 'SesiProdiController@index')->name('sesiProdi.index');
+  Route::get('sesiProdi-create', 'SesiProdiController@create')->name('sesiProdi.create');
+  Route::post('sesiProdi-store', 'SesiProdiController@store')->name('sesiProdi.store');
+  Route::get('sesiProdi-edit/{id}', 'SesiProdiController@edit')->name('sesiProdi.edit');
+  Route::patch('sesiProdi-update/{id}', 'SesiProdiController@update')->name('sesiProdi.update');
+  Route::get('sesiProdi-delete/{id}', 'SesiProdiController@destroy')->name('sesiProdi.destroy');
+
+  Route::get('sesiProdiTerhapus-restore/{id}', 'SesiProdiController@terhapusRestore')->name('sesiProdiTerhapus.restore');
+  Route::get('sesiProdiTerhapus-destroy/{id}', 'SesiProdiController@terhapusDestroy')->name('sesiProdiTerhapus.destroy');
+});
+
+//Jadwal
+Route::group(['middleware'=>'checkUser', 'auth'], function() {
+  Route::get('jadwal-index', 'JadwalController@index')->name('jadwal.index');
+  Route::get('jadwal-create/{id}', 'JadwalController@create')->name('jadwal.create');
+  Route::post('jadwal-store', 'JadwalController@store')->name('jadwal.store');
+  Route::get('jadwal-edit/{id}', 'JadwalController@edit')->name('jadwal.edit');
+  Route::patch('jadwal-update/{id}', 'JadwalController@update')->name('jadwal.update');
+  Route::get('jadwal-delete/{id}', 'JadwalController@destroy')->name('jadwal.destroy');
+});
 /* ----------- End of Front End Routes -------------  */

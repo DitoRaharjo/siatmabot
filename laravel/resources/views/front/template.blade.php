@@ -6,8 +6,8 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-  	<meta name="description" content="SIATMA Bot : bot penyedia informasi seputar kuliah" />
-  	<meta name="author" content="SIATMA Bot" />
+  	<meta name="description" content="SIATMA Bot : Bot penyedia informasi seputar perkuliahan" />
+  	<meta name="author" content="Dito Raharjo" />
 
 
     <title>SIATMA Bot</title>
@@ -142,26 +142,30 @@
                 <h3 style="margin-top:85px">Pengelolaan</h3>
                 <ul class="nav side-menu">
                   @if(strcasecmp(Auth::user()->role,'admin')==0)
-                  <li><a href="{{ Route('dashboard.admin') }}"><i class="fa fa-desktop"></i> Dashboard Admin </a></li>
+                  <li><a href="{{ Route('dashboard.admin') }}"><i class="fa fa-tachometer"></i> Dashboard Admin </a></li>
                   @endif
                   <li><a href="{{ Route('dashboard.mahasiswa') }}"><i class="fa fa-desktop"></i> Dashboard</a></li>
-                  <li><a href="{{ Route('fakultas.index') }}"><i class="fa fa-home"></i> Fakultas</a></li>
-                  <li><a href="{{ Route('prodi.index') }}"><i class="fa fa-exchange"></i> Program Studi</a>
+                  <li><a href="{{ Route('jadwal.index') }}"><i class="fa fa-graduation-cap"></i> Jadwal Kuliah</a></li>
+                  @if(strcasecmp(Auth::user()->role,'admin')==0)
+                  <li><a><i class="fa fa-cog"></i> Pengelolaan <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                      <li><a href="{{ Route('fakultas.index') }}"><i class="fa fa-university"></i> Fakultas</a></li>
+                      <li><a href="{{ Route('prodi.index') }}"><i class="fa fa-home"></i> Program Studi</a></li>
+                      <li><a href="{{ Route('sesi.index') }}"><i class="fa fa-exchange"></i> Sesi </a></li>
+                      <li><a href="{{ Route('sesiProdi.index') }}"><i class="fa fa-list-ol"></i> Sesi-Program Studi </a></li>
+                    </ul>
                   </li>
-                  <li><a href="{{ Route('sesi.index') }}"><i class="fa fa-users"></i> Kelola Sesi </a>
-                  </li>
-                  <li><a href="#"><i class="fa fa-list-ol"></i> Kelola Sesi-Prodi </a>
-                  </li>
+                  @endif
                 </ul>
               </div>
 
-              <div class="menu_section">
+              <!-- <div class="menu_section">
                 <h3>Website</h3>
                 <ul class="nav side-menu">
                   <li><a href="#"><i class="fa fa-info-circle"></i> Kelola Identitas Web </a>
                   </li>
                 </ul>
-              </div>
+              </div> -->
 
 
             </div>
