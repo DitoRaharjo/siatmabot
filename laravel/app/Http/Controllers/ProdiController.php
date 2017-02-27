@@ -73,22 +73,28 @@ class ProdiController extends Controller
           'fakultas_id' => 'required',
       ]);
 
-      $prodi_data['updated_by'] = Auth::user()->id;
+      if($prodi_data['fakultas_id'] == -1) {
+        alert()->error('Fakultas yang anda pilih sudah dihapus, silahkan kontak admin', 'Edit Gagal!');
+        return redirect()->route('prodi.index');
+      }
+      else {
+        $prodi_data['updated_by'] = Auth::user()->id;
 
-      DB::beginTransaction();
+        DB::beginTransaction();
 
-      try{
-          $prodi = Prodi::find($id);
-          $prodi->update($prodi_data);
+        try{
+            $prodi = Prodi::find($id);
+            $prodi->update($prodi_data);
 
-          DB::commit();
+            DB::commit();
 
-          alert()->success('Data berhasil di edit', 'Edit Berhasil!');
-          return redirect()->route('prodi.index');
-      }catch(\Exception $e){
-          DB::rollback();
+            alert()->success('Data berhasil di edit', 'Edit Berhasil!');
+            return redirect()->route('prodi.index');
+        }catch(\Exception $e){
+            DB::rollback();
 
-          throw $e;
+            throw $e;
+        }
       }
     }
 

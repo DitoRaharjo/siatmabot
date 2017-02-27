@@ -27,6 +27,19 @@ class SesiController extends Controller
     return view('front.sesi.create');
   }
 
+  public function checkDuplicate($sesi, $hari) {
+    $sesiCheck = Sesi::select('id')->where([
+      ['hari', 'LIKE', $hari],
+      ['sesi', '=', $sesi]
+      ])->get()->count();
+
+    if($sesiCheck == 0) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   public function store(Request $request)
   {
     $sesi_data = $request->except('_token');
@@ -36,21 +49,26 @@ class SesiController extends Controller
         'hari' => 'required',
     ]);
 
-    $sesi_data['created_by'] = Auth::user()->id;
+    if($this->checkDuplicate($sesi_data['sesi'], $sesi_data['hari']) == true ) {
+      $sesi_data['created_by'] = Auth::user()->id;
 
-    DB::beginTransaction();
+      DB::beginTransaction();
 
-    try{
-      Sesi::create($sesi_data);
+      try{
+        Sesi::create($sesi_data);
 
-      DB::commit();
+        DB::commit();
 
-      alert()->success('Data berhasil di tambahkan', 'Tambah Data Berhasil!');
+        alert()->success('Data berhasil di tambahkan', 'Tambah Data Berhasil!');
+        return redirect()->route('sesi.index');
+      }catch(\Exception $e){
+          DB::rollback();
+
+          throw $e;
+      }
+    } else {
+      alert()->error('Maaf sesi sudah ada', 'Sesi Sudah Ada!');
       return redirect()->route('sesi.index');
-    }catch(\Exception $e){
-        DB::rollback();
-
-        throw $e;
     }
   }
 
@@ -70,22 +88,27 @@ class SesiController extends Controller
         'hari' => 'required',
     ]);
 
-    $sesi_data['updated_by'] = Auth::user()->id;
+    if($this->checkDuplicate($sesi_data['sesi'], $sesi_data['hari']) == true ) {
+      $sesi_data['updated_by'] = Auth::user()->id;
 
-    DB::beginTransaction();
+      DB::beginTransaction();
 
-    try{
-        $sesi = Sesi::find($id);
-        $sesi->update($sesi_data);
+      try{
+          $sesi = Sesi::find($id);
+          $sesi->update($sesi_data);
 
-        DB::commit();
+          DB::commit();
 
-        alert()->success('Data berhasil di edit', 'Edit Berhasil!');
-        return redirect()->route('sesi.index');
-    }catch(\Exception $e){
-        DB::rollback();
+          alert()->success('Data berhasil di edit', 'Edit Berhasil!');
+          return redirect()->route('sesi.index');
+      }catch(\Exception $e){
+          DB::rollback();
 
-        throw $e;
+          throw $e;
+      }
+    } else {
+      alert()->error('Maaf sesi sudah ada', 'Sesi Sudah Ada!');
+      return redirect()->route('sesi.index');
     }
   }
 
