@@ -27,7 +27,8 @@ class UserController extends Controller
 
     public function dashboardMahasiswa() {
       if (strcasecmp(Auth::user()->role,'admin')==0 || strcasecmp(Auth::user()->role,'mahasiswa')==0) {
-        return view('front.dashboard.mahasiswa');
+        return redirect()->route('jadwal.index');
+        // return view('front.dashboard.mahasiswa');
       } else {
         alert()->error('Akun anda tidak memiliki hak untuk melihat halaman ini', 'Pelanggaran Akun!');
         return redirect()->route('user.login');
@@ -39,6 +40,16 @@ class UserController extends Controller
       $semuaFakultas = Fakultas::all();
 
       return view('front.loginregister.register', compact('semuaProdi', 'semuaFakultas'));
+    }
+
+    public function checkEmailDuplicate($email) {
+      $userCheck = User::select('id')->where('email', $email)->get()->count();
+
+      if($userCheck == 0) {
+        return true;
+      } else {
+        return false;
+      }
     }
 
     public function doRegister(Request $request) {
@@ -53,41 +64,51 @@ class UserController extends Controller
 
       $user_data = $request->except('_token');
 
-      $fakultasId = Prodi::find($user_data['prodi_id'])->fakultas->id;
+      if($this->checkEmailDuplicate($user_data['email']) == true ) {
+        $fakultasId = Prodi::find($user_data['prodi_id'])->fakultas->id;
 
-      $user_data['fakultas_id'] = $fakultasId;
-      $user_data['password'] = bcrypt($user_data['password']);
-      $user_data['role'] = "Mahasiswa";
-      $user_data['registerdate'] = Carbon::now();
+        $user_data['fakultas_id'] = $fakultasId;
+        $user_data['password'] = bcrypt($user_data['password']);
+        $user_data['role'] = "Mahasiswa";
+        $user_data['registerdate'] = Carbon::now();
 
-      $checkChatLog = ChatLog::select('id')->where('username', $user_data['telegram_username'])->get();
-      $checkCount = $checkChatLog->count();
-      if($checkCount != 0) {
-        $chatLogId = ChatLog::find($checkChatLog)->id;
-        $chatId = ChatLog::find($checkChatLog)->chat_id;
-        $user_data['chat_log_id'] = $chatLogId;
-        $user_data['chat_id'] = $chatId;
-      }
-
-      DB::beginTransaction();
-
-      try {
-        $userId = User::create($user_data)->id;
-
+        $checkChatLog = ChatLog::select('id')->where('username', $user_data['telegram_username'])->get();
+        $checkCount = $checkChatLog->count();
         if($checkCount != 0) {
-          $chatLog = ChatLog::find($checkChatLog);
-          $chatLog->user_id = $userId;
-          $chatLog->save();
+          $chatLogId = ChatLog::find($checkChatLog)->id;
+          $chatId = ChatLog::find($checkChatLog)->chat_id;
+          $user_data['chat_log_id'] = $chatLogId;
+          $user_data['chat_id'] = $chatId;
         }
 
-        DB::commit();
 
-        alert()->success('Akun anda berhasil di register', 'Berhasil!');
-        return redirect()->route('dashboard.mahasiswa');
-      } catch (\Exception $e) {
-        DB::rollback();
 
-        throw $e;
+        DB::beginTransaction();
+
+        try {
+          $user = User::create($user_data);
+          $userId = $user->id;
+
+          if($checkCount != 0) {
+            $chatLog = ChatLog::find($checkChatLog);
+            $chatLog->user_id = $userId;
+            $chatLog->save();
+          }
+
+          DB::commit();
+
+          Auth::login($user);
+
+          alert()->success('Akun anda berhasil di register', 'Berhasil!');
+          return redirect()->route('dashboard.mahasiswa');
+        } catch (\Exception $e) {
+          DB::rollback();
+
+          throw $e;
+        }
+      } else {
+        alert()->error('Maaf email anda sudah terdaftar', 'Gagal mendaftar!');
+        return redirect()->route('user.register');
       }
     }
 

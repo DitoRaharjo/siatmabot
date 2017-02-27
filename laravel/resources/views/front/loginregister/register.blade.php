@@ -6,8 +6,8 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Seputar Farmasi : Informasi dan Konsultasi Kesehatan" />
-  	<meta name="author" content="Seputar Farmasi" />
+    <meta name="description" content="SIATMA Bot : Bot penyedia informasi seputar perkuliahan" />
+  	<meta name="author" content="Dito Raharjo" />
 
     <title>SIATMA Bot</title>
     <link rel="icon" href="{{ asset('images/logo_tabbrowser.png') }}" type="image" sizes="16x16"> <!------------------------------------------ ICON-------------->
@@ -20,6 +20,11 @@
     <link href="{{ asset('Template/AdminPage/vendors/nprogress/nprogress.css') }}" rel="stylesheet">
     <!-- Animate.css -->
     <link href="{{ asset('Template/AdminPage/vendors/animate.css/animate.min.css') }}" rel="stylesheet">
+
+    <!-- jQuery -->
+    <script src="{{ asset('Template/AdminPage/vendors/jquery/dist/jquery.min.js') }}"></script>
+    <!-- Select2 -->
+    <link href="{{ asset('Template/AdminPage/vendors/select2/dist/css/select2.min.css') }}" rel="stylesheet">
 
     <!-- Custom Theme Style -->
     <link href="{{ asset('Template/AdminPage/build/css/custom.min.css') }}" rel="stylesheet">
@@ -144,16 +149,19 @@
       </div>
     </div>
 
+    <!-- jQuery Tags Input -->
+    <script src="{{ asset('Template/AdminPage/vendors/jquery.tagsinput/src/jquery.tagsinput.js') }}"></script>
+    <!-- Select2 -->
+    <script src="{{ asset('Template/AdminPage/vendors/select2/dist/js/select2.full.min.js') }}"></script>
+
+    <!--<script src="{{ asset('js/loginadmin/index.js') }}"></script>-->
+    <!-- Sweet Alert -->
+    <script src="{{ asset('js/sweetalert/sweetalert2.js') }}"></script>
 
     <!-- Select2 -->
     <script>
       $(document).ready(function() {
         $(".select2_group").select2({});
-        $(".select2_multiple").select2({
-          maximumSelectionLength: 0,
-          placeholder: "Silahkan pilih kategori yang sesuai dengan artikel",
-          allowClear: true
-        });
       });
     </script>
     <!-- /Select2 -->
@@ -175,10 +183,6 @@
       confirm_password.onkeyup = validatePassword;
     </script>
     <!-- Untuk Pencocokan Konfirmasi Password -->
-
-    <!--<script src="{{ asset('js/loginadmin/index.js') }}"></script>-->
-    <!-- Sweet Alert -->
-    <script src="{{ asset('js/sweetalert/sweetalert2.js') }}"></script>
 
     <!-- Include this after the sweet alert js file -->
     @include('sweet::alert')
