@@ -16,7 +16,11 @@ Route::get('/', function () {
 });
 
 /* ---------------- Bot Updates Routes ---------------- */
+//Telegram Bot
 Route::post('updates', 'BotController@updates')->name('bot.updates');
+
+//LINE Bot
+Route::post('line-updates', 'LineBotController@updates')->name('linebot.updates');
 /* ------------ End of Bot Updates Routes ------------- */
 
 /* ---------------- FrontEnd Routes -----------------  */

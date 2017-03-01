@@ -9,6 +9,7 @@
         "irazasyed/telegram-bot-sdk": "^2.2",
         "laravel/framework": "5.4.*",
         "laravel/tinker": "~1.0",
+        "linecorp/line-bot-sdk": "^1.5",
         "uxweb/sweet-alert": "^1.4"
     },
     "require-dev": {
