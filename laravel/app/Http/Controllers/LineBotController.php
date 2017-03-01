@@ -32,7 +32,7 @@ class LineBotController extends Controller
       $chatId = 253128578;
       Telegram::sendMessage([
         'chat_id' => $chatId,
-        'text' => $request,
+        'text' => "asdf",
       ]);
 
       return Response::json(['status' => 'OK'],200);
