@@ -4,10 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\Response;
 use App\Http\Requests;
 use Carbon\Carbon;
 
+use Response;
 use Input;
 use DB;
 
