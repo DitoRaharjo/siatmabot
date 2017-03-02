@@ -22,35 +22,35 @@ class FbBotController extends Controller
       return view('facebookPrivacyPolicy.index');
     }
     public function updates() {
-      $local_verify_token = env('FB_WEBHOOK_VERIFY_TOKEN');
-      $hub_verify_token = Input::get('hub_verify_token');
+      // $local_verify_token = env('FB_WEBHOOK_VERIFY_TOKEN');
+      // $hub_verify_token = Input::get('hub_verify_token');
+      //
+      // if($local_verify_token == $hub_verify_token) {
+      //   return Input::get('hub_challenge');
+      // } else {
+      //   return "Bad verify token";
+      // }
 
-      if($local_verify_token == $hub_verify_token) {
-        return Input::get('hub_challenge');
-      } else {
-        return "Bad verify token";
-      }
+      $responses = file_get_contents("php://input");
+      $responses = json_decode($responses);
 
-      // $responses = file_get_contents("php://input");
-      // $responses = json_decode($responses, true);
-      //
-      // $userId = $responses->entry[0]->messaging[0]->sender->id;
-      //
-      // $data = array(
-      //   'recipient'=>array('id'=>"$userId"),
-      //   'message'=>array('text'=>"Halo juga :D")
-      // );
-      //
-      // $opts = array(
-      //   'http'=>array(
-      //     'method'=> 'POST',
-      //     'content'=> json_encode($data),
-      //     'header'=> "Content-Type: application/json\n"
-      //   )
-      // );
-      // $context = stream_context_create($opts);
-      //
-      // $website = "https://graph.facebook.com/v2.6/me/messages?access_token=".env('FB_PAGE_ACCESS_TOKEN');
-      // file_get_contents($website, false, $context);
+      $userId = $responses->entry[0]->messaging[0]->sender->id;
+
+      $data = array(
+        'recipient'=>array('id'=>$userId),
+        'message'=>array('text'=>"Halo juga :D")
+      );
+
+      $opts = array(
+        'http'=>array(
+          'method'=> 'POST',
+          'content'=> json_encode($data),
+          'header'=> "Content-Type: application/json\n"
+        )
+      );
+      $context = stream_context_create($opts);
+
+      $website = "https://graph.facebook.com/v2.6/me/messages?access_token=".env('FB_PAGE_ACCESS_TOKEN');
+      file_get_contents($website, false, $context);
     }
 }
