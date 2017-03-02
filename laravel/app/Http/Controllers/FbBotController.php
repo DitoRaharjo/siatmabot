@@ -60,13 +60,6 @@ class FbBotController extends Controller
       // $website = "https://graph.facebook.com/v2.6/me/messages?access_token=$token";
       // file_get_contents($website, false, $context);
 
-      $chatId = 253128578;
-      $text = "Chat FB Masuk";
-
-      Telegram::sendMessage([
-        'chat_id' => $chatId,
-        'text' => $text,
-      ]);
 
       return response()->json("OK");
     }
