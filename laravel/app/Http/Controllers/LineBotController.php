@@ -48,14 +48,39 @@ class LineBotController extends Controller
     		{
     			if($event['message']['type'] == 'text')
     			{
-    				// send same message as reply to user
-    				// $result = $bot->replyText($event['replyToken'], $event['message']['text']);
+            if(strcasecmp($event['message']['text'], "halo")==0) {
+      				// send same message as reply to user
+      				// $result = $bot->replyText($event['replyToken'], $event['message']['text']);
+              $opts = array(
+                'http'=>array(
+                  'method'=>"GET",
+                  'header'=>"Authorization: Bearer ".env('CHANNEL_ACCESS_TOKEN')
+                )
+              );
+              $context = stream_context_create($opts);
+              
+              $userID = $event['source']['userId'];
+              $website = "https://api.line.me/v2/bot/profile/".$userID;
+              $user = file_get_contents($website, false, $context);
 
-    				// or we can use pushMessage() instead to send reply message
-    				$textMessageBuilder = new \LINE\LINEBot\MessageBuilder\TextMessageBuilder($event['message']['text']);
-    				$result = $bot->pushMessage($event['source']['userId'], $textMessageBuilder);
+              $user = json_decode($user, true);
+              $userName = $user['displayName'];
 
-    				return $result->getHTTPStatus() . ' ' . $result->getRawBody();
+
+              $text = "Hai juga, salam kenal ".$userName;
+
+      				// or we can use pushMessage() instead to send reply message
+      				$textMessageBuilder = new \LINE\LINEBot\MessageBuilder\TextMessageBuilder($text);
+      				$result = $bot->pushMessage($event['source']['userId'], $textMessageBuilder);
+
+      				return $result->getHTTPStatus() . ' ' . $result->getRawBody();
+            } else {
+              //pushMessage() instead to send reply message
+              $textMessageBuilder = new \LINE\LINEBot\MessageBuilder\TextMessageBuilder("Maaf perintah tidak ditemukan");
+              $result = $bot->pushMessage($event['source']['userId'], $textMessageBuilder);
+
+              return $result->getHTTPStatus() . ' ' . $result->getRawBody();
+            }
     			}
     		}
     	}
