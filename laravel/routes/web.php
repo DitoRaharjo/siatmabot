@@ -24,6 +24,7 @@ Route::post('line-updates', 'LineBotController@updates')->name('linebot.updates'
 
 //Facebook Messenger Bot
 Route::get('fb-updates', 'FbBotController@updates')->name('fbbot.updates');
+Route::get('fb-privacy-policy', 'FbBotController@privacyPolicy')->name('fbbot.privacyPolicy');
 /* ------------ End of Bot Updates Routes ------------- */
 
 /* ---------------- FrontEnd Routes -----------------  */

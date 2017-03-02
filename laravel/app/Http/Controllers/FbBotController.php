@@ -18,6 +18,9 @@ use Telegram;
 
 class FbBotController extends Controller
 {
+    public function privacyPolicy() {
+      return view('facebookPrivacyPolicy.index');
+    }
     public function updates() {
       $local_verify_token = env('FB_WEBHOOK_VERIFY_TOKEN');
       $hub_verify_token = Input::get('hub_verify_token');
