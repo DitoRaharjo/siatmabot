@@ -33,7 +33,8 @@ class FbBotController extends Controller
       // }
       /* ---------------- For Verifying FB Messenger API Webhook ---------------- */
 
-      $responses = file_get_contents("php://input");
+      file_put_contents("fb.txt", file_get_contents("php://input"));
+      $responses = file_get_contents("fb.txt");
       $responses = json_decode($responses);
 
       $userId = $responses->entry[0]->messaging[0]->sender->id;
