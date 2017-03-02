@@ -3,8 +3,6 @@
         Options -MultiViews
     </IfModule>
 
-    SetEnv TZ "Asia/Jakarta"
-
     RewriteEngine On
 
     # Redirect Trailing Slashes If Not A Folder...
