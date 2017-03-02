@@ -12,6 +12,7 @@ class VerifyCsrfToken extends BaseVerifier
      * @var array
      */
     protected $except = [
+          'fb-updates',
           'line-updates',
           'updates',
           'cetak',
