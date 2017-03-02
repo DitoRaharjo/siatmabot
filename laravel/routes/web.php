@@ -21,6 +21,9 @@ Route::post('updates', 'BotController@updates')->name('bot.updates');
 
 //LINE Bot
 Route::post('line-updates', 'LineBotController@updates')->name('linebot.updates');
+
+//Facebook Messenger Bot
+Route::get('fb-updates', 'FbBotController@updates')->name('fbbot.updates');
 /* ------------ End of Bot Updates Routes ------------- */
 
 /* ---------------- FrontEnd Routes -----------------  */

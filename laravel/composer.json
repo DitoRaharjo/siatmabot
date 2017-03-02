@@ -10,8 +10,9 @@
         "laravel/framework": "5.4.*",
         "laravel/tinker": "~1.0",
         "linecorp/line-bot-sdk": "^1.5",
-        "uxweb/sweet-alert": "^1.4",
+        "pimax/fb-messenger-php": "dev-master",
         "slim/slim": "^3.0",
+        "uxweb/sweet-alert": "^1.4",
         "vlucas/phpdotenv": "^2.4"
     },
     "require-dev": {

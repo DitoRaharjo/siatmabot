@@ -58,7 +58,7 @@ class LineBotController extends Controller
                 )
               );
               $context = stream_context_create($opts);
-              
+
               $userID = $event['source']['userId'];
               $website = "https://api.line.me/v2/bot/profile/".$userID;
               $user = file_get_contents($website, false, $context);
