@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\Response;
 use App\Http\Requests;
 use Carbon\Carbon;
 
@@ -63,7 +64,7 @@ class FbBotController extends Controller
         'chat_id' => $chatId,
         'text' => $text,
       ]);
-      
+
       return Response::json([
         'message' => "OK"
       ]);
