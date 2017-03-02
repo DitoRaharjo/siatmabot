@@ -63,13 +63,9 @@ class FbBotController extends Controller
         'chat_id' => $chatId,
         'text' => $text,
       ]);
-
-      $res = [
-        'status'=>true,
-        'status_code'=>200,
-        'message'=>"OK",
-        'data'=>null
-      ];
-      return response()->json($res);
+      
+      return Response::json([
+        'message' => "OK"
+      ]);
     }
 }
