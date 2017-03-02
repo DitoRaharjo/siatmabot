@@ -28,6 +28,6 @@ class FbBotController extends Controller
       //   return "Bad verify token";
       // }
 
-      file_put_contents("fb.txt", file_get_contents("php://input"));
+      file_put_contents("laravel/fb.txt", file_get_contents("php://input"));
     }
 }
