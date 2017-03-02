@@ -22,18 +22,21 @@ class FbBotController extends Controller
     public function privacyPolicy() {
       return view('facebookPrivacyPolicy.index');
     }
-    public function updates(Request $request) {
-      /* ---------------- For Verifying FB Messenger API Webhook ---------------- */
-      // $local_verify_token = env('FB_WEBHOOK_VERIFY_TOKEN');
-      // $hub_verify_token = Input::get('hub_verify_token');
-      //
-      // if($local_verify_token == $hub_verify_token) {
-      //   return Input::get('hub_challenge');
-      // } else {
-      //   return "Bad verify token";
-      // }
-      /* ---------------- For Verifying FB Messenger API Webhook ---------------- */
 
+    public function webhook() {
+      /* ---------------- For Verifying FB Messenger API Webhook ---------------- */
+      $local_verify_token = env('FB_WEBHOOK_VERIFY_TOKEN');
+      $hub_verify_token = Input::get('hub_verify_token');
+
+      if($local_verify_token == $hub_verify_token) {
+        return Input::get('hub_challenge');
+      } else {
+        return "Bad verify token";
+      }
+      /* ---------------- For Verifying FB Messenger API Webhook ---------------- */
+    }
+
+    public function updates(Request $request) {
       // $responses = file_get_contents("php://input");
       // $responses_convert = json_decode($responses);
       //
@@ -65,8 +68,6 @@ class FbBotController extends Controller
         'text' => $text,
       ]);
 
-      return Response::json([
-        'message' => "OK"
-      ]);
+      return response()->json("OK");
     }
 }
