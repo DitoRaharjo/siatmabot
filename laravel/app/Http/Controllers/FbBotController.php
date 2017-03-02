@@ -28,6 +28,26 @@ class FbBotController extends Controller
       //   return "Bad verify token";
       // }
 
-      file_put_contents("laravel/fb.txt", file_get_contents("php://input"));
+      $responses = file_get_contents("php://input");
+      $responses = json_decode($responses, true);
+
+      $userId = $responses->entry[0]->messaging[0]->sender->id;
+
+      $data = array(
+        'recipient'=>array('id'=>$userId),
+        'message'=>array('text'=>"Halo juga :D")
+      );
+
+      $opts = array(
+        'http'=>array(
+          'method'=>"POST",
+          'content'=> json_encode($data),
+          'header'=> "Content-Type: application/json"
+        )
+      );
+      $context = stream_context_create($opts);
+
+      $website = "https://graph.facebook.com/v2.6/me/messages?access_token=".env('FB_PAGE_ACCESS_TOKEN');
+      file_get_contents($website, false, $context);
     }
 }
