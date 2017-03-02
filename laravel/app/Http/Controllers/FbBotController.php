@@ -33,13 +33,13 @@ class FbBotController extends Controller
       // }
       /* ---------------- For Verifying FB Messenger API Webhook ---------------- */
 
-      $responses = file_get_contents("php://input");
-      $responses = json_decode($responses);
-
-      $userId = $responses->entry[0]->messaging[0]->sender->id;
+      // $responses = file_get_contents("php://input");
+      // $responses_convert = json_decode($responses);
+      //
+      // $userId = $responses_convert->entry[0]->messaging[0]->sender->id;
 
       $data = array(
-        'recipient'=>array('id'=>$userId),
+        'recipient'=>array('id'=>"1334082683305106"),
         'message'=>array('text'=>"Halo juga")
       );
 
@@ -52,7 +52,8 @@ class FbBotController extends Controller
       );
       $context = stream_context_create($opts);
 
-      $website = "https://graph.facebook.com/v2.6/me/messages?access_token=".env('FB_PAGE_ACCESS_TOKEN');
+      $token = "EAAbbj6niWKABAM9MAdxj9B4v7ZAm9faW1ZAzp5sGpZCepxWQEzAmOyGlMBPlNXinomjamNmhlJaiumtLsh12eWbsn9LDtzEaMKxY3JJUWKIiOhFoi7FvWoW4ShxbZCyibEBylJ1XP0UVQTMCTh0ZCu2oQ38RRSSe7BHa2nSfPfQZDZD";
+      $website = "https://graph.facebook.com/v2.6/me/messages?access_token=$token";
       file_get_contents($website, false, $context);
     }
 }
