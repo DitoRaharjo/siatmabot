@@ -39,7 +39,7 @@ class FbBotController extends Controller
       $userId = $responses->entry[0]->messaging[0]->sender->id;
 
       $data = array(
-        'recipient'=>array('id'=>"$userId"),
+        'recipient'=>array('id'=>$userId),
         'message'=>array('text'=>"Halo juga :D")
       );
 
@@ -47,7 +47,7 @@ class FbBotController extends Controller
         'http'=>array(
           'method'=>"POST",
           'content'=>json_encode($data),
-          'header'=>"Content-Type: application/json\n"
+          'header'=>"Content-Type: application/json"
         )
       );
       $context = stream_context_create($opts);
