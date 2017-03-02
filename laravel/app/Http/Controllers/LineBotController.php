@@ -3,9 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
-use \LINE\LINEBot\SignatureValidator as SignatureValidator;
-
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests;
 use Carbon\Carbon;
@@ -17,6 +14,8 @@ use App\Prodi;
 use App\Fakultas;
 use App\ChatLog;
 use Telegram;
+
+use \LINE\LINEBot\SignatureValidator as SignatureValidator;
 
 class LineBotController extends Controller
 {
