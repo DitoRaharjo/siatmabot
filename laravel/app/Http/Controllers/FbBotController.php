@@ -42,6 +42,9 @@ class FbBotController extends Controller
 
       $userId = $responses_convert->entry[0]->messaging[0]->sender->id;
 
+      $this->setRead($userId);
+      $this->setTypingOn($userId);
+
       if(isset($responses_convert->entry[0]->message)) {
         $this->setRead($userId);
         $this->setTypingOn($userId);
