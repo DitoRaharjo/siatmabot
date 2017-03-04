@@ -92,9 +92,10 @@ class LineBotController extends Controller
                   if($this->checkPassword($userId, $email, $password)== true ) {
                     $textSend = "Selamat anda berhasil login, sekarang anda sudah bisa menggunakan fitur kuliah SIATMA Bot";
                   } else {
-                    $textSend = "Maaf email atau password anda salah". PHP_EOL .
-                    "atau anda belum terdaftar". PHP_EOL .
-                    "jika anda belum mendaftar, silahkan daftarkan diri anda di : http://ditoraharjo.co/siatmabot/register";
+                    $textSend = "salah password";
+                    // $textSend = "Maaf email atau password anda salah". PHP_EOL .
+                    // "atau anda belum terdaftar". PHP_EOL .
+                    // "jika anda belum mendaftar, silahkan daftarkan diri anda di : http://ditoraharjo.co/siatmabot/register";
                   }
 
                   // $textMessageBuilder = new \LINE\LINEBot\MessageBuilder\TextMessageBuilder($textSend);
@@ -102,9 +103,10 @@ class LineBotController extends Controller
                   //
                   // return $result->getHTTPStatus() . ' ' . $result->getRawBody();
                 } else {
-                  $textSend = "Maaf email atau password anda salah". PHP_EOL .
-                  "atau anda belum terdaftar". PHP_EOL .
-                  "jika anda belum mendaftar, silahkan daftarkan diri anda di : http://ditoraharjo.co/siatmabot/register";
+                  $textSend = "salah email";
+                  // $textSend = "Maaf email atau password anda salah". PHP_EOL .
+                  // "atau anda belum terdaftar". PHP_EOL .
+                  // "jika anda belum mendaftar, silahkan daftarkan diri anda di : http://ditoraharjo.co/siatmabot/register";
                 }
                 // $textMessageBuilder = new \LINE\LINEBot\MessageBuilder\TextMessageBuilder($textSend);
                 // $result = $bot->pushMessage($userId, $textMessageBuilder);
