@@ -37,8 +37,8 @@ class FbBotController extends Controller
     }
 
     public function updates(Request $request) {
-      // $responses = file_get_contents("php://input");
-      // $responses_convert = json_decode($responses);
+      $responses = file_get_contents("php://input");
+      $responses_convert = json_decode($responses);
       //
       // // if(!empty($responses_convert->entry[0]->message->text)) {
       //   $userId = $responses_convert->entry[0]->messaging[0]->sender->id;
@@ -62,14 +62,13 @@ class FbBotController extends Controller
       // // }
 
       $chatId = 253128578;
-      $text = "Chat FB Masuk";
+      $text = $responses;
 
-        Telegram::sendMessage([
-          'chat_id' => $chatId,
-          'text' => $text,
-        ]);
+      Telegram::sendMessage([
+        'chat_id' => $chatId,
+        'text' => $text,
+      ]);
 
-
-        return response()->json("OK");
+      return response()->json("OK");
     }
 }
