@@ -113,7 +113,7 @@ class LineBotController extends Controller
 
     public function sendMessage($userId, $textSend) {
       // or we can use pushMessage() instead to send reply message
-      $textMessageBuilder = new \LINE\LINEBot\MessageBuilder\TextMessageBuilder($text);
+      $textMessageBuilder = new \LINE\LINEBot\MessageBuilder\TextMessageBuilder($textSend);
       $result = $bot->pushMessage($userId, $textMessageBuilder);
 
       return $result->getHTTPStatus() . ' ' . $result->getRawBody();
