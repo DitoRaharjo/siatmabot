@@ -225,7 +225,7 @@ class LineBotController extends Controller
     public function checkPassword($userId, $email, $password) {
       $check = User::select('id')->where([
         ['email', 'LIKE', $email],
-        ['password', bcrypt($password)]
+        ['password', '=',bcrypt($password)]
         ])->get();
       $checkCount = $check->count();
 
