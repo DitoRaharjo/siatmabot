@@ -61,13 +61,13 @@ class FbBotController extends Controller
         file_get_contents($website, false, $context);
       // }
 
-      $chatId = 253128578;
-      $text = "Chat FB Masuk";
-
-        Telegram::sendMessage([
-          'chat_id' => $chatId,
-          'text' => $text,
-        ]);
+      // $chatId = 253128578;
+      // $text = "Chat FB Masuk";
+      //
+      //   Telegram::sendMessage([
+      //     'chat_id' => $chatId,
+      //     'text' => $text,
+      //   ]);
 
 
         return response()->json("OK");
