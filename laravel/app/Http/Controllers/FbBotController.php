@@ -41,33 +41,33 @@ class FbBotController extends Controller
       $responses_convert = json_decode($responses);
 
       // if(!empty($responses_convert->entry[0]->message->text)) {
-        $userId = $responses_convert->entry[0]->messaging[0]->sender->id;
-
-        $data = array(
-          'recipient'=>array('id'=>"$userId"),
-          'message'=>array('text'=>"Halo juga")
-        );
-
-        $opts = array(
-          'http'=>array(
-            'method'=>'POST',
-            'content'=>json_encode($data),
-            'header'=>"Content-Type: application/json\n"
-          )
-        );
-        $context = stream_context_create($opts);
-
-        $website = "https://graph.facebook.com/v2.8/me/messages?access_token=".env('FB_PAGE_ACCESS_TOKEN');
-        file_get_contents($website, false, $context);
+      //   $userId = $responses_convert->entry[0]->messaging[0]->sender->id;
+      //
+      //   $data = array(
+      //     'recipient'=>array('id'=>"$userId"),
+      //     'message'=>array('text'=>"Halo juga")
+      //   );
+      //
+      //   $opts = array(
+      //     'http'=>array(
+      //       'method'=>'POST',
+      //       'content'=>json_encode($data),
+      //       'header'=>"Content-Type: application/json\n"
+      //     )
+      //   );
+      //   $context = stream_context_create($opts);
+      //
+      //   $website = "https://graph.facebook.com/v2.8/me/messages?access_token=".env('FB_PAGE_ACCESS_TOKEN');
+      //   file_get_contents($website, false, $context);
       // }
 
-      // $chatId = 253128578;
-      // $text = "Chat FB Masuk";
-      //
-      //   Telegram::sendMessage([
-      //     'chat_id' => $chatId,
-      //     'text' => $text,
-      //   ]);
+      $chatId = 253128578;
+      $text = print_r($responses_convert);
+
+        Telegram::sendMessage([
+          'chat_id' => $chatId,
+          'text' => $text,
+        ]);
 
 
         return response()->json("OK");
