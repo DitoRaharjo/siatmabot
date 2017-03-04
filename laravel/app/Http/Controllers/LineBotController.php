@@ -254,6 +254,8 @@ class LineBotController extends Controller
 
               throw $e;
             }
+            return true;
+            
           } else {
             return false;
           }
