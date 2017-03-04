@@ -41,7 +41,7 @@ class FbBotController extends Controller
       $responses_convert = json_decode($responses);
       //
       // // if(!empty($responses_convert->entry[0]->message->text)) {
-      //   $userId = $responses_convert->entry[0]->messaging[0]->sender->id;
+      $userId = $responses_convert->entry[0]->messaging[0]->sender->id;
       //
       //   $data = array(
       //     'recipient'=>array('id'=>"$userId"),
@@ -62,7 +62,7 @@ class FbBotController extends Controller
       // // }
 
       $chatId = 253128578;
-      $text = $responses;
+      $text = $userId;
 
       Telegram::sendMessage([
         'chat_id' => $chatId,
