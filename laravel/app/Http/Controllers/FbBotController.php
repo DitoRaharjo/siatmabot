@@ -51,6 +51,14 @@ class FbBotController extends Controller
         $this->setTypingOn($userId);
         $this->sendMessage($userId, $textSend);
         $this->setTypingOff($userId);
+      } else if(strcasecmp($textReceived, "salam kenal")==0) {
+        $user_data = $this->getUserProfile($userId);
+        $textSend = "Salam kenal juga, ".$user_data->first_name." ".$user_data->last_name;
+
+        $this->setRead($userId);
+        $this->setTypingOn($userId);
+        $this->sendMessage($userId, $textSend);
+        $this->setTypingOff($userId);
       } else {
         $textSend = "Maaf perintah tidak ditemukan";
 
@@ -145,6 +153,13 @@ class FbBotController extends Controller
 
       $website = "https://graph.facebook.com/v2.8/me/messages?access_token=".env('FB_PAGE_ACCESS_TOKEN');
       file_get_contents($website, false, $context);
+    }
+
+    public function getUserProfile($userId) {
+      $website = "https://graph.facebook.com/v2.8/".$userId."?access_token=".env('FB_PAGE_ACCESS_TOKEN');
+      $user_data = file_get_contents($website, false, $context);
+
+      return json_decode($user_data);
     }
 
 }
