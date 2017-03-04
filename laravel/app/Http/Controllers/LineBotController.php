@@ -51,6 +51,8 @@ class LineBotController extends Controller
     		{
     			if($event['message']['type'] == 'text')
     			{
+            // $registerUrl = "http://ditoraharjo.co/siatmabot/register";
+            $registerUrl = "UNDER MAINTENANCE";
             $userId = $event['source']['userId'];
             $replyToken = $event['replyToken'];
 
@@ -93,29 +95,18 @@ class LineBotController extends Controller
                   if($this->checkPassword($userId, $email, $password)== true ) {
                     $textSend = "Selamat anda berhasil login, sekarang anda sudah bisa menggunakan fitur kuliah SIATMA Bot";
                   } else {
-                    $textSend = "salah password ".$password;
-                    // $textSend = "Maaf email atau password anda salah". PHP_EOL .
-                    // "atau anda belum terdaftar". PHP_EOL .
-                    // "jika anda belum mendaftar, silahkan daftarkan diri anda di : http://ditoraharjo.co/siatmabot/register";
+                    $textSend = "Maaf email atau password anda salah". PHP_EOL .
+                    "atau anda belum terdaftar". PHP_EOL .
+                    "jika anda belum mendaftar, silahkan daftarkan diri anda di : ".$registerUrl;
                   }
-
-                  // $textMessageBuilder = new \LINE\LINEBot\MessageBuilder\TextMessageBuilder($textSend);
-                  // $result = $bot->pushMessage($userId, $textMessageBuilder);
-                  //
-                  // return $result->getHTTPStatus() . ' ' . $result->getRawBody();
                 } else {
-                  $textSend = "salah email ".$email;
-                  // $textSend = "Maaf email atau password anda salah". PHP_EOL .
-                  // "atau anda belum terdaftar". PHP_EOL .
-                  // "jika anda belum mendaftar, silahkan daftarkan diri anda di : http://ditoraharjo.co/siatmabot/register";
+                  $textSend = "Maaf email atau password anda salah". PHP_EOL .
+                  "atau anda belum terdaftar". PHP_EOL .
+                  "jika anda belum mendaftar, silahkan daftarkan diri anda di : ".$registerUrl;
                 }
-                // $textMessageBuilder = new \LINE\LINEBot\MessageBuilder\TextMessageBuilder($textSend);
-                // $result = $bot->pushMessage($userId, $textMessageBuilder);
-                //
-                // return $result->getHTTPStatus() . ' ' . $result->getRawBody();
               } else {
                 $textSend = "Maaf anda perlu login terlebih dahulu".PHP_EOL.
-                "silahkan kirimkan chat email dan password yang sudah anda daftarkan di http://ditoraharjo.co/siatmabot/register". PHP_EOL .
+                "silahkan kirimkan chat email dan password yang sudah anda daftarkan di ".$registerUrl. PHP_EOL .
                 "dengan format : email-password". PHP_EOL .
                 "contoh: asdf@gmail.com-1234 ";
               }
@@ -255,7 +246,7 @@ class LineBotController extends Controller
               throw $e;
             }
             return true;
-            
+
           } else {
             return false;
           }
