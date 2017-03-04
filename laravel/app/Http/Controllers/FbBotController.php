@@ -62,14 +62,14 @@ class FbBotController extends Controller
       // // }
 
       $chatId = 253128578;
-      $text = $userId;
+      $text = $responses;
 
       Telegram::sendMessage([
         'chat_id' => $chatId,
         'text' => $text,
       ]);
 
-      // $this->sendMessage($userId);
+      $this->sendMessage($userId);
 
       return response()->json("OK");
     }
