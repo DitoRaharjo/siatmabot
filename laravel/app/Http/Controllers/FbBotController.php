@@ -42,12 +42,23 @@ class FbBotController extends Controller
 
       $userId = $responses_convert->entry[0]->messaging[0]->sender->id;
 
-      // if(isset($responses_convert->entry[0]->message)) {
+      $textReceived = $responses_convert->entry[0]->message->text;
+
+      if(strcasecmp($textReceived, "hai")==0) {
+        $textSend = "Halo juga :D";
+
         $this->setRead($userId);
         $this->setTypingOn($userId);
-        $this->sendMessage($userId);
+        $this->sendMessage($userId, $textSend);
         $this->setTypingOff($userId);
-      // }
+      } else {
+        $textSend = "Maaf perintah tidak ditemukan";
+
+        $this->setRead($userId);
+        $this->setTypingOn($userId);
+        $this->sendMessage($userId, $textSend);
+        $this->setTypingOff($userId);
+      }
 
       $chatId = 253128578;
       $text = $responses;
@@ -58,6 +69,25 @@ class FbBotController extends Controller
       ]);
 
       return response()->json("OK");
+    }
+
+    public function sendMessage($userId, $text) {
+        $data = array(
+          'recipient'=>array('id'=>"$userId"),
+          'message'=>array('text'=>"$text")
+        );
+
+        $opts = array(
+          'http'=>array(
+            'method'=>'POST',
+            'content'=>json_encode($data),
+            'header'=>"Content-Type: application/json\n"
+          )
+        );
+        $context = stream_context_create($opts);
+
+        $website = "https://graph.facebook.com/v2.8/me/messages?access_token=".env('FB_PAGE_ACCESS_TOKEN');
+        file_get_contents($website, false, $context);
     }
 
     public function setRead($userId) {
@@ -117,22 +147,4 @@ class FbBotController extends Controller
       file_get_contents($website, false, $context);
     }
 
-    public function sendMessage($userId) {
-        $data = array(
-          'recipient'=>array('id'=>"$userId"),
-          'message'=>array('text'=>"Halo juga")
-        );
-
-        $opts = array(
-          'http'=>array(
-            'method'=>'POST',
-            'content'=>json_encode($data),
-            'header'=>"Content-Type: application/json\n"
-          )
-        );
-        $context = stream_context_create($opts);
-
-        $website = "https://graph.facebook.com/v2.8/me/messages?access_token=".env('FB_PAGE_ACCESS_TOKEN');
-        file_get_contents($website, false, $context);
-    }
 }
