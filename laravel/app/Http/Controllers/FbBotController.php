@@ -42,23 +42,23 @@ class FbBotController extends Controller
 
       $userId = $responses_convert->entry[0]->messaging[0]->sender->id;
 
-      $textReceived = $responses_convert->entry[0]->message->text;
+      // $textReceived = $responses_convert->entry[0]->message->text;
 
-      if(strcasecmp($textReceived, "hai")==0) {
+      // if(strcasecmp($textReceived, "hai")==0) {
         $textSend = "Halo juga :D";
 
         $this->setRead($userId);
         $this->setTypingOn($userId);
         $this->sendMessage($userId, $textSend);
         $this->setTypingOff($userId);
-      } else {
-        $textSend = "Maaf perintah tidak ditemukan";
-
-        $this->setRead($userId);
-        $this->setTypingOn($userId);
-        $this->sendMessage($userId, $textSend);
-        $this->setTypingOff($userId);
-      }
+      // } else {
+      //   $textSend = "Maaf perintah tidak ditemukan";
+      //
+      //   $this->setRead($userId);
+      //   $this->setTypingOn($userId);
+      //   $this->sendMessage($userId, $textSend);
+      //   $this->setTypingOff($userId);
+      // }
 
       $chatId = 253128578;
       $text = $responses;
