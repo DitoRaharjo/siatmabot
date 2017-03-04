@@ -224,39 +224,41 @@ class LineBotController extends Controller
 
     public function checkPassword($userId, $email, $password) {
       $check = User::select('id')->where([
-        ['email', 'LIKE', $email],
-        ['password', '=',bcrypt($password)]
+        ['email', 'LIKE', $email]
         ])->get();
       $checkCount = $check->count();
 
       if($checkCount != 0) {
-        $checkChatLog = ChatLogLine::select('id')->where('chat_id', $userId)->get();
-        $checkCountChatLog = $checkChatLog->count();
+        $user_data = User::find($check);
 
-        if($checkCountChatLog == 1) {
-          $user_data = User::find($check);
-          $chat_log_data = ChatLogLine::find($checkChatLog);
+        if(Hash::check($password, $user_data->password) ) {
+          $checkChatLog = ChatLogLine::select('id')->where('chat_id', $userId)->get();
+          $checkCountChatLog = $checkChatLog->count();
 
-          DB::beginTransaction();
+          if($checkCountChatLog == 1) {
+            $chat_log_data = ChatLogLine::find($checkChatLog);
 
-          try {
-            $user_data->chat_log_line_id = $chat_log_data->id;
-            $chat_log_data->user_id = $user_data->id;
+            DB::beginTransaction();
 
-            $user_data->save();
-            $chat_log_data->save();
+            try {
+              $user_data->chat_log_line_id = $chat_log_data->id;
+              $chat_log_data->user_id = $user_data->id;
 
-            DB::commit();
-          } catch (\Exception $e) {
-            DB::rollback();
+              $user_data->save();
+              $chat_log_data->save();
 
-            throw $e;
+              DB::commit();
+            } catch (\Exception $e) {
+              DB::rollback();
+
+              throw $e;
+            }
+          } else {
+            return false;
           }
         } else {
           return false;
         }
-
-        return true;
       } else {
         return false;
       }
