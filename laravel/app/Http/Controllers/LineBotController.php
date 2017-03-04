@@ -92,7 +92,7 @@ class LineBotController extends Controller
                   if($this->checkPassword($userId, $email, $password)== true ) {
                     $textSend = "Selamat anda berhasil login, sekarang anda sudah bisa menggunakan fitur kuliah SIATMA Bot";
                   } else {
-                    $textSend = "salah password";
+                    $textSend = "salah password ".$password;
                     // $textSend = "Maaf email atau password anda salah". PHP_EOL .
                     // "atau anda belum terdaftar". PHP_EOL .
                     // "jika anda belum mendaftar, silahkan daftarkan diri anda di : http://ditoraharjo.co/siatmabot/register";
@@ -103,7 +103,7 @@ class LineBotController extends Controller
                   //
                   // return $result->getHTTPStatus() . ' ' . $result->getRawBody();
                 } else {
-                  $textSend = "salah email";
+                  $textSend = "salah email ".$email;
                   // $textSend = "Maaf email atau password anda salah". PHP_EOL .
                   // "atau anda belum terdaftar". PHP_EOL .
                   // "jika anda belum mendaftar, silahkan daftarkan diri anda di : http://ditoraharjo.co/siatmabot/register";
@@ -212,7 +212,7 @@ class LineBotController extends Controller
     }
 
     public function checkEmail($email) {
-      $check = User::select('id')->where('email', $email)->get();
+      $check = User::select('id')->where('email', 'LIKE', $email)->get();
       $checkCount = $check->count();
 
       if($checkCount != 0) {
@@ -224,7 +224,7 @@ class LineBotController extends Controller
 
     public function checkPassword($userId, $email, $password) {
       $check = User::select('id')->where([
-        ['email', $email],
+        ['email', 'LIKE', $email],
         ['password', bcrypt($password)]
         ])->get();
       $checkCount = $check->count();
