@@ -58,7 +58,11 @@ class LineBotController extends Controller
 
             $textReceived = $event['message']['text'];
             $textSend = $textReceived;
-            $this->sendMessage($userId, $textSend);
+            // $this->sendMessage($userId, $textSend);
+            $textMessageBuilder = new \LINE\LINEBot\MessageBuilder\TextMessageBuilder($textSend);
+            $result = $bot->pushMessage($userId, $textMessageBuilder);
+
+            return $result->getHTTPStatus() . ' ' . $result->getRawBody();
 
             // if($this->checkLogin($userId) == false) {
             //   if(strcasecmp($textReceived, "halo")==0) {
