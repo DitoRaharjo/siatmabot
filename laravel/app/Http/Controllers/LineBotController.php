@@ -57,53 +57,55 @@ class LineBotController extends Controller
             $this->getUser($userId);
 
             $textReceived = $event['message']['text'];
+            $textSend = $textReceived;
+            $this->sendMessage($userId, $textSend);
 
-            if($this->checkLogin($userId) == false) {
-              if(strcasecmp($textReceived, "halo")==0) {
-                $opts = array(
-                  'http'=>array(
-                    'method'=>"GET",
-                    'header'=>"Authorization: Bearer ".env('CHANNEL_ACCESS_TOKEN')
-                  )
-                );
-                $context = stream_context_create($opts);
-
-                $website = "https://api.line.me/v2/bot/profile/".$userId;
-                $user = file_get_contents($website, false, $context);
-
-                $user = json_decode($user, true);
-                $userName = $user['displayName'];
-
-                $textSend = "Hai juga, salam kenal ".$userName;
-                $this->sendMessage($userId, $textSend);
-              } else {
-                $textSend = "Maaf perintah tidak ditemukan.";
-                $this->sendMessage($userId, $textSend);
-              }
-            } else {
-              if (($check = strpos($textReceived, "-")) !== FALSE) {
-                $email = strtok($textReceived, '-');
-                $password = substr($textReceived, strpos($textReceived, "-") +1);
-
-                if($this->checkEmail($email) == true) {
-                  if($this->checkPassword($userId, $email, $password)== true ) {
-                    $textSend = "Selamat anda berhasil login, sekarang anda sudah bisa menggunakan fitur kuliah SIATMA Bot";
-                    $this->sendMessage($userId, $textSend);
-                  } else {
-                    $textSend = "Maaf email atau password anda salah, atau jika anda belum terdaftar, silahkan daftarkan diri anda di : http://ditoraharjo.co/siatmabot/register";
-                    $this->sendMessage($userId, $textSend);
-                  }
-                } else {
-                  $textSend = "Maaf email atau password anda salah, atau jika anda belum terdaftar, silahkan daftarkan diri anda di : http://ditoraharjo.co/siatmabot/register";
-                  $this->sendMessage($userId, $textSend);
-                }
-              } else {
-                $textSend = "Maaf anda perlu login terlebih dahulu,
-                silahkan kirimkan chat email dan password yang
-                sudah anda daftarkan di http://ditoraharjo.co/siatmabot/register, dengan format : email-username , contoh: asdf@gmail.com-1234 ";
-                $this->sendMessage($userId, $textSend);
-              }
-            }
+            // if($this->checkLogin($userId) == false) {
+            //   if(strcasecmp($textReceived, "halo")==0) {
+            //     $opts = array(
+            //       'http'=>array(
+            //         'method'=>"GET",
+            //         'header'=>"Authorization: Bearer ".env('CHANNEL_ACCESS_TOKEN')
+            //       )
+            //     );
+            //     $context = stream_context_create($opts);
+            //
+            //     $website = "https://api.line.me/v2/bot/profile/".$userId;
+            //     $user = file_get_contents($website, false, $context);
+            //
+            //     $user = json_decode($user, true);
+            //     $userName = $user['displayName'];
+            //
+            //     $textSend = "Hai juga, salam kenal ".$userName;
+            //     $this->sendMessage($userId, $textSend);
+            //   } else {
+            //     $textSend = "Maaf perintah tidak ditemukan.";
+            //     $this->sendMessage($userId, $textSend);
+            //   }
+            // } else {
+            //   if (($check = strpos($textReceived, "-")) !== FALSE) {
+            //     $email = strtok($textReceived, '-');
+            //     $password = substr($textReceived, strpos($textReceived, "-") +1);
+            //
+            //     if($this->checkEmail($email) == true) {
+            //       if($this->checkPassword($userId, $email, $password)== true ) {
+            //         $textSend = "Selamat anda berhasil login, sekarang anda sudah bisa menggunakan fitur kuliah SIATMA Bot";
+            //         $this->sendMessage($userId, $textSend);
+            //       } else {
+            //         $textSend = "Maaf email atau password anda salah, atau jika anda belum terdaftar, silahkan daftarkan diri anda di : http://ditoraharjo.co/siatmabot/register";
+            //         $this->sendMessage($userId, $textSend);
+            //       }
+            //     } else {
+            //       $textSend = "Maaf email atau password anda salah, atau jika anda belum terdaftar, silahkan daftarkan diri anda di : http://ditoraharjo.co/siatmabot/register";
+            //       $this->sendMessage($userId, $textSend);
+            //     }
+            //   } else {
+            //     $textSend = "Maaf anda perlu login terlebih dahulu,
+            //     silahkan kirimkan chat email dan password yang
+            //     sudah anda daftarkan di http://ditoraharjo.co/siatmabot/register, dengan format : email-username , contoh: asdf@gmail.com-1234 ";
+            //     $this->sendMessage($userId, $textSend);
+            //   }
+            // }
     			}
     		}
     	}
