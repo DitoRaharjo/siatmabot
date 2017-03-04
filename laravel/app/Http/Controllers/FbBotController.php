@@ -157,7 +157,7 @@ class FbBotController extends Controller
 
     public function getUserProfile($userId) {
       $website = "https://graph.facebook.com/v2.8/".$userId."?access_token=".env('FB_PAGE_ACCESS_TOKEN');
-      $user_data = file_get_contents($website, false, $context);
+      $user_data = file_get_contents($website);
 
       return json_decode($user_data);
     }
