@@ -62,7 +62,7 @@ class FbBotController extends Controller
       // // }
 
       $chatId = 253128578;
-      $text = $userId;
+      $text = "Chat FB Masuk";
 
         Telegram::sendMessage([
           'chat_id' => $chatId,
