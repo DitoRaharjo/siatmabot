@@ -69,7 +69,7 @@ class FbBotController extends Controller
         'text' => $text,
       ]);
 
-      $this->sendMessage($userId);
+      // $this->sendMessage($userId);
 
       return response()->json("OK");
     }
