@@ -58,7 +58,7 @@ class LineBotController extends Controller
 
             $textReceived = $event['message']['text'];
 
-            if($this->checkLogin($userId) == false) {
+            if($this->checkLogin($userId) == true) {
               if(strcasecmp($textReceived, "halo")==0) {
                 $opts = array(
                   'http'=>array(
