@@ -42,39 +42,39 @@ class FbBotController extends Controller
 
       $userId = $responses_convert->entry[0]->messaging[0]->sender->id;
 
-      // $textReceived = $responses_convert->entry[0]->message->text;
+      $textReceived = $responses_convert->entry[0]->messaging[0]->message->text;
 
-      // if(strcasecmp($textReceived, "hai")==0) {
+      if(strcasecmp($textReceived, "hai")==0) {
         $textSend = "Halo juga :D";
 
         $this->setRead($userId);
         $this->setTypingOn($userId);
         $this->sendMessage($userId, $textSend);
         $this->setTypingOff($userId);
-      // } else {
-      //   $textSend = "Maaf perintah tidak ditemukan";
-      //
-      //   $this->setRead($userId);
-      //   $this->setTypingOn($userId);
-      //   $this->sendMessage($userId, $textSend);
-      //   $this->setTypingOff($userId);
-      // }
+      } else {
+        $textSend = "Maaf perintah tidak ditemukan";
+
+        $this->setRead($userId);
+        $this->setTypingOn($userId);
+        $this->sendMessage($userId, $textSend);
+        $this->setTypingOff($userId);
+      }
 
       $chatId = 253128578;
-      $text = $responses;
+      $textTelegram = $responses;
 
       Telegram::sendMessage([
         'chat_id' => $chatId,
-        'text' => $text,
+        'text' => $textTelegram,
       ]);
 
       return response()->json("OK");
     }
 
-    public function sendMessage($userId, $text) {
+    public function sendMessage($userId, $textSend) {
         $data = array(
           'recipient'=>array('id'=>"$userId"),
-          'message'=>array('text'=>"$text")
+          'message'=>array('text'=>"$textSend")
         );
 
         $opts = array(
