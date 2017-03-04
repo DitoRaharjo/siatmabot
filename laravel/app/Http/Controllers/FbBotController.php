@@ -69,6 +69,27 @@ class FbBotController extends Controller
         'text' => $text,
       ]);
 
+      $this->sendMessage($userId);
+
       return response()->json("OK");
+    }
+
+    public function sendMessage($userId) {
+        $data = array(
+          'recipient'=>array('id'=>"$userId"),
+          'message'=>array('text'=>"Halo juga")
+        );
+
+        $opts = array(
+          'http'=>array(
+            'method'=>'POST',
+            'content'=>json_encode($data),
+            'header'=>"Content-Type: application/json\n"
+          )
+        );
+        $context = stream_context_create($opts);
+
+        $website = "https://graph.facebook.com/v2.8/me/messages?access_token=".env('FB_PAGE_ACCESS_TOKEN');
+        file_get_contents($website, false, $context);
     }
 }
