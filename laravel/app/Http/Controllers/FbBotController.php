@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Requests;
 use Carbon\Carbon;
 
+use Hash;
 use Response;
 use Input;
 use DB;
@@ -14,7 +15,7 @@ use DB;
 use App\User;
 use App\Prodi;
 use App\Fakultas;
-use App\ChatLog;
+use App\ChatLogFb;
 use Telegram;
 
 class FbBotController extends Controller
@@ -41,42 +42,163 @@ class FbBotController extends Controller
       $responses_convert = json_decode($responses);
 
       $userId = $responses_convert->entry[0]->messaging[0]->sender->id;
-
       $textReceived = $responses_convert->entry[0]->messaging[0]->message->text;
+      $registerUrl = "UNDER MAINTENANCE";
 
-      if(strcasecmp($textReceived, "hai")==0) {
-        $textSend = "Halo juga :D";
+      $this->getUser($userId);
 
-        $this->setRead($userId);
-        $this->setTypingOn($userId);
-        $this->sendMessage($userId, $textSend);
-        $this->setTypingOff($userId);
-      } else if(strcasecmp($textReceived, "salam kenal")==0) {
-        $user_data = $this->getUserProfile($userId);
-        $textSend = "Salam kenal juga, ".$user_data->first_name." ".$user_data->last_name;
-
-        $this->setRead($userId);
-        $this->setTypingOn($userId);
-        $this->sendMessage($userId, $textSend);
-        $this->setTypingOff($userId);
+      if($this->checkLogin($userId) == true) {
+        if(strcasecmp($textReceived, "hai")==0) {
+          $textSend = "Halo juga :D";
+        } else if(strcasecmp($textReceived, "salam kenal")==0) {
+          $user_data = $this->getUserProfile($userId);
+          $textSend = "Salam kenal juga, ".$user_data->first_name." ".$user_data->last_name;
+        } else {
+          $textSend = "Maaf perintah tidak ditemukan";
+        }
+        $this->setSendCondition($userId, $textSend);
       } else {
-        $textSend = "Maaf perintah tidak ditemukan";
+        if (($check = strpos($textReceived, "-")) !== FALSE) {
+          $email = strtok($textReceived, '-');
+          $password = substr($textReceived, strpos($textReceived, "-") +1);
 
-        $this->setRead($userId);
-        $this->setTypingOn($userId);
-        $this->sendMessage($userId, $textSend);
-        $this->setTypingOff($userId);
+          if($this->checkEmail($email) == true) {
+            if($this->checkPassword($userId, $email, $password)== true ) {
+              $textSend = "Selamat anda berhasil login, sekarang anda sudah bisa menggunakan fitur kuliah SIATMA Bot";
+            } else {
+              $textSend = "Maaf email atau password anda salah". PHP_EOL .
+              "atau anda belum terdaftar". PHP_EOL .
+              "jika anda belum mendaftar, silahkan daftarkan diri anda di : ".$registerUrl;
+            }
+          } else {
+            $textSend = "Maaf email atau password anda salah". PHP_EOL .
+            "atau anda belum terdaftar". PHP_EOL .
+            "jika anda belum mendaftar, silahkan daftarkan diri anda di : ".$registerUrl;
+          }
+        } else {
+          $textSend = "Maaf anda perlu login terlebih dahulu".PHP_EOL.
+          "silahkan kirimkan chat email dan password yang sudah anda daftarkan di ".$registerUrl. PHP_EOL .
+          "dengan format : email-password". PHP_EOL .
+          "contoh: asdf@gmail.com-1234 ";
+        }
+        $this->setSendCondition($userId, $textSend);
       }
 
-      $chatId = 253128578;
-      $textTelegram = $responses;
 
-      Telegram::sendMessage([
-        'chat_id' => $chatId,
-        'text' => $textTelegram,
-      ]);
+      // $chatId = 253128578;
+      // $textTelegram = $responses;
+      //
+      // Telegram::sendMessage([
+      //   'chat_id' => $chatId,
+      //   'text' => $textTelegram,
+      // ]);
 
       return response()->json("OK");
+    }
+
+    public function getUser($userId) {
+      $check = ChatLogFb::select('id')->where('chat_id', $userId)->get();
+      $checkCount = $check->count();
+
+      if($checkCount == 0) {
+        $user = $this->getUserProfile($userId);
+
+        $user_data = array();
+        $user_data['chat_id'] = $userId;
+        $user_data['first_name'] = $user->first_name;
+        $user_data['last_name'] = $user->last_name;
+
+        DB::beginTransaction();
+
+        try {
+          ChatLogFb::create($user_data);
+
+          DB::commit();
+        } catch (\Exception $e) {
+          DB::rollback();
+
+          throw $e;
+        }
+      }
+    }
+
+    public function checkLogin($userId) {
+      $check = ChatLogFb::select('id')->where('chat_id', $userId)->get();
+      $checkCount = $check->count();
+
+      if($checkCount == 1) {
+        $chatLog = ChatLogFb::find($check);
+
+        if($chatLog->user_id == 0) {
+          return false;
+        } else {
+          return true;
+        }
+      } else {
+        return false;
+      }
+    }
+
+    public function checkEmail($email) {
+      $check = User::select('id')->where('email', 'LIKE', $email)->get();
+      $checkCount = $check->count();
+
+      if($checkCount != 0) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+
+    public function checkPassword($userId, $email, $password) {
+      $check = User::select('id')->where([
+        ['email', 'LIKE', $email]
+        ])->get();
+      $checkCount = $check->count();
+
+      if($checkCount != 0) {
+        $user_data = User::find($check);
+
+        if(Hash::check($password, $user_data->password) ) {
+          $checkChatLog = ChatLogFb::select('id')->where('chat_id', $userId)->get();
+          $checkCountChatLog = $checkChatLog->count();
+
+          if($checkCountChatLog == 1) {
+            $chat_log_data = ChatLogFb::find($checkChatLog);
+
+            DB::beginTransaction();
+
+            try {
+              $user_data->chat_log_line_id = $chat_log_data->id;
+              $chat_log_data->user_id = $user_data->id;
+
+              $user_data->save();
+              $chat_log_data->save();
+
+              DB::commit();
+            } catch (\Exception $e) {
+              DB::rollback();
+
+              throw $e;
+            }
+            return true;
+
+          } else {
+            return false;
+          }
+        } else {
+          return false;
+        }
+      } else {
+        return false;
+      }
+    }
+
+    public function setSendCondition($userId, $textSend) {
+      $this->setRead($userId);
+      $this->setTypingOn($userId);
+      $this->sendMessage($userId, $textSend);
+      $this->setTypingOff($userId);
     }
 
     public function sendMessage($userId, $textSend) {
