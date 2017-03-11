@@ -251,17 +251,17 @@ class LineBotController extends Controller
     }
 
     public function getJadwalKuliah($userId) {
-      $check = ChatLogLine::select('id')->where('chat_id', $userId)->get();
-      $chatLog = ChatLogLine::find($check);
-
-      $semuaJadwal = $chatLog->user->jadwal;
-
-      $senin = "";
-      $selasa = "";
-      $rabu = "";
-      $kamis = "";
-      $jumat = "";
-      $sabtu = "";
+      // $check = ChatLogLine::select('id')->where('chat_id', $userId)->get();
+      // $chatLog = ChatLogLine::find($check);
+      //
+      // $semuaJadwal = $chatLog->user->jadwal;
+      //
+      // $senin = "";
+      // $selasa = "";
+      // $rabu = "";
+      // $kamis = "";
+      // $jumat = "";
+      // $sabtu = "";
 
       // foreach ($semuaJadwal as $jadwal) {
       //   $makul = $jadwal->makul;
