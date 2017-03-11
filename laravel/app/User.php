@@ -49,17 +49,17 @@ class User extends Authenticatable
 
     public function chatlog()
     {
-        return $this->hasOne('App\ChatLog', 'chat_log_id');
+        return $this->hasOne('App\ChatLog');
     }
 
     public function chatlogLine()
     {
-        return $this->hasOne('App\ChatLogLine', 'chat_log_line_id');
+        return $this->hasOne('App\ChatLogLine');
     }
 
     public function chatlogFb()
     {
-        return $this->hasOne('App\ChatLogFb', 'chat_log_fb_id');
+        return $this->hasOne('App\ChatLogFb');
     }
 
     public function jadwal() {
