@@ -78,6 +78,10 @@ class LineBotController extends Controller
                 $userName = $user['displayName'];
 
                 $textSend = "Hai juga, salam kenal ".$userName;
+              } else if(strcasecmp($textReceived, "makul")==0) {
+
+                $textSend = $this->getJadwalKuliah($userId);
+
               } else {
                 $textSend = "Maaf perintah tidak ditemukan.";
               }
@@ -171,19 +175,7 @@ class LineBotController extends Controller
 
           throw $e;
         }
-        // $text = "chat log baru dan berhasil disimpan";
-        // Telegram::sendMessage([
-        //   'chat_id' => $chatId,
-        //   'text' => $text,
-        // ]);
       }
-      // else {
-      //   $text = "chat log sudah ada";
-      //   Telegram::sendMessage([
-      //     'chat_id' => $chatId,
-      //     'text' => $text,
-      //   ]);
-      // }
     }
 
     public function checkLogin($userId) {
@@ -256,6 +248,59 @@ class LineBotController extends Controller
       } else {
         return false;
       }
+    }
+
+    public function getJadwalKuliah($userId) {
+      $check = ChatLogLine::select('id')->where('chat_id', $userId)->get();
+      $chatLog = ChatLogLine::find($check);
+
+      $semuaJadwal = $chatLog->user->jadwal;
+
+      $senin = "";
+      $selasa = "";
+      $rabu = "";
+      $kamis = "";
+      $jumat = "";
+      $sabut = "";
+
+      foreach ($semuaJadwal as $jadwal) {
+        $makul = $jadwal->makul;
+        $kelas = $jadwal->kelas;
+        $ruangan = $jadwal->ruangan;
+        $sesiMulai = $jadwal->sesi->sesi->sesi;
+        $sesiSelesai = "";
+        if($jadwal->sesi_prodi_id_selesai != 0) {
+          $sesiSelesai = $jadwal->sesiSelesai->sesi->sesi;
+
+          $header = $makul ." (". $kelas . ")";
+          $middle = $ruangan;
+          $bottom = $sesiMulai . " - " . $sesiSelesai;
+        } else {
+          $header = $makul ." (". $kelas . ")";
+          $middle = $ruangan;
+          $bottom = $sesiMulai;
+        }
+        $summary = $header . PHP_EOL . $middle . PHP_EOL . $bottom . PHP_EOL . PHP_EOL;
+
+        if(strcasecmp($jadwal->sesi->sesi->hari, "Senin")==0) {
+          $senin = $senin . $summary;
+        } else if(strcasecmp($jadwal->sesi->sesi->hari, "Selasa")==0) {
+          $selasa = $selasa . $summary;
+        } else if(strcasecmp($jadwal->sesi->sesi->hari, "Rabu")==0) {
+          $rabu = $rabu . $summary;
+        } else if(strcasecmp($jadwal->sesi->sesi->hari, "Kamis")==0) {
+          $kamis = $kamis . $summary;
+        } else if(strcasecmp($jadwal->sesi->sesi->hari, "Jumat")==0) {
+          $jumat = $jumat . $summary;
+        } else if(strcasecmp($jadwal->sesi->sesi->hari, "Sabtu")==0) {
+          $sabtu = $sabtu . $summary;
+        }
+      }
+
+      // $text = "--===Senin===--" . PHP_EOL . $senin . "--===Selasa===--" . PHP_EOL . $selasa . "--===Rabu===--" . PHP_EOL . $rabu . "--===Kamis===--" . PHP_EOL . $kamis . "--===Jumat===--" . PHP_EOL . $jumat;
+
+      $text = "asdf";
+      return $text;
     }
 
 }
