@@ -261,7 +261,7 @@ class LineBotController extends Controller
       $rabu = "";
       $kamis = "";
       $jumat = "";
-      $sabut = "";
+      $sabtu = "";
 
       foreach ($semuaJadwal as $jadwal) {
         $makul = $jadwal->makul;
