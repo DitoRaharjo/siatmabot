@@ -312,15 +312,20 @@ class LineBotController extends Controller
 
         if($senin == "") {
           $senin = "KOSONG" . PHP_EOL . PHP_EOL;
-        } else if($selasa == "") {
+        }
+        if($selasa == "") {
           $selasa = "KOSONG" . PHP_EOL . PHP_EOL;
-        } else if($rabu == "") {
+        }
+        if($rabu == "") {
           $rabu = "KOSONG" . PHP_EOL . PHP_EOL;
-        } else if($kamis == "") {
+        }
+        if($kamis == "") {
           $kamis = "KOSONG" . PHP_EOL . PHP_EOL;
-        } else if($jumat == "") {
-          $jumat = "KOSONG" . PHP_EOL;
-        } else if($sabtu == "") {
+        }
+        if($jumat == "") {
+          $jumat = "KOSONG" . PHP_EOL . PHP_EOL;
+        }
+        if($sabtu == "") {
           $sabtu = "KOSONG" . PHP_EOL . PHP_EOL;
         }
 
