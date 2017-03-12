@@ -57,6 +57,13 @@ class BotController extends Controller
         } else {
           if(strcasecmp($textResponse, "/start")==0) {
             $text = 'Halo salam kenal ' . $chatName . ', saya SIATMA BOT';
+          } else if(strcasecmp($textResponse, "help")==0) {
+            $helpCommand = "Halo, berikut perintah-perintah yang dapat digunakan di SIATMA Bot : " . PHP_EOL .
+            "makul : Untuk menampilkan semua jadwal kuliah" . PHP_EOL .
+            "jadwal (keyword) : Untuk menampilkan informasi jadwal kuliah sesuai dengan keyword yang sudah ditentukan" . PHP_EOL .
+            PHP_EOL . "Jika anda belum pernah melakukan login sebelumnya, maka anda perlu login terlebih dahulu di platform chat dengan mengetikkan email dan password anda dengan format :". PHP_EOL ."email-password". PHP_EOL ."contoh : asd@gmail.com-asdfghj";
+
+            $text = $helpCommand;
           } else if(strcasecmp($textResponse, "hai")==0) {
             $text = "Hai juga :D";
           } else if(strcasecmp($textResponse, "salam kenal")==0) {
