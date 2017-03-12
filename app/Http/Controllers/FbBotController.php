@@ -46,9 +46,8 @@ class FbBotController extends Controller
       $registerUrl = "UNDER MAINTENANCE";
       $helpCommand = "Halo, berikut perintah-perintah yang dapat digunakan di SIATMA Bot : " . PHP_EOL .
       "makul : Untuk menampilkan semua jadwal kuliah" . PHP_EOL .
-      "jadwal (keyword) : Untuk menampilkan informasi jadwal kuliah sesuai". PHP_EOL ."dengan keyword yang sudah ditentukan" . PHP_EOL .
-      PHP_EOL . "Jika anda belum pernah melakukan login sebelumnya, maka anda". PHP_EOL ."perlu login terlebih dahulu di platform chat" . PHP_EOL .
-      "dengan mengetikkan email dan password anda dengan format : email-password, contoh : asd@gmail.com-asdfghj";
+      "jadwal (keyword) : Untuk menampilkan informasi jadwal kuliah sesuai dengan keyword yang sudah ditentukan" . PHP_EOL .
+      PHP_EOL . "Jika anda belum pernah melakukan login sebelumnya, maka anda perlu login terlebih dahulu di platform chat dengan mengetikkan email dan password anda dengan format :". PHP_EOL ."email-password". PHP_EOL ."contoh : asd@gmail.com-asdfghj";
       $checkMakulResult = $this->checkMakul($userId, $textReceived);
 
       $this->getUser($userId);
