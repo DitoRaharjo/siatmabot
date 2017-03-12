@@ -51,7 +51,7 @@ class BotController extends Controller
         // Apakah anda sudah mendaftar? Kalau belum silahkan daftar
         // atau apakah anda mengganti username? silahkan update username anda di aplikasi
       } else {
-        $checkMakulResult = $this->checkMakul($chatId, $textReceived);
+        $checkMakulResult = $this->checkMakul($chatId, $textResponse);
         if($checkMakulResult != false) {
           $text = $checkMakulResult;
         } else {
