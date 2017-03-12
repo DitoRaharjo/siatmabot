@@ -263,12 +263,12 @@ class LineBotController extends Controller
       }
 
       if($semuaJadwal->count() > 0) {
-        $senin = "KOSONG" . PHP_EOL;
-        $selasa = "KOSONG" . PHP_EOL;
-        $rabu = "KOSONG" . PHP_EOL;
-        $kamis = "KOSONG" . PHP_EOL;
-        $jumat = "KOSONG" . PHP_EOL;
-        $sabtu = "KOSONG" . PHP_EOL;
+        $senin = "";
+        $selasa = "";
+        $rabu = "";
+        $kamis = "";
+        $jumat = "";
+        $sabtu = "";
 
         foreach ($semuaJadwal as $jadwal) {
           $makul = $jadwal->makul;
@@ -302,6 +302,20 @@ class LineBotController extends Controller
           } else if(strcasecmp($jadwal->sesi->sesi->hari, "Sabtu")==0) {
             $sabtu = $sabtu . $summary;
           }
+        }
+
+        if($senin == "") {
+          $senin = "KOSONG" . PHP_EOL . PHP_EOL;
+        } else if($selasa == "") {
+          $selasa = "KOSONG" . PHP_EOL . PHP_EOL;
+        } else if($rabu == "") {
+          $rabu = "KOSONG" . PHP_EOL . PHP_EOL;
+        } else if($kamis == "") {
+          $kamis = "KOSONG" . PHP_EOL . PHP_EOL;
+        } else if($jumat == "") {
+          $jumat = "KOSONG" . PHP_EOL . PHP_EOL;
+        } else if($sabtu == "") {
+          $sabtu = "KOSONG" . PHP_EOL . PHP_EOL;
         }
 
         $text = "--===Senin===--" . PHP_EOL . $senin . "--===Selasa===--" . PHP_EOL . $selasa . "--===Rabu===--" . PHP_EOL . $rabu . "--===Kamis===--" . PHP_EOL . $kamis . "--===Jumat===--" . PHP_EOL . $jumat;
