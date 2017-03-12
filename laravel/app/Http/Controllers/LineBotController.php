@@ -252,12 +252,12 @@ class LineBotController extends Controller
 
       $semuaJadwal = $chatLog->user->jadwal;
 
-      $senin = "";
-      $selasa = "";
-      $rabu = "";
-      $kamis = "";
-      $jumat = "";
-      $sabtu = "";
+      $senin = "KOSONG" . PHP_EOL;
+      $selasa = "KOSONG" . PHP_EOL;
+      $rabu = "KOSONG" . PHP_EOL;
+      $kamis = "KOSONG" . PHP_EOL;
+      $jumat = "KOSONG" . PHP_EOL;
+      $sabtu = "KOSONG" . PHP_EOL;
 
       foreach ($semuaJadwal as $jadwal) {
         $makul = $jadwal->makul;
