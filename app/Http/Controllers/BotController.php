@@ -40,7 +40,7 @@ class BotController extends Controller
       $chatName = $first_name . " " . $last_name;
 
       if($this->checkAll($responses) == false) {
-        $linkRegister = "https://google.com";
+        $linkRegister = "http://www.ditoraharjo.co/siatmabot/register";
         $text = "Maaf sepertinya anda belum terdaftar, silahkan daftarkan diri anda pada link dibawah " . PHP_EOL .
           "<a href='".$linkRegister."'>LINK</a>";
         Telegram::sendMessage([
@@ -60,7 +60,7 @@ class BotController extends Controller
           } else if(strcasecmp($textResponse, "help")==0) {
             $helpCommand = "Halo, berikut perintah-perintah yang dapat digunakan di SIATMA Bot : " . PHP_EOL .
             "makul : Untuk menampilkan semua jadwal kuliah" . PHP_EOL .
-            "jadwal (keyword) : Untuk menampilkan informasi jadwal kuliah sesuai dengan keyword yang sudah ditentukan" . PHP_EOL .
+            "(keyword) : Untuk menampilkan informasi jadwal kuliah sesuai dengan keyword yang sudah ditentukan" . PHP_EOL .
             PHP_EOL . "Jika anda belum pernah melakukan login sebelumnya, maka anda perlu login terlebih dahulu di platform chat dengan mengetikkan email dan password anda dengan format :". PHP_EOL ."email-password". PHP_EOL ."contoh : asd@gmail.com-asdfghj";
 
             $text = $helpCommand;
