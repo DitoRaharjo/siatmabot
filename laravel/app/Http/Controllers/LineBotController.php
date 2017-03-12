@@ -60,30 +60,36 @@ class LineBotController extends Controller
             $this->getUser($userId);
 
             $textReceived = $event['message']['text'];
+            $checkMakulResult = $this->checkMakul($userId, $textReceived);
 
             if($this->checkLogin($userId) == true) {
-              if(strcasecmp($textReceived, "halo")==0) {
-                $opts = array(
-                  'http'=>array(
-                    'method'=>"GET",
-                    'header'=>"Authorization: Bearer ".env('CHANNEL_ACCESS_TOKEN')
-                  )
-                );
-                $context = stream_context_create($opts);
 
-                $website = "https://api.line.me/v2/bot/profile/".$userId;
-                $user = file_get_contents($website, false, $context);
-
-                $user = json_decode($user, true);
-                $userName = $user['displayName'];
-
-                $textSend = "Hai juga, salam kenal ".$userName;
-              } else if(strcasecmp($textReceived, "makul")==0) {
-
-                $textSend = $this->getJadwalKuliah($userId);
-
+              if($checkMakulResult != false) {
+                $textSend = $checkMakulResult;
               } else {
-                $textSend = "Maaf perintah tidak ditemukan.";
+                if(strcasecmp($textReceived, "halo")==0) {
+                  $opts = array(
+                    'http'=>array(
+                      'method'=>"GET",
+                      'header'=>"Authorization: Bearer ".env('CHANNEL_ACCESS_TOKEN')
+                    )
+                  );
+                  $context = stream_context_create($opts);
+
+                  $website = "https://api.line.me/v2/bot/profile/".$userId;
+                  $user = file_get_contents($website, false, $context);
+
+                  $user = json_decode($user, true);
+                  $userName = $user['displayName'];
+
+                  $textSend = "Hai juga, salam kenal ".$userName;
+                } else if(strcasecmp($textReceived, "makul")==0) {
+
+                  $textSend = $this->getJadwalKuliah($userId);
+
+                } else {
+                  $textSend = "Maaf perintah tidak ditemukan.";
+                }
               }
 
             } else {
@@ -279,13 +285,13 @@ class LineBotController extends Controller
           if($jadwal->sesi_prodi_id_selesai != 0) {
             $sesiSelesai = $jadwal->sesiSelesai->sesi->sesi;
 
-            $header = $makul ." (". $kelas . ")";
-            $middle = $ruangan;
-            $bottom = $sesiMulai . " - " . $sesiSelesai;
+            $header = "Mata Kuliah : " . $makul ." (". $kelas . ")";
+            $middle = "Ruangan : " . $ruangan;
+            $bottom = "Sesi : " . $sesiMulai . " - " . $sesiSelesai;
           } else {
-            $header = $makul ." (". $kelas . ")";
-            $middle = $ruangan;
-            $bottom = $sesiMulai;
+            $header = "Mata Kuliah : " . $makul ." (". $kelas . ")";
+            $middle = "Ruangan : " . $ruangan;
+            $bottom = "Sesi : " . $sesiMulai;
           }
           $summary = $header . PHP_EOL . $middle . PHP_EOL . $bottom . PHP_EOL . PHP_EOL;
 
@@ -313,7 +319,7 @@ class LineBotController extends Controller
         } else if($kamis == "") {
           $kamis = "KOSONG" . PHP_EOL . PHP_EOL;
         } else if($jumat == "") {
-          $jumat = "KOSONG" . PHP_EOL . PHP_EOL;
+          $jumat = "KOSONG" . PHP_EOL;
         } else if($sabtu == "") {
           $sabtu = "KOSONG" . PHP_EOL . PHP_EOL;
         }
@@ -325,7 +331,49 @@ class LineBotController extends Controller
         $text = "Maaf anda belum memasukkan data jadwal kuliah.";
         return $text;
       }
+    }
 
+    public function checkMakul($userId, $textReceived) {
+      $check = ChatLogLine::select('id')->where('chat_id', $userId)->get();
+      $chatLog = ChatLogLine::find($check);
+
+      $semuaJadwal = $chatLog->user->jadwal;
+
+      $total = "";
+
+      foreach ($semuaJadwal as $jadwal) {
+        if(strcasecmp($jadwal->keyword, $textReceived)==0 && $jadwal->sesi_prodi_id_selesai == 0) {
+          $makul = $jadwal->makul;
+          $kelas = $jadwal->kelas;
+          $ruangan = $jadwal->ruangan;
+          $sesiMulai = $jadwal->sesi->sesi->sesi;
+
+          $header = "Mata Kuliah : " . $makul ." (". $kelas . ")";
+          $middle = "Ruangan : " . $ruangan;
+          $bottom = "Sesi : " . $sesiMulai;
+          $summary = $header . PHP_EOL . $middle . PHP_EOL . $bottom . PHP_EOL . PHP_EOL;
+
+          $hari = $jadwal->sesi->sesi->hari;
+          $text = "--===".$hari."===--". PHP_EOL . $summary;
+          return $text;
+        } else if(strcasecmp($jadwal->keyword, $textReceived)==0 && $jadwal->sesi_prodi_id_selesai != 0) {
+          $hari = $jadwal->sesi->sesi->hari;
+          $sesiSelesai = $jadwal->sesiSelesai->sesi->sesi;
+
+          $makul = $jadwal->makul;
+          $kelas = $jadwal->kelas;
+          $ruangan = $jadwal->ruangan;
+          $sesiMulai = $jadwal->sesi->sesi->sesi;
+
+          $header = "Mata Kuliah : " . $makul ." (". $kelas . ")";
+          $middle = "Ruangan : " . $ruangan;
+          $bottom = "Sesi : " . $sesiMulai . " - " . $sesiSelesai;
+          $summary = $header . PHP_EOL . $middle . PHP_EOL . $bottom . PHP_EOL . PHP_EOL;
+          $text = "--===".$hari."===--". PHP_EOL . $summary;
+          return $text;
+        }
+      }
+      return false;
     }
 
 }
