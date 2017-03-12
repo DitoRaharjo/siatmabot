@@ -44,6 +44,11 @@ class FbBotController extends Controller
       $userId = $responses_convert->entry[0]->messaging[0]->sender->id;
       $textReceived = $responses_convert->entry[0]->messaging[0]->message->text;
       $registerUrl = "UNDER MAINTENANCE";
+      $helpCommand = "Halo, berikut perintah-perintah yang dapat digunakan di SIATMA Bot : " . PHP_EOL .
+      "makul : Untuk menampilkan semua jadwal kuliah" . PHP_EOL .
+      "jadwal (keyword) : Untuk menampilkan informasi jadwal kuliah sesuai". PHP_EOL ."dengan keyword yang sudah ditentukan" . PHP_EOL .
+      PHP_EOL . "Jika anda belum pernah melakukan login sebelumnya, maka anda". PHP_EOL ."perlu login terlebih dahulu di platform chat" . PHP_EOL .
+      "dengan mengetikkan email dan password anda dengan format : email-password, contoh : asd@gmail.com-asdfghj";
       $checkMakulResult = $this->checkMakul($userId, $textReceived);
 
       $this->getUser($userId);
@@ -54,6 +59,8 @@ class FbBotController extends Controller
         } else {
           if(strcasecmp($textReceived, "hai")==0) {
             $textSend = "Halo juga :D";
+          } else if(strcasecmp($textReceived, "help")==0) {
+            $textSend = $helpCommand;
           } else if(strcasecmp($textReceived, "salam kenal")==0) {
             $user_data = $this->getUserProfile($userId);
             $textSend = "Salam kenal juga, ".$user_data->first_name." ".$user_data->last_name;
