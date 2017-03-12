@@ -144,7 +144,7 @@
                   @if(strcasecmp(Auth::user()->role,'admin')==0)
                   <li><a href="{{ Route('dashboard.admin') }}"><i class="fa fa-tachometer"></i> Dashboard Admin </a></li>
                   @endif
-                  <li><a href="{{ Route('dashboard.mahasiswa') }}"><i class="fa fa-desktop"></i> Dashboard</a></li>
+                  <!-- <li><a href="{{ Route('dashboard.mahasiswa') }}"><i class="fa fa-desktop"></i> Dashboard</a></li> -->
                   <li><a href="{{ Route('jadwal.index') }}"><i class="fa fa-graduation-cap"></i> Jadwal Kuliah</a></li>
                   @if(strcasecmp(Auth::user()->role,'admin')==0)
                   <li><a><i class="fa fa-cog"></i> Pengelolaan <span class="fa fa-chevron-down"></span></a>

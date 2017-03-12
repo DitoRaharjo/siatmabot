@@ -50,7 +50,7 @@
               {{ csrf_field() }}
               <h1>Create Account</h1>
               <div>
-                <input name="telegram_username" type="text" class="form-control" placeholder="Telegram Username, ex : vincentiusdito, Without @ " required="" />
+                <input name="telegram_username" type="text" class="form-control" placeholder="Telegram Username, ex : vincentiusdito, Without @ "/>
               </div>
               <div>
                 <input name="fullname" type="text" class="form-control" placeholder="Fullname" required="" />

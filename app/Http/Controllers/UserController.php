@@ -54,7 +54,7 @@ class UserController extends Controller
 
     public function doRegister(Request $request) {
       $this->validate($request, [
-        'telegram_username' => 'required',
+        // 'telegram_username' => 'required',
         'fullname' => 'required',
         'npm' => 'required',
         'prodi_id' => 'required',
@@ -63,6 +63,10 @@ class UserController extends Controller
       ]);
 
       $user_data = $request->except('_token');
+
+      if(!isset($request['telegram_username']) ) {
+        $user_data['telegram_username'] = "";
+      }
 
       if($this->checkEmailDuplicate($user_data['email']) == true ) {
         $fakultasId = Prodi::find($user_data['prodi_id'])->fakultas->id;
