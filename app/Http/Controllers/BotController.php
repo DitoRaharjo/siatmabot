@@ -65,7 +65,7 @@ class BotController extends Controller
             $text = "Under maintenance, please be patient";
           } else if(strcasecmp($textResponse, "chat id dong")==0) {
             $text = "Chat ID : ".$chatId;
-          } else if(strcasecmp($textReceived, "makul")==0) {
+          } else if(strcasecmp($textResponse, "makul")==0) {
             $text = $this->getJadwalKuliah($chatId);
           } else {
             $text = "Perintah tidak ditemukan";

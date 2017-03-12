@@ -19,6 +19,7 @@ use App\SesiProdi;
 use App\Jadwal;
 use App\User;
 use App\ChatLogLine;
+use App\ChatLog;
 
 class SesiProdiController extends Controller
 {
