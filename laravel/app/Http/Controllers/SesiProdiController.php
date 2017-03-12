@@ -23,6 +23,23 @@ use App\ChatLogLine;
 class SesiProdiController extends Controller
 {
     public function index() {
+      // $userId = "Ud6c98299e8a444e219b9479efe772f52";
+      // $check = ChatLogLine::select('id')->where('chat_id', $userId)->get();
+      // $chatLog = ChatLogLine::find($check);
+      //
+      // $semuaJadwal = $chatLog->user->jadwal;
+      //
+      // for ($i = 0 ; $i<$semuaJadwal->count(); $i++) {
+      //   for($j = 0 ; $j<$semuaJadwal->count(); $j++) {
+      //     if($semuaJadwal[$i]->sesi_prodi_id < $semuaJadwal[$j]->sesi_prodi_id) {
+      //       $temp = $semuaJadwal[$i];
+      //       $semuaJadwal[$i] = $semuaJadwal[$j];
+      //       $semuaJadwal[$j] = $temp;
+      //     }
+      //   }
+      // }
+      //
+      // echo $semuaJadwal;
       $semuaSesiProdi = SesiProdi::all();
 
       return view('front.sesiprodi.index', compact('semuaSesiProdi'));

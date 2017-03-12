@@ -252,6 +252,16 @@ class LineBotController extends Controller
 
       $semuaJadwal = $chatLog->user->jadwal;
 
+      for ($i = 0 ; $i<$semuaJadwal->count(); $i++) {
+        for($j = 0 ; $j<$semuaJadwal->count(); $j++) {
+          if($semuaJadwal[$i]->sesi_prodi_id < $semuaJadwal[$j]->sesi_prodi_id) {
+            $temp = $semuaJadwal[$i];
+            $semuaJadwal[$i] = $semuaJadwal[$j];
+            $semuaJadwal[$j] = $temp;
+          }
+        }
+      }
+
       if($semuaJadwal->count() > 0) {
         $senin = "KOSONG" . PHP_EOL;
         $selasa = "KOSONG" . PHP_EOL;
