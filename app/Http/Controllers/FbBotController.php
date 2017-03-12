@@ -44,17 +44,24 @@ class FbBotController extends Controller
       $userId = $responses_convert->entry[0]->messaging[0]->sender->id;
       $textReceived = $responses_convert->entry[0]->messaging[0]->message->text;
       $registerUrl = "UNDER MAINTENANCE";
+      $checkMakulResult = $this->checkMakul($userId, $textReceived);
 
       $this->getUser($userId);
 
       if($this->checkLogin($userId) == true) {
-        if(strcasecmp($textReceived, "hai")==0) {
-          $textSend = "Halo juga :D";
-        } else if(strcasecmp($textReceived, "salam kenal")==0) {
-          $user_data = $this->getUserProfile($userId);
-          $textSend = "Salam kenal juga, ".$user_data->first_name." ".$user_data->last_name;
+        if($checkMakulResult != false) {
+          $textSend = $checkMakulResult;
         } else {
-          $textSend = "Maaf perintah tidak ditemukan";
+          if(strcasecmp($textReceived, "hai")==0) {
+            $textSend = "Halo juga :D";
+          } else if(strcasecmp($textReceived, "salam kenal")==0) {
+            $user_data = $this->getUserProfile($userId);
+            $textSend = "Salam kenal juga, ".$user_data->first_name." ".$user_data->last_name;
+          } else if(strcasecmp($textReceived, "makul")==0) {
+            $textSend = $this->getJadwalKuliah($userId);
+          } else {
+            $textSend = "Maaf perintah tidak ditemukan";
+          }
         }
         $this->setSendCondition($userId, $textSend);
       } else {
@@ -94,6 +101,139 @@ class FbBotController extends Controller
       // ]);
 
       return response()->json("OK");
+    }
+
+    public function checkMakul($userId, $textReceived) {
+      $check = ChatLogFb::select('id')->where('chat_id', $userId)->get();
+      $chatLog = ChatLogFb::find($check);
+
+      $semuaJadwal = $chatLog->user->jadwal;
+
+      $total = "";
+
+      foreach ($semuaJadwal as $jadwal) {
+        if(strcasecmp($jadwal->keyword, $textReceived)==0 && $jadwal->sesi_prodi_id_selesai == 0) {
+          $makul = $jadwal->makul;
+          $kelas = $jadwal->kelas;
+          $ruangan = $jadwal->ruangan;
+          $sesiMulai = $jadwal->sesi->sesi->sesi;
+
+          $header = "Mata Kuliah : " . $makul ." (". $kelas . ")";
+          $middle = "Ruangan : " . $ruangan;
+          $bottom = "Sesi : " . $sesiMulai;
+          $summary = $header . PHP_EOL . $middle . PHP_EOL . $bottom . PHP_EOL . PHP_EOL;
+
+          $hari = $jadwal->sesi->sesi->hari;
+          $text = "--===".$hari."===--". PHP_EOL . $summary;
+          return $text;
+        } else if(strcasecmp($jadwal->keyword, $textReceived)==0 && $jadwal->sesi_prodi_id_selesai != 0) {
+          $hari = $jadwal->sesi->sesi->hari;
+          $sesiSelesai = $jadwal->sesiSelesai->sesi->sesi;
+
+          $makul = $jadwal->makul;
+          $kelas = $jadwal->kelas;
+          $ruangan = $jadwal->ruangan;
+          $sesiMulai = $jadwal->sesi->sesi->sesi;
+
+          $header = "Mata Kuliah : " . $makul ." (". $kelas . ")";
+          $middle = "Ruangan : " . $ruangan;
+          $bottom = "Sesi : " . $sesiMulai . " - " . $sesiSelesai;
+          $summary = $header . PHP_EOL . $middle . PHP_EOL . $bottom . PHP_EOL . PHP_EOL;
+          $text = "--===".$hari."===--". PHP_EOL . $summary;
+          return $text;
+        }
+      }
+      return false;
+    }
+
+    public function getJadwalKuliah($userId) {
+      $check = ChatLogFb::select('id')->where('chat_id', $userId)->get();
+      $chatLog = ChatLogFb::find($check);
+
+      $semuaJadwal = $chatLog->user->jadwal;
+
+      for ($i = 0 ; $i<$semuaJadwal->count(); $i++) {
+        for($j = 0 ; $j<$semuaJadwal->count(); $j++) {
+          if($semuaJadwal[$i]->sesi_prodi_id < $semuaJadwal[$j]->sesi_prodi_id) {
+            $temp = $semuaJadwal[$i];
+            $semuaJadwal[$i] = $semuaJadwal[$j];
+            $semuaJadwal[$j] = $temp;
+          }
+        }
+      }
+
+      if($semuaJadwal->count() > 0) {
+        $senin = "";
+        $selasa = "";
+        $rabu = "";
+        $kamis = "";
+        $jumat = "";
+        $sabtu = "";
+
+        foreach ($semuaJadwal as $jadwal) {
+          $makul = $jadwal->makul;
+          $kelas = $jadwal->kelas;
+          $ruangan = $jadwal->ruangan;
+          $sesiMulai = $jadwal->sesi->sesi->sesi;
+          $sesiSelesai = "";
+          // if($jadwal->sesi_prodi_id_selesai != 0) {
+          //   $sesiSelesai = $jadwal->sesiSelesai->sesi->sesi;
+          //
+          //   $header = "Mata Kuliah : " . $makul ." (". $kelas . ")";
+          //   $middle = "Ruangan : " . $ruangan;
+          //   $bottom = "Sesi : " . $sesiMulai;
+          // } else {
+          //   $header = "Mata Kuliah : " . $makul ." (". $kelas . ")";
+          //   $middle = "Ruangan : " . $ruangan;
+          //   $bottom = "Sesi : " . $sesiMulai;
+          // }
+          $header = "Mata Kuliah : " . $makul ." (". $kelas . ")";
+          $middle = "Ruangan : " . $ruangan;
+          $bottom = "Sesi : " . $sesiMulai;
+
+          $summary = $header . PHP_EOL . $middle . PHP_EOL . $bottom . PHP_EOL . PHP_EOL;
+
+          if(strcasecmp($jadwal->sesi->sesi->hari, "Senin")==0) {
+            $senin = $senin . $summary;
+          } else if(strcasecmp($jadwal->sesi->sesi->hari, "Selasa")==0) {
+            $selasa = $selasa . $summary;
+          } else if(strcasecmp($jadwal->sesi->sesi->hari, "Rabu")==0) {
+            $rabu = $rabu . $summary;
+          } else if(strcasecmp($jadwal->sesi->sesi->hari, "Kamis")==0) {
+            $kamis = $kamis . $summary;
+          } else if(strcasecmp($jadwal->sesi->sesi->hari, "Jumat")==0) {
+            $jumat = $jumat . $summary;
+          } else if(strcasecmp($jadwal->sesi->sesi->hari, "Sabtu")==0) {
+            $sabtu = $sabtu . $summary;
+          }
+        }
+
+        if($senin == "") {
+          $senin = "KOSONG" . PHP_EOL . PHP_EOL;
+        }
+        if($selasa == "") {
+          $selasa = "KOSONG" . PHP_EOL . PHP_EOL;
+        }
+        if($rabu == "") {
+          $rabu = "KOSONG" . PHP_EOL . PHP_EOL;
+        }
+        if($kamis == "") {
+          $kamis = "KOSONG" . PHP_EOL . PHP_EOL;
+        }
+        if($jumat == "") {
+          $jumat = "KOSONG" . PHP_EOL . PHP_EOL;
+        }
+        if($sabtu == "") {
+          $sabtu = "KOSONG" . PHP_EOL . PHP_EOL;
+        }
+
+        $text = "--===Senin===--" . PHP_EOL . $senin . "--===Selasa===--" . PHP_EOL . $selasa . "--===Rabu===--" . PHP_EOL . $rabu . "--===Kamis===--" . PHP_EOL . $kamis . "--===Jumat===--" . PHP_EOL . $jumat;
+
+        return $text;
+      } else {
+        $text = "Maaf anda belum memasukkan data jadwal kuliah.";
+        return $text;
+      }
     }
 
     public function getUser($userId) {
