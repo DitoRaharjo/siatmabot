@@ -282,17 +282,21 @@ class LineBotController extends Controller
           $ruangan = $jadwal->ruangan;
           $sesiMulai = $jadwal->sesi->sesi->sesi;
           $sesiSelesai = "";
-          if($jadwal->sesi_prodi_id_selesai != 0) {
-            $sesiSelesai = $jadwal->sesiSelesai->sesi->sesi;
+          // if($jadwal->sesi_prodi_id_selesai != 0) {
+          //   $sesiSelesai = $jadwal->sesiSelesai->sesi->sesi;
+          //
+          //   $header = "Mata Kuliah : " . $makul ." (". $kelas . ")";
+          //   $middle = "Ruangan : " . $ruangan;
+          //   $bottom = "Sesi : " . $sesiMulai;
+          // } else {
+          //   $header = "Mata Kuliah : " . $makul ." (". $kelas . ")";
+          //   $middle = "Ruangan : " . $ruangan;
+          //   $bottom = "Sesi : " . $sesiMulai;
+          // }
+          $header = "Mata Kuliah : " . $makul ." (". $kelas . ")";
+          $middle = "Ruangan : " . $ruangan;
+          $bottom = "Sesi : " . $sesiMulai;
 
-            $header = "Mata Kuliah : " . $makul ." (". $kelas . ")";
-            $middle = "Ruangan : " . $ruangan;
-            $bottom = "Sesi : " . $sesiMulai . " - " . $sesiSelesai;
-          } else {
-            $header = "Mata Kuliah : " . $makul ." (". $kelas . ")";
-            $middle = "Ruangan : " . $ruangan;
-            $bottom = "Sesi : " . $sesiMulai;
-          }
           $summary = $header . PHP_EOL . $middle . PHP_EOL . $bottom . PHP_EOL . PHP_EOL;
 
           if(strcasecmp($jadwal->sesi->sesi->hari, "Senin")==0) {
