@@ -110,16 +110,16 @@ class LineBotController extends Controller
                   } else {
                     $textSend = "Maaf email atau password anda salah". PHP_EOL .
                     "atau anda belum terdaftar". PHP_EOL .
-                    "jika anda belum mendaftar, silahkan daftarkan diri anda di : ".$registerUrl;
+                    "jika anda belum mendaftar, silahkan daftarkan diri anda di : ". PHP_EOL .$registerUrl;
                   }
                 } else {
                   $textSend = "Maaf email atau password anda salah". PHP_EOL .
                   "atau anda belum terdaftar". PHP_EOL .
-                  "jika anda belum mendaftar, silahkan daftarkan diri anda di : ".$registerUrl;
+                  "jika anda belum mendaftar, silahkan daftarkan diri anda di : ". PHP_EOL .$registerUrl;
                 }
               } else {
                 $textSend = "Maaf anda perlu login terlebih dahulu".PHP_EOL.
-                "silahkan kirimkan chat email dan password yang sudah anda daftarkan di ".$registerUrl. PHP_EOL .
+                "silahkan kirimkan chat email dan password yang sudah anda daftarkan di ". PHP_EOL .$registerUrl. PHP_EOL .
                 "dengan format : email-password". PHP_EOL .
                 "contoh: asdf@gmail.com-1234 ";
               }
