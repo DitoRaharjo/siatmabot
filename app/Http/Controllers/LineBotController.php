@@ -65,10 +65,8 @@ class LineBotController extends Controller
             "(keyword) : Untuk menampilkan informasi jadwal kuliah sesuai dengan keyword yang sudah ditentukan" . PHP_EOL .
             PHP_EOL . "Jika anda belum pernah melakukan login sebelumnya, maka anda perlu login terlebih dahulu di platform chat dengan mengetikkan email dan password anda dengan format :". PHP_EOL ."email-password". PHP_EOL ."contoh : asd@gmail.com-asdfghj";
 
-            $checkMakulResult = $this->checkMakul($userId, $textReceived);
-
             if($this->checkLogin($userId) == true) {
-
+              $checkMakulResult = $this->checkMakul($userId, $textReceived);
               if($checkMakulResult != false) {
                 $textSend = $checkMakulResult;
               } else {
