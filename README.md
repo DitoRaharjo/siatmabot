@@ -2,7 +2,7 @@
 
 ##About SIATMA Bot
 
-SIATMA Bot is a web application for Universitas Atma Jaya Yogyakarta's students classes reminder that integrated with <a href="https://core.telegram.org/bots">Telegram Bot API</a>, <a href="https://developers.line.me/messaging-api/overview">LINE Messaging API</a>, and <a href="https://developers.facebook.com/products/messenger/">Facebook Messenger API</a> make with <a href="https://laravel.com">Laravel</a>. SIATMA Bot attempts to take the complicacy for students to checking their college routine with the help chatbot that using 3 major instant messenger usually used by students.
+SIATMA Bot is a web application for Universitas Atma Jaya Yogyakarta's students classes reminder that integrated with <a href="https://core.telegram.org/bots">Telegram Bot API</a>, <a href="https://developers.line.me/messaging-api/overview">LINE Messaging API</a>, and <a href="https://developers.facebook.com/products/messenger/">Facebook Messenger API</a> make with <a href="https://laravel.com">Laravel 5.4</a>. SIATMA Bot attempts to take the complicacy for students to checking their college routine with the help chatbot that using 3 major instant messenger usually used by students.
 
 #Sample web
 
@@ -30,10 +30,11 @@ Open your database then import siatma_bot.sql, that will be automatically make t
 
 And the last thing, you need to change the .env.example file to .env file and fill it with your configuration. How to get the Telegram, Facebook, and LINE API key? take a look at some tutorial in Youtube.
 
-##Contact
+##Having a problem to understand the project?
 
 please feel free to make an issue if you can't understand how to run this project or can't understand some code in the project, I'll try my best to reply it ASAP.
 
 ##N.B.
 
-This web application is made for my college project and I lived in Indonesia, so please understand some of the codes will be in Bahasa, but I will try to keep it minimize. By the way, sorry for my English.
+- Laravel I used for creating this project is Laravel 5.4
+- This web application is made for my college project and I lived in Indonesia, so please understand some of the codes will be in Bahasa, but I will try to keep it minimize. By the way, sorry for my English.
