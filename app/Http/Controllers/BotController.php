@@ -39,10 +39,22 @@ class BotController extends Controller
       }
       $chatName = $first_name . " " . $last_name;
 
-      if($this->checkAll($responses) == false) {
+      $helpCommand = "Halo, berikut perintah-perintah yang dapat digunakan di SIATMA Bot : " . PHP_EOL .
+      "makul : Untuk menampilkan semua jadwal kuliah" . PHP_EOL .
+      "(keyword) : Untuk menampilkan informasi jadwal kuliah sesuai dengan keyword yang sudah ditentukan";
+
+      if(strcasecmp($textResponse, "help")==0) {
+        $text = $helpCommand;
+
+        Telegram::sendMessage([
+          'chat_id' => $chatId,
+          'text' => $text,
+        ]);
+      } else if($this->checkAll($responses) == false) {
         $linkRegister = "http://www.ditoraharjo.co/siatmabot/register";
         $text = "Maaf sepertinya anda belum terdaftar, silahkan daftarkan diri anda pada link dibawah " . PHP_EOL .
-          "<a href='".$linkRegister."'>LINK</a>";
+          "<a href='".$linkRegister."'>LINK</a>" . PHP_EOL .
+          "Jika anda kesulitan, silahkan gunakan perintah 'help' ";
         Telegram::sendMessage([
           'chat_id' => $chatId,
           'text' => $text,
@@ -50,7 +62,7 @@ class BotController extends Controller
         ]);
         // Apakah anda sudah mendaftar? Kalau belum silahkan daftar
         // atau apakah anda mengganti username? silahkan update username anda di aplikasi
-      } else {
+      } else if($this->checkAll($responses) == true) {
         $checkMakulResult = $this->checkMakul($chatId, $textResponse);
         if($checkMakulResult != false) {
           $text = $checkMakulResult;
@@ -58,11 +70,6 @@ class BotController extends Controller
           if(strcasecmp($textResponse, "/start")==0) {
             $text = 'Halo salam kenal ' . $chatName . ', saya SIATMA BOT';
           } else if(strcasecmp($textResponse, "help")==0) {
-            $helpCommand = "Halo, berikut perintah-perintah yang dapat digunakan di SIATMA Bot : " . PHP_EOL .
-            "makul : Untuk menampilkan semua jadwal kuliah" . PHP_EOL .
-            "(keyword) : Untuk menampilkan informasi jadwal kuliah sesuai dengan keyword yang sudah ditentukan" . PHP_EOL .
-            PHP_EOL . "Jika anda belum pernah melakukan login sebelumnya, maka anda perlu login terlebih dahulu di platform chat dengan mengetikkan email dan password anda dengan format :". PHP_EOL ."email-password". PHP_EOL ."contoh : asd@gmail.com-asdfghj";
-
             $text = $helpCommand;
           } else if(strcasecmp($textResponse, "hai")==0) {
             $text = "Hai juga :D";
@@ -78,6 +85,13 @@ class BotController extends Controller
             $text = "Perintah tidak ditemukan";
           }
         }
+
+        Telegram::sendMessage([
+          'chat_id' => $chatId,
+          'text' => $text,
+        ]);
+      } else {
+        $text = "Gagal menjalankan perintah";
 
         Telegram::sendMessage([
           'chat_id' => $chatId,

@@ -97,6 +97,8 @@ class LineBotController extends Controller
                 }
               }
 
+            } else if(strcasecmp($textReceived, "help")==0) {
+              $textSend = $helpCommand;
             } else {
               if (($check = strpos($textReceived, "-")) !== FALSE) {
                 $email = strtok($textReceived, '-');
@@ -108,18 +110,21 @@ class LineBotController extends Controller
                   } else {
                     $textSend = "Maaf email atau password anda salah". PHP_EOL .
                     "atau anda belum terdaftar". PHP_EOL .
-                    "jika anda belum mendaftar, silahkan daftarkan diri anda di : ". PHP_EOL .$registerUrl;
+                    "jika anda belum mendaftar, silahkan daftarkan diri anda di : ". PHP_EOL .$registerUrl . PHP_EOL .
+                    "Jika anda kesulitan, silahkan gunakan perintah 'help' ";
                   }
                 } else {
                   $textSend = "Maaf email atau password anda salah". PHP_EOL .
                   "atau anda belum terdaftar". PHP_EOL .
-                  "jika anda belum mendaftar, silahkan daftarkan diri anda di : ". PHP_EOL .$registerUrl;
+                  "jika anda belum mendaftar, silahkan daftarkan diri anda di : ". PHP_EOL .$registerUrl . PHP_EOL .
+                  "Jika anda kesulitan, silahkan gunakan perintah 'help' ";
                 }
               } else {
                 $textSend = "Maaf anda perlu login terlebih dahulu".PHP_EOL.
                 "silahkan kirimkan chat email dan password yang sudah anda daftarkan di ". PHP_EOL .$registerUrl. PHP_EOL .
                 "dengan format : email-password". PHP_EOL .
-                "contoh: asdf@gmail.com-1234 ";
+                "contoh: asdf@gmail.com-1234 " . PHP_EOL .
+                "Jika anda kesulitan, silahkan gunakan perintah 'help' ";
               }
             }
 
