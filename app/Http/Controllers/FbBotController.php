@@ -71,29 +71,33 @@ class FbBotController extends Controller
         }
         $this->setSendCondition($userId, $textSend);
       } else {
-        if (($check = strpos($textReceived, "-")) !== FALSE) {
-          $email = strtok($textReceived, '-');
-          $password = substr($textReceived, strpos($textReceived, "-") +1);
-
-          if($this->checkEmail($email) == true) {
-            if($this->checkPassword($userId, $email, $password)== true ) {
-              $textSend = "Selamat anda berhasil login, sekarang anda sudah bisa menggunakan fitur kuliah SIATMA Bot";
-            } else {
-              $textSend = "Maaf email atau password anda salah". PHP_EOL .
-              "atau anda belum terdaftar". PHP_EOL .
-              "jika anda belum mendaftar, silahkan daftarkan diri anda di : ". PHP_EOL .$registerUrl;
-            }
-          } else {
-            $textSend = "Maaf email atau password anda salah". PHP_EOL .
-            "atau anda belum terdaftar". PHP_EOL .
-            "jika anda belum mendaftar, silahkan daftarkan diri anda di : ". PHP_EOL .$registerUrl;
-          }
-        } else {
-          $textSend = "Maaf anda perlu login terlebih dahulu".PHP_EOL.
-          "silahkan kirimkan chat email dan password yang sudah anda daftarkan di ". PHP_EOL .$registerUrl. PHP_EOL .
-          "dengan format : email-password". PHP_EOL .
-          "contoh: asdf@gmail.com-1234 ";
-        }
+        // if (($check = strpos($textReceived, "-")) !== FALSE) {
+        //   $email = strtok($textReceived, '-');
+        //   $password = substr($textReceived, strpos($textReceived, "-") +1);
+        //
+        //   if($this->checkEmail($email) == true) {
+        //     if($this->checkPassword($userId, $email, $password)== true ) {
+        //       $textSend = "Selamat anda berhasil login, sekarang anda sudah bisa menggunakan fitur kuliah SIATMA Bot";
+        //     } else {
+        //       $textSend = "Maaf email atau password anda salah". PHP_EOL .
+        //       "atau anda belum terdaftar". PHP_EOL .
+        //       "jika anda belum mendaftar, silahkan daftarkan diri anda di : ". PHP_EOL .$registerUrl;
+        //     }
+        //   } else {
+        //     $textSend = "Maaf email atau password anda salah". PHP_EOL .
+        //     "atau anda belum terdaftar". PHP_EOL .
+        //     "jika anda belum mendaftar, silahkan daftarkan diri anda di : ". PHP_EOL .$registerUrl;
+        //   }
+        // } else {
+          // $textSend = "Maaf anda perlu login terlebih dahulu".PHP_EOL.
+          // "silahkan kirimkan chat email dan password yang sudah anda daftarkan di ". PHP_EOL .$registerUrl. PHP_EOL .
+          // "dengan format : email-password". PHP_EOL .
+          // "contoh: asdf@gmail.com-1234 ";
+        // }
+        $textSend = "Maaf anda perlu login terlebih dahulu".PHP_EOL.
+        "silahkan kirimkan chat email dan password yang sudah anda daftarkan di ". PHP_EOL .$registerUrl. PHP_EOL .
+        "dengan format : email-password". PHP_EOL .
+        "contoh: asdf@gmail.com-1234 ";
         $this->setSendCondition($userId, $textSend);
       }
 

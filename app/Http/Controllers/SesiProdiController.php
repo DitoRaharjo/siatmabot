@@ -24,6 +24,41 @@ use App\ChatLog;
 class SesiProdiController extends Controller
 {
     public function index() {
+      // $registerUrl = "http://www.ditoraharjo.co/siatmabot/register";
+      // $textReceived = "Halo";
+      // $userId = 1334082683305106;
+      // $hasil = app('App\Http\Controllers\FbBotController')->checkLogin($userId);
+      //
+      // if($hasil == true) {
+      //   echo "sip";
+      // } else {
+      //   if (($check = strpos($textReceived, "-")) !== FALSE) {
+      //     $email = strtok($textReceived, '-');
+      //     $password = substr($textReceived, strpos($textReceived, "-") +1);
+      //
+      //     if(app('App\Http\Controllers\FbBotController')->checkEmail($email) == true) {
+      //       if(app('App\Http\Controllers\FbBotController')->checkPassword($userId, $email, $password)== true ) {
+      //         $textSend = "Selamat anda berhasil login, sekarang anda sudah bisa menggunakan fitur kuliah SIATMA Bot";
+      //       } else {
+      //         $textSend = "Maaf email atau password anda salah". PHP_EOL .
+      //         "atau anda belum terdaftar". PHP_EOL .
+      //         "jika anda belum mendaftar, silahkan daftarkan diri anda di : ". PHP_EOL .$registerUrl;
+      //       }
+      //     } else {
+      //       $textSend = "Maaf email atau password anda salah". PHP_EOL .
+      //       "atau anda belum terdaftar". PHP_EOL .
+      //       "jika anda belum mendaftar, silahkan daftarkan diri anda di : ". PHP_EOL .$registerUrl;
+      //     }
+      //   } else {
+      //     $textSend = "Maaf anda perlu login terlebih dahulu".PHP_EOL.
+      //     "silahkan kirimkan chat email dan password yang sudah anda daftarkan di ". PHP_EOL .$registerUrl. PHP_EOL .
+      //     "dengan format : email-password". PHP_EOL .
+      //     "contoh: asdf@gmail.com-1234 ";
+      //   }
+      //   echo $textSend;
+      // }
+      //
+
       $semuaSesiProdi = SesiProdi::all();
 
       return view('front.sesiprodi.index', compact('semuaSesiProdi'));
