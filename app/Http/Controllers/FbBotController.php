@@ -89,7 +89,7 @@ class FbBotController extends Controller
             } else if(strcasecmp($textReceived, "makul")==0) {
               $textSend = $this->getJadwalKuliah($userId);
             } else if(strcasecmp($textReceived, "logout")==0) {
-              $this->logout($userId);
+              $this->chatLogout($userId);
               $textSend = "Logout berhasil";
             } else {
               $textSend = "Maaf perintah tidak ditemukan";
@@ -163,7 +163,7 @@ class FbBotController extends Controller
       return response()->json("OK");
     }
 
-    public function logout($userId) {
+    public function chatLogout($userId) {
       $check = ChatLogFb::select('id')->where('chat_id', $userId)->get();
       $chatLog = ChatLogFb::find($check);
 
@@ -172,8 +172,8 @@ class FbBotController extends Controller
       DB::beginTransaction();
 
       try {
-        $chat_log->user_id = 0;
-        $chat_log->save();
+        $chatLog->user_id = 0;
+        $chatLog->save();
 
         $user->chat_log_fb_id = NULL;
         $user->save();
