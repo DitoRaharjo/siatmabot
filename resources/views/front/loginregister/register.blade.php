@@ -31,6 +31,8 @@
     <!-- Sweet Alert -->
     <link href="{{ asset('css/sweetalert/sweetalert2.min.css') }}" rel="stylesheet">
     <link href="{{ asset('css/sweetalert/sweetalert2.css') }}" rel="stylesheet">
+    <!-- Social Login Button -->
+    <link href="{{ asset('css/bootstrap-social/bootstrap-social.css') }}" rel="stylesheet">
 
 
   </head>
@@ -141,7 +143,10 @@
               </div>
 
             <button type="submit" class="btn btn-default submit" >Log in</button>
-            <a class="reset_pass" href="#">Lupa password?</a>
+            <a href="{{ route('fb.redirect') }}" class="btn btn-social btn-facebook">
+              <span class="fa fa-facebook"></span> Sign in with Facebook
+            </a>
+            <!-- <a class="reset_pass" href="#">Lupa password?</a> -->
             </form>
           </section>
         </div>

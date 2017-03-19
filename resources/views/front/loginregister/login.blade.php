@@ -32,18 +32,13 @@
     <link href="{{ asset('css/sweetalert/sweetalert2.min.css') }}" rel="stylesheet">
     <link href="{{ asset('css/sweetalert/sweetalert2.css') }}" rel="stylesheet">
 
+    <!-- Social Login Button -->
+    <link href="{{ asset('css/bootstrap-social/bootstrap-social.css') }}" rel="stylesheet">
+
 
   </head>
 
   <body class="login">
-    <div id="fb-root"></div>
-    <script>(function(d, s, id) {
-      var js, fjs = d.getElementsByTagName(s)[0];
-      if (d.getElementById(id)) return;
-      js = d.createElement(s); js.id = id;
-      js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.8&appId=1930259937253536";
-      fjs.parentNode.insertBefore(js, fjs);
-    }(document, 'script', 'facebook-jssdk'));</script>
 
     <div>
 
@@ -150,9 +145,13 @@
               </div>
 
             <button type="submit" class="btn btn-default submit" >Log in</button>
-            <a class="fb-login-button" data-size="large" href="{{ route('fb.redirect') }}"></a>
+            <a href="{{ route('fb.redirect') }}" class="btn btn-social btn-facebook">
+              <span class="fa fa-facebook"></span> Sign in with Facebook
+            </a>
             <!-- <a class="btn btn-default submit" href="{{ route('fb.redirect') }}">FB Login</a> -->
-            <a class="reset_pass" href="#">Lupa password?</a>
+            <!-- <div>
+              <a class="reset_pass" href="#">Lupa password?</a>
+            </div> -->
             </form>
           </section>
         </div>
