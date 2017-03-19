@@ -34,6 +34,10 @@ Route::get('login', 'UserController@login')->name('user.login');
 Route::post('auth/login', 'UserController@doLogin')->name('user.auth.login');
 Route::get('logout', 'UserController@doLogout')->name('user.logout');
 
+//Facebook - login
+Route::get('fb-redirect', 'SocialAuthController@redirect')->name('fb.redirect');
+Route::get('fb-callback', 'SocialAuthController@callback')->name('fb.callback');
+
 //Register
 Route::get('register', 'UserController@register')->name('user.register');
 Route::post('register', 'UserController@doRegister')->name('user.do.register');

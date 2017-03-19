@@ -35,4 +35,10 @@ return [
         'secret' => env('STRIPE_SECRET'),
     ],
 
+    'facebook' => [
+    'client_id' => '1930259937253536',
+    'client_secret' => '69628858f9e0433da4c1c77f7184437e',
+    'redirect' => 'http://ditoraharjo.co/siatmabot/fb-callback',
+    ],
+
 ];

@@ -141,6 +141,7 @@
               </div>
 
             <button type="submit" class="btn btn-default submit" >Log in</button>
+            <a class="btn btn-default submit" href="{{ route('fb.redirect') }}">FB Login</a>
             <a class="reset_pass" href="#">Lupa password?</a>
             </form>
           </section>
