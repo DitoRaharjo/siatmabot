@@ -19,9 +19,9 @@ class SocialAuthController extends Controller
   {
       $providerUser = \Socialite::driver('facebook')->user();
 
-      echo $providerUser->getId();
-      echo $providerUser->getNickname();
-      echo $providerUser->getName();
-      echo $providerUser->getEmail();
+      echo $providerUser->getId() . "</br>";
+      echo $providerUser->getNickname() . "</br>";
+      echo $providerUser->getName() . "</br>";
+      echo $providerUser->getEmail() . "</br>";
   }
 }
