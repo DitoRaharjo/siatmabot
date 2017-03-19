@@ -43,8 +43,8 @@ class SocialAuthController extends Controller
       $user_data['fullname'] = $fbName;
       $user_data['email'] = $fbEmail;
       $user_data['npm'] = "0";
-      $user_data['prodi_id'] = 6;
-      $user_data['password'] = "1234";
+      $user_data['prodi_id'] = 13;
+      $user_data['password'] = "123";
 
       if(!isset($request['telegram_username']) ) {
         $user_data['telegram_username'] = "";

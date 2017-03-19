@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Requests;
 use Carbon\Carbon;
 
+use Hash;
 use DB;
 
 use App\User;
@@ -16,22 +17,37 @@ use App\ChatLog;
 
 class UserController extends Controller
 {
-    public function dashboardAdmin() {
-      if (strcasecmp(Auth::user()->role,'admin')==0) {
-        return view('front.dashboard.admin');
+    public function checkLoginFb() {
+      $user = Auth::user();
+      $password = "123";
+      if(Hash::check($password, $user->password)) {
+        $emailUser = $user_data['email'];
+        return view('front.dashboard.updatePassFb', compact('emailUser'));
       } else {
-        alert()->error('Akun anda tidak memiliki hak untuk melihat halaman ini', 'Pelanggaran Akun!');
-        return redirect()->route('dashboard.mahasiswa');
+        return true;
+      }
+    }
+
+    public function dashboardAdmin() {
+      if($this->checkLoginFb() == true) {
+        if (strcasecmp(Auth::user()->role,'admin')==0) {
+          return view('front.dashboard.admin');
+        } else {
+          alert()->error('Akun anda tidak memiliki hak untuk melihat halaman ini', 'Pelanggaran Akun!');
+          return redirect()->route('dashboard.mahasiswa');
+        }
       }
     }
 
     public function dashboardMahasiswa() {
-      if (strcasecmp(Auth::user()->role,'admin')==0 || strcasecmp(Auth::user()->role,'mahasiswa')==0) {
-        return redirect()->route('jadwal.index');
-        // return view('front.dashboard.mahasiswa');
-      } else {
-        alert()->error('Akun anda tidak memiliki hak untuk melihat halaman ini', 'Pelanggaran Akun!');
-        return redirect()->route('user.login');
+      if($this->checkLoginFb() == true) {
+        if (strcasecmp(Auth::user()->role,'admin')==0 || strcasecmp(Auth::user()->role,'mahasiswa')==0) {
+          return redirect()->route('jadwal.index');
+          // return view('front.dashboard.mahasiswa');
+        } else {
+          alert()->error('Akun anda tidak memiliki hak untuk melihat halaman ini', 'Pelanggaran Akun!');
+          return redirect()->route('user.login');
+        }
       }
     }
 
@@ -251,10 +267,12 @@ class UserController extends Controller
         throw $e;
       }
 
-      $this->doLogin($request);
-
       alert()->success('Password berhasil diperbaharui', 'Berhasil!');
-      return redirect()->route('user.login');
+      if(strcasecmp($user->role, "admin")==0) {
+        return redirect()->route('dashboard.admin');
+      } else {
+        return redirect()->route('dashboard.mahasiswa');
+      }
     }
 
     public function doLogout()

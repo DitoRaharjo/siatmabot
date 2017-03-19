@@ -34,6 +34,9 @@ Route::get('login', 'UserController@login')->name('user.login');
 Route::post('auth/login', 'UserController@doLogin')->name('user.auth.login');
 Route::get('logout', 'UserController@doLogout')->name('user.logout');
 
+//Ganti Password - Lupa Password
+Route::post('GantiPass-do', 'UserController@gantiPassDo')->name('GantiPass.do');
+
 //Facebook - login
 Route::get('fb-redirect', 'SocialAuthController@redirect')->name('fb.redirect');
 Route::get('fb-callback', 'SocialAuthController@callback')->name('fb.callback');
