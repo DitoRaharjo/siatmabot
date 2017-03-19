@@ -88,6 +88,9 @@ class FbBotController extends Controller
               $textSend = "Salam kenal juga, ".$user_data->first_name." ".$user_data->last_name;
             } else if(strcasecmp($textReceived, "makul")==0) {
               $textSend = $this->getJadwalKuliah($userId);
+            } else if(strcasecmp($textReceived, "logout")==0) {
+              $this->logout($userId);
+              $textSend = "Logout berhasil";
             } else {
               $textSend = "Maaf perintah tidak ditemukan";
             }
@@ -158,6 +161,29 @@ class FbBotController extends Controller
       // ]);
 
       return response()->json("OK");
+    }
+
+    public function logout($userId) {
+      $check = ChatLogFb::select('id')->where('chat_id', $userId)->get();
+      $chatLog = ChatLogFb::find($check);
+
+      $user = $chatLog->user;
+
+      DB::beginTransaction();
+
+      try {
+        $chat_log->user_id = NULL;
+        $chat_log->save();
+
+        $user->chat_log_fb_id = NULL;
+        $user->save();
+
+        DB::commit();
+      } catch (\Exception $e) {
+        DB::rollback();
+
+        throw $e;
+      }
     }
 
     public function checkMakul($userId, $textReceived) {
