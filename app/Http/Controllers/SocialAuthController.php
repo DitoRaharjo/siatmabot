@@ -89,10 +89,14 @@ class SocialAuthController extends Controller
           throw $e;
         }
       } else {
-        $userCheck = User::select('id')->where('email', $email)->get();
+        $userCheck = User::select('id')->where('email', $user_data['email'])->get();
         $user = User::find($userCheck);
         Auth::login($user);
-        return redirect()->route('dashboard.mahasiswa');
+        if(strcasecmp($user->role, "admin")==0) {
+          return redirect()->route('dashboard.admin');
+        } else {
+          return redirect()->route('dashboard.mahasiswa');
+        }
       }
   }
 
