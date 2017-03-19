@@ -172,7 +172,7 @@ class FbBotController extends Controller
       DB::beginTransaction();
 
       try {
-        $chat_log->user_id = NULL;
+        $chat_log->user_id = 0;
         $chat_log->save();
 
         $user->chat_log_fb_id = NULL;
