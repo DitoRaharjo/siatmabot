@@ -93,13 +93,30 @@ class SocialAuthController extends Controller
       } else {
         $userCheck = User::select('id')->where('email', $user_data['email'])->get();
         $user = User::find($userCheck);
+
         Auth::login($user);
-        if(strcasecmp($user->role, "admin")==0) {
-          return redirect()->route('dashboard.admin');
+
+        if($this->checkLoginFb() == true) {
+          if(strcasecmp($user->role, "admin")==0) {
+            return redirect()->route('dashboard.admin');
+          } else {
+            return redirect()->route('dashboard.mahasiswa');
+          }
         } else {
-          return redirect()->route('dashboard.mahasiswa');
+          $emailUser = $user->email;
+          return view('front.dashboard.updatePassFb', compact('emailUser'));
         }
       }
+  }
+
+  public function checkLoginFb() {
+    $user = Auth::user();
+    $password = "123";
+    if(Hash::check($password, $user->password)) {
+      return false;
+    } else {
+      return true;
+    }
   }
 
   public function checkEmailDuplicate($email) {

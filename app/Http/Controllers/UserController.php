@@ -17,30 +17,27 @@ use App\ChatLog;
 
 class UserController extends Controller
 {
-    public function checkLoginFb() {
-      $user = Auth::user();
-      $password = "123";
-      if(Hash::check($password, $user->password)) {
-        $emailUser = $user->email;
-        return view('front.dashboard.updatePassFb', compact('emailUser'));
-      } else {
-        return true;
-      }
-    }
+    // public function checkLoginFb() {
+    //   $user = Auth::user();
+    //   $password = "123";
+    //   if(Hash::check($password, $user->password)) {
+    //     $emailUser = $user->email;
+    //     return view('front.dashboard.updatePassFb', compact('emailUser'));
+    //   } else {
+    //     return true;
+    //   }
+    // }
 
     public function dashboardAdmin() {
-      if($this->checkLoginFb() == true) {
         if (strcasecmp(Auth::user()->role,'admin')==0) {
           return view('front.dashboard.admin');
         } else {
           alert()->error('Akun anda tidak memiliki hak untuk melihat halaman ini', 'Pelanggaran Akun!');
           return redirect()->route('dashboard.mahasiswa');
         }
-      }
     }
 
     public function dashboardMahasiswa() {
-      if($this->checkLoginFb() == true) {
         if (strcasecmp(Auth::user()->role,'admin')==0 || strcasecmp(Auth::user()->role,'mahasiswa')==0) {
           return redirect()->route('jadwal.index');
           // return view('front.dashboard.mahasiswa');
@@ -48,7 +45,6 @@ class UserController extends Controller
           alert()->error('Akun anda tidak memiliki hak untuk melihat halaman ini', 'Pelanggaran Akun!');
           return redirect()->route('user.login');
         }
-      }
     }
 
     public function register() {
