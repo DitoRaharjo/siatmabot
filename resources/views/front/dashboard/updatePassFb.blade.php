@@ -21,6 +21,11 @@
     <!-- Animate.css -->
     <link href="{{ asset('Template/AdminPage/vendors/animate.css/animate.min.css') }}" rel="stylesheet">
 
+    <!-- jQuery -->
+    <script src="{{ asset('Template/AdminPage/vendors/jquery/dist/jquery.min.js') }}"></script>
+    <!-- Select2 -->
+    <link href="{{ asset('Template/AdminPage/vendors/select2/dist/css/select2.min.css') }}" rel="stylesheet">
+
     <!-- Custom Theme Style -->
     <link href="{{ asset('Template/AdminPage/build/css/custom.min.css') }}" rel="stylesheet">
     <!-- Sweet Alert -->
@@ -32,18 +37,37 @@
 
   <body class="login">
     <div>
-      <!--
-      <a class="hiddenanchor" id="signup"></a>
-      <a class="hiddenanchor" id="signin"></a>
-    -->
-
       <div class="login_wrapper">
         <div class="animate form login_form">
           <section class="login_content">
 
-            <form action="{{ route('GantiPass.do') }}" method="post">
+            <form action="{{ route('fb.login') }}" method="post">
               {{ csrf_field() }}
-              <h1>Masukkan Password</h1>
+              <h1>Tambahan Data Penting</h1>
+              <div>
+                <input name="telegram_username" type="text" class="form-control" placeholder="Telegram Username, ex : vincentiusdito, Without @ "/>
+              </div>
+              <div>
+                <input name="npm" type="number" class="form-control" placeholder="NPM" required="" />
+              </div>
+              <div>
+                </br>
+              </div>
+              <div>
+                <select class="select2_group form-control" required="" name="prodi_id">
+                  @foreach($semuaFakultas as $fakultas)
+                    @if($fakultas->deleted_at == NULL)
+                    <optgroup label="{{ $fakultas->nama }}">
+                              @foreach($semuaProdi as $prodi)
+                                @if($prodi->fakultas_id == $fakultas->id)
+                                <option value="{{ $prodi->id }}">{{ $prodi->nama }}</option>
+                                @endif
+                              @endforeach
+                    </optgroup>
+                    @endif
+                  @endforeach
+                </select>
+              </div>
               <div>
                 <input type="hidden" name="email" class="form-control" placeholder="Email" required="" value="{{ $emailUser }}"/>
                 <input type="email" name="emailAbalAbal" class="form-control" placeholder="Email" required="" disabled="" value="{{ $emailUser }}"/>
@@ -55,73 +79,29 @@
                 <input type="password" id="password_confirmation" name="password_confirmation" class="form-control" placeholder="Konfirmasi Password Baru" required="" />
               </div>
               <div class="clearfix"></div>
-
-              <!--
-              <div class="separator">
-                <p class="change_link">New to site?
-                  <a href="#signup" class="to_register"> Create Account </a>
-                </p>
-
-                <div class="clearfix"></div>
-                <br />
-
-                <div>
-                  <h1><i class="fa fa-paw"></i> Gentelella Alela!</h1>
-                  <p>©2016 All Rights Reserved. Gentelella Alela! is a Bootstrap 3 template. Privacy and Terms</p>
-                </div>
-              </div>
-            -->
             <button type="submit" class="btn btn-default submit" >Submit</button>
             </form>
           </section>
         </div>
-
-        <!--
-        <div id="register" class="animate form registration_form">
-          <section class="login_content">
-            <form>
-              <h1>Create Account</h1>
-              <div>
-                <input type="text" class="form-control" placeholder="Username" required="" />
-              </div>
-              <div>
-                <input type="email" class="form-control" placeholder="Email" required="" />
-              </div>
-              <div>
-                <input type="password" class="form-control" placeholder="Password" required="" />
-              </div>
-              <div>
-                <a class="btn btn-default submit" href="index.html">Submit</a>
-              </div>
-
-              <div class="clearfix"></div>
-
-
-              <div class="separator">
-                <p class="change_link">Already a member ?
-                  <a href="#signin" class="to_register"> Log in </a>
-                </p>
-
-                <div class="clearfix"></div>
-                <br />
-
-                <div>
-                  <h1><i class="fa fa-paw"></i> Gentelella Alela!</h1>
-                  <p>©2016 All Rights Reserved. Gentelella Alela! is a Bootstrap 3 template. Privacy and Terms</p>
-                </div>
-              </div>
-
-            </form>
-          </section>
-        </div>
-      -->
       </div>
     </div>
 
     <!--<script src="{{ asset('js/loginadmin/index.js') }}"></script>-->
+    <!-- jQuery Tags Input -->
+    <script src="{{ asset('Template/AdminPage/vendors/jquery.tagsinput/src/jquery.tagsinput.js') }}"></script>
+    <!-- Select2 -->
+    <script src="{{ asset('Template/AdminPage/vendors/select2/dist/js/select2.full.min.js') }}"></script>
     <!-- Sweet Alert -->
     <script src="{{ asset('js/sweetalert/sweetalert2.js') }}"></script>
     <!-- Include this after the sweet alert js file -->
+
+    <!-- Select2 -->
+    <script>
+      $(document).ready(function() {
+        $(".select2_group").select2({});
+      });
+    </script>
+    <!-- /Select2 -->
 
     <!-- Untuk Pencocokan Konfirmasi Password -->
     <script>

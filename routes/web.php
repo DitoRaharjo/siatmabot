@@ -40,6 +40,15 @@ Route::post('GantiPass-do', 'UserController@gantiPassDo')->name('GantiPass.do');
 //Facebook - login
 Route::get('fb-redirect', 'SocialAuthController@redirect')->name('fb.redirect');
 Route::get('fb-callback', 'SocialAuthController@callback')->name('fb.callback');
+Route::post('fb-login', 'SocialAuthController@login')->name('fb.login');
+
+//Profile Admin
+Route::group(['middleware'=>'checkUser', 'auth'], function() {
+  Route::get('Profile-index', 'ProfileController@index')->name('Profile.index');
+  Route::patch('Profile-update/{id}', 'ProfileController@update')->name('Profile.update');
+  Route::patch('Profile-updatefoto/{id}', 'ProfileController@updateFoto')->name('Profile.updatefoto');
+  Route::patch('Profile-updatepass/{id}', 'ProfileController@updatePass')->name('Profile.updatepass');
+});
 
 //Register
 Route::get('register', 'UserController@register')->name('user.register');

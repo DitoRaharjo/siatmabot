@@ -16,6 +16,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
+        'image',
         'chat_log_id',
         'chat_log_line_id',
         'chat_log_fb_id',

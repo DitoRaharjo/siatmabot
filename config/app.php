@@ -170,6 +170,7 @@ return [
         Telegram\Bot\Laravel\TelegramServiceProvider::class,
         UxWeb\SweetAlert\SweetAlertServiceProvider::class,
         Laravel\Socialite\SocialiteServiceProvider::class,
+        Intervention\Image\ImageServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -231,7 +232,8 @@ return [
         'Input' => Illuminate\Support\Facades\Input::class,
         'Telegram'  => Telegram\Bot\Laravel\Facades\Telegram::class,
         'Alert' => UxWeb\SweetAlert\SweetAlert::class,
-        'Socialite' => Laravel\Socialite\Facades\Socialite::class
+        'Socialite' => Laravel\Socialite\Facades\Socialite::class,
+        'Image' => Intervention\Image\Facades\Image::class,
     ],
 
 ];
