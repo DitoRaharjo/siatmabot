@@ -103,10 +103,58 @@ class SocialAuthController extends Controller
             return redirect()->route('dashboard.mahasiswa');
           }
         } else {
+          $semuaProdi = Prodi::all();
+          $semuaFakultas = Fakultas::all();
           $emailUser = $user->email;
-          return view('front.dashboard.updatePassFb', compact('emailUser'));
+
+          return view('front.dashboard.updatePassFb', compact('emailUser', 'semuaProdi', 'semuaFakultas'));
         }
       }
+  }
+
+  public function login(Request $request) {
+    $this->validate($request, [
+        'npm' => 'required',
+        'prodi_id' => 'required',
+        'email' => 'required|email',
+        'password' => 'required',
+        'password_confirmation' => 'required',
+    ]);
+
+    $user_data = $request->except('_token');
+
+    if(!isset($request['telegram_username']) ) {
+      $user_data['telegram_username'] = "";
+    }
+
+    $fakultasId = Prodi::find($user_data['prodi_id'])->fakultas->id;
+
+    $user_data['fakultas_id'] = $fakultasId;
+
+    DB::beginTransaction();
+
+    try {
+      $userId = User::select('id')->where('email', '=', $user_data['email'])->get();
+
+      $user = User::find($userId[0]->id);
+
+      $passwordBaru = bcrypt($user_data['password']);
+
+      $user->update($user_data);
+
+      DB::commit();
+
+      alert()->success('Data berhasil diperbaharui', 'Berhasil!');
+      if(strcasecmp($user->role, "admin")==0) {
+        return redirect()->route('dashboard.admin');
+      } else {
+        return redirect()->route('dashboard.mahasiswa');
+      }
+    } catch (\Exception $e) {
+      DB::rollback();
+
+      throw $e;
+    }
   }
 
   public function checkLoginFb() {
