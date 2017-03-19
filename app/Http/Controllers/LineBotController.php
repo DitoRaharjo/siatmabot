@@ -92,6 +92,9 @@ class LineBotController extends Controller
 
                 } else if(strcasecmp($textReceived, "help")==0) {
                   $textSend = $helpCommand;
+                } else if(strcasecmp($textReceived, "logout")==0) {
+                  $this->chatLogout($userId);
+                  $textSend = "Logout berhasil";
                 } else {
                   $textSend = "Maaf perintah tidak ditemukan.";
                 }
@@ -152,6 +155,29 @@ class LineBotController extends Controller
       // send same message as reply to user
       $result = $bot->replyText($replyToken, $textSend);
       return $result->getHTTPStatus() . ' ' . $result->getRawBody();
+    }
+
+    public function chatLogout($userId) {
+      $check = ChatLogLine::select('id')->where('chat_id', $userId)->get();
+      $chatLog = ChatLogLine::find($check);
+
+      $user = $chatLog->user;
+
+      DB::beginTransaction();
+
+      try {
+        $chatLog->user_id = 0;
+        $chatLog->save();
+
+        $user->chat_log_fb_id = NULL;
+        $user->save();
+
+        DB::commit();
+      } catch (\Exception $e) {
+        DB::rollback();
+
+        throw $e;
+      }
     }
 
     public function getUser($userId) {
