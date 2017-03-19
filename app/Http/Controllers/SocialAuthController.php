@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Auth;
 use App\User;
 use App\Prodi;
 use App\Fakultas;
+use App\ChatLog;
 use App\ChatLogFb;
 use Telegram;
 
