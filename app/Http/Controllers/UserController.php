@@ -21,7 +21,7 @@ class UserController extends Controller
       $user = Auth::user();
       $password = "123";
       if(Hash::check($password, $user->password)) {
-        $emailUser = $user_data['email'];
+        $emailUser = $user->email;
         return view('front.dashboard.updatePassFb', compact('emailUser'));
       } else {
         return true;
