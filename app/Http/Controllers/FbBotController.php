@@ -52,58 +52,62 @@ class FbBotController extends Controller
 
       $this->getUser($userId);
 
-      if($this->checkLogin($userId) == true) {
-        $checkMakulResult = $this->checkMakul($userId, $textReceived);
-        if($checkMakulResult != false) {
-          $textSend = $checkMakulResult;
-        } else {
-          if(strcasecmp($textReceived, "hai")==0) {
-            $textSend = "Halo juga :D";
-          } else if(strcasecmp($textReceived, "help")==0) {
-            $textSend = $helpCommand;
-          } else if(strcasecmp($textReceived, "salam kenal")==0) {
-            $user_data = $this->getUserProfile($userId);
-            $textSend = "Salam kenal juga, ".$user_data->first_name." ".$user_data->last_name;
-          } else if(strcasecmp($textReceived, "makul")==0) {
-            $textSend = $this->getJadwalKuliah($userId);
-          } else {
-            $textSend = "Maaf perintah tidak ditemukan";
-          }
-        }
-        $this->setSendCondition($userId, $textSend);
-      } else if(strcasecmp($textReceived, "help")==0) {
-        $textSend = $helpCommand;
-        // $this->setSendCondition($userId, $textSend);
-        $this->sendButtonMessage($userId, $textSend);
-      } else {
-        if (($check = strpos($textReceived, "-")) !== FALSE) {
-          $email = strtok($textReceived, '-');
-          $password = substr($textReceived, strpos($textReceived, "-") +1);
+      $textSend = $responses_convert;
 
-          if($this->checkEmail($email) == true) {
-            if($this->checkPassword($userId, $email, $password)== true ) {
-              $textSend = "Selamat anda berhasil login, sekarang anda sudah bisa menggunakan fitur kuliah SIATMA Bot";
-            } else {
-              $textSend = "Maaf email atau password anda salah". PHP_EOL .
-              "atau anda belum terdaftar". PHP_EOL .
-              "jika anda belum mendaftar, silahkan daftarkan diri anda di : ". PHP_EOL .$registerUrl . PHP_EOL .
-              "Jika anda kesulitan, silahkan gunakan perintah 'help' ";
-            }
-          } else {
-            $textSend = "Maaf email atau password anda salah". PHP_EOL .
-            "atau anda belum terdaftar". PHP_EOL .
-            "jika anda belum mendaftar, silahkan daftarkan diri anda di : ". PHP_EOL .$registerUrl . PHP_EOL .
-            "Jika anda kesulitan, silahkan gunakan perintah 'help' ";
-          }
-        } else {
-          $textSend = "Maaf anda perlu login terlebih dahulu".PHP_EOL.
-          "silahkan kirimkan chat email dan password yang sudah anda daftarkan di ". PHP_EOL .$registerUrl. PHP_EOL .
-          "dengan format : email-password". PHP_EOL .
-          "contoh: asdf@gmail.com-1234 " . PHP_EOL .
-          "Jika anda kesulitan, silahkan gunakan perintah 'help' ";
-        }
-        $this->setSendCondition($userId, $textSend);
-      }
+      $this->setSendCondition($userId, $textSend);
+
+      // if($this->checkLogin($userId) == true) {
+      //   $checkMakulResult = $this->checkMakul($userId, $textReceived);
+      //   if($checkMakulResult != false) {
+      //     $textSend = $checkMakulResult;
+      //   } else {
+      //     if(strcasecmp($textReceived, "hai")==0) {
+      //       $textSend = "Halo juga :D";
+      //     } else if(strcasecmp($textReceived, "help")==0) {
+      //       $textSend = $helpCommand;
+      //     } else if(strcasecmp($textReceived, "salam kenal")==0) {
+      //       $user_data = $this->getUserProfile($userId);
+      //       $textSend = "Salam kenal juga, ".$user_data->first_name." ".$user_data->last_name;
+      //     } else if(strcasecmp($textReceived, "makul")==0) {
+      //       $textSend = $this->getJadwalKuliah($userId);
+      //     } else {
+      //       $textSend = "Maaf perintah tidak ditemukan";
+      //     }
+      //   }
+      //   $this->setSendCondition($userId, $textSend);
+      // } else if(strcasecmp($textReceived, "help")==0) {
+      //   $textSend = $helpCommand;
+      //   // $this->setSendCondition($userId, $textSend);
+      //   $this->sendButtonMessage($userId, $textSend);
+      // } else {
+      //   if (($check = strpos($textReceived, "-")) !== FALSE) {
+      //     $email = strtok($textReceived, '-');
+      //     $password = substr($textReceived, strpos($textReceived, "-") +1);
+      //
+      //     if($this->checkEmail($email) == true) {
+      //       if($this->checkPassword($userId, $email, $password)== true ) {
+      //         $textSend = "Selamat anda berhasil login, sekarang anda sudah bisa menggunakan fitur kuliah SIATMA Bot";
+      //       } else {
+      //         $textSend = "Maaf email atau password anda salah". PHP_EOL .
+      //         "atau anda belum terdaftar". PHP_EOL .
+      //         "jika anda belum mendaftar, silahkan daftarkan diri anda di : ". PHP_EOL .$registerUrl . PHP_EOL .
+      //         "Jika anda kesulitan, silahkan gunakan perintah 'help' ";
+      //       }
+      //     } else {
+      //       $textSend = "Maaf email atau password anda salah". PHP_EOL .
+      //       "atau anda belum terdaftar". PHP_EOL .
+      //       "jika anda belum mendaftar, silahkan daftarkan diri anda di : ". PHP_EOL .$registerUrl . PHP_EOL .
+      //       "Jika anda kesulitan, silahkan gunakan perintah 'help' ";
+      //     }
+      //   } else {
+      //     $textSend = "Maaf anda perlu login terlebih dahulu".PHP_EOL.
+      //     "silahkan kirimkan chat email dan password yang sudah anda daftarkan di ". PHP_EOL .$registerUrl. PHP_EOL .
+      //     "dengan format : email-password". PHP_EOL .
+      //     "contoh: asdf@gmail.com-1234 " . PHP_EOL .
+      //     "Jika anda kesulitan, silahkan gunakan perintah 'help' ";
+      //   }
+      //   $this->setSendCondition($userId, $textSend);
+      // }
 
 
       // $chatId = 253128578;
