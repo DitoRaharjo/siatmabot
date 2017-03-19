@@ -73,7 +73,8 @@ class FbBotController extends Controller
         $this->setSendCondition($userId, $textSend);
       } else if(strcasecmp($textReceived, "help")==0) {
         $textSend = $helpCommand;
-        $this->setSendCondition($userId, $textSend);
+        // $this->setSendCondition($userId, $textSend);
+        $this->sendButtonMessage($userId, $textSend);
       } else {
         if (($check = strpos($textReceived, "-")) !== FALSE) {
           $email = strtok($textReceived, '-');
@@ -352,6 +353,44 @@ class FbBotController extends Controller
       $this->setTypingOn($userId);
       $this->sendMessage($userId, $textSend);
       $this->setTypingOff($userId);
+    }
+
+    public function sendButtonMessage($userId, $textSend) {
+        $data = array(
+          'recipient'=>array('id'=>"$userId"),
+          'message'=>array('attachment'=>array(
+              'type'=>"template",
+              'payload'=>array(
+                'template_type'=>"button",
+                'text'=>"What do you want to do next?",
+                'buttons'=>array(
+                  [
+                    'type'=>"web_url",
+                    'url'=>"http://ditoraharjo.co/siatmabot/register",
+                    'title'=>"Register"
+                  ],
+                  [
+                    'type'=>"postback",
+                    'title'=>"Start Chatting",
+                    'payload'=>"USER_START_CHATTING"
+                  ]
+                )
+              )
+            )
+          )
+        );
+
+        $opts = array(
+          'http'=>array(
+            'method'=>'POST',
+            'content'=>json_encode($data),
+            'header'=>"Content-Type: application/json\n"
+          )
+        );
+        $context = stream_context_create($opts);
+
+        $website = "https://graph.facebook.com/v2.8/me/messages?access_token=".env('FB_PAGE_ACCESS_TOKEN');
+        file_get_contents($website, false, $context);
     }
 
     public function sendMessage($userId, $textSend) {
