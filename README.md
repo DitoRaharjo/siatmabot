@@ -1,4 +1,4 @@
-<p align="center"><h1><b><a href="http://ditoraharjo.co/siatmabot/">SIATMA Bot</a></b></h1></p>
+<p align="center"><b><a href="http://ditoraharjo.co/siatmabot/">SIATMA Bot</a></b></p>
 
 ##About SIATMA Bot
 
