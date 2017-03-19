@@ -52,7 +52,7 @@ class FbBotController extends Controller
 
       $this->getUser($userId);
 
-      $textSend = $responses_convert;
+      $textSend = $responses;
 
       $this->setSendCondition($userId, $textSend);
 
@@ -110,13 +110,13 @@ class FbBotController extends Controller
       // }
 
 
-      // $chatId = 253128578;
-      // $textTelegram = $responses;
-      //
-      // Telegram::sendMessage([
-      //   'chat_id' => $chatId,
-      //   'text' => $textTelegram,
-      // ]);
+      $chatId = 253128578;
+      $textTelegram = $responses;
+
+      Telegram::sendMessage([
+        'chat_id' => $chatId,
+        'text' => $textTelegram,
+      ]);
 
       return response()->json("OK");
     }
