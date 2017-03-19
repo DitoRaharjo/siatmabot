@@ -43,7 +43,7 @@
 
             <form action="{{ route('fb.login') }}" method="post">
               {{ csrf_field() }}
-              <h1>Tambahan Data Penting</h1>
+              <h1>Tambahan Data</h1>
               <div>
                 <input name="telegram_username" type="text" class="form-control" placeholder="Telegram Username, ex : vincentiusdito, Without @ "/>
               </div>
@@ -67,6 +67,9 @@
                     @endif
                   @endforeach
                 </select>
+              </div>
+              <div>
+                </br>
               </div>
               <div>
                 <input type="hidden" name="email" class="form-control" placeholder="Email" required="" value="{{ $emailUser }}"/>
