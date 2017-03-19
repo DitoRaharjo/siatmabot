@@ -53,6 +53,14 @@ class FbBotController extends Controller
             $this->setTypingOn($userId);
             $textSend = "Jika anda belum mendaftarkan diri, silahkan daftar terlebih dahulu";
             $this->sendGetStartedMessage($userId, $textSend);
+            $textSend = "Jika anda sudah mendaftarkan diri, silahkan login dengan format :";
+            $this->sendMessage($userId, $textSend);
+            $textSend = "username-password";
+            $this->sendMessage($userId, $textSend);
+            $textSend = "contoh : asdf@gmail.com-1234";
+            $this->sendMessage($userId, $textSend);
+            $textSend = "untuk info lebih lanjut, kirim perintah 'help' ";
+            $this->sendMessage($userId, $textSend);
             $this->setTypingOff($userId);
           }
         }
@@ -62,8 +70,7 @@ class FbBotController extends Controller
         $registerUrl = "http://www.ditoraharjo.co/siatmabot/register";
         $helpCommand = "Halo, berikut perintah-perintah yang dapat digunakan di SIATMA Bot : " . PHP_EOL .
         "makul : Untuk menampilkan semua jadwal kuliah" . PHP_EOL .
-        "(keyword) : Untuk menampilkan informasi jadwal kuliah sesuai dengan keyword yang sudah ditentukan" . PHP_EOL .
-        PHP_EOL . "Jika anda belum pernah melakukan login sebelumnya, maka anda perlu login terlebih dahulu di platform chat dengan mengetikkan email dan password anda dengan format :". PHP_EOL ."email-password". PHP_EOL ."contoh : asd@gmail.com-asdfghj";
+        "(keyword) : Untuk menampilkan informasi jadwal kuliah sesuai dengan keyword yang sudah ditentukan";
 
         $this->getUser($userId);
 
@@ -88,8 +95,8 @@ class FbBotController extends Controller
           $this->setSendCondition($userId, $textSend);
         } else if(strcasecmp($textReceived, "help")==0) {
           $textSend = $helpCommand;
-          // $this->setSendCondition($userId, $textSend);
-          $this->sendButtonMessage($userId, $textSend);
+          $this->setSendCondition($userId, $textSend);
+          // $this->sendButtonMessage($userId, $textSend);
         } else {
           if (($check = strpos($textReceived, "-")) !== FALSE) {
             $email = strtok($textReceived, '-');
@@ -98,26 +105,46 @@ class FbBotController extends Controller
             if($this->checkEmail($email) == true) {
               if($this->checkPassword($userId, $email, $password)== true ) {
                 $textSend = "Selamat anda berhasil login, sekarang anda sudah bisa menggunakan fitur kuliah SIATMA Bot";
+                $this->sendMessage($userId, $textSend);
               } else {
-                $textSend = "Maaf email atau password anda salah". PHP_EOL .
-                "atau anda belum terdaftar". PHP_EOL .
-                "jika anda belum mendaftar, silahkan daftarkan diri anda di : ". PHP_EOL .$registerUrl . PHP_EOL .
-                "Jika anda kesulitan, silahkan gunakan perintah 'help' ";
+                $this->setRead($userId);
+                $this->setTypingOn($userId);
+                $textSend = "Maaf email atau password anda salah";
+                $this->sendMessage($userId, $textSend);
+                $textSend = "Jika anda belum mendaftarkan diri, silahkan daftar terlebih dahulu";
+                $this->sendGetStartedMessage($userId, $textSend);
+                $this->setTypingOff($userId);
               }
             } else {
-              $textSend = "Maaf email atau password anda salah". PHP_EOL .
-              "atau anda belum terdaftar". PHP_EOL .
-              "jika anda belum mendaftar, silahkan daftarkan diri anda di : ". PHP_EOL .$registerUrl . PHP_EOL .
-              "Jika anda kesulitan, silahkan gunakan perintah 'help' ";
+              $this->setRead($userId);
+              $this->setTypingOn($userId);
+              $textSend = "Maaf email atau password anda salah";
+              $this->sendMessage($userId, $textSend);
+              $textSend = "Jika anda belum mendaftarkan diri, silahkan daftar terlebih dahulu";
+              $this->sendGetStartedMessage($userId, $textSend);
+              $this->setTypingOff($userId);
             }
           } else {
-            $textSend = "Maaf anda perlu login terlebih dahulu".PHP_EOL.
-            "silahkan kirimkan chat email dan password yang sudah anda daftarkan di ". PHP_EOL .$registerUrl. PHP_EOL .
-            "dengan format : email-password". PHP_EOL .
-            "contoh: asdf@gmail.com-1234 " . PHP_EOL .
-            "Jika anda kesulitan, silahkan gunakan perintah 'help' ";
+            // $textSend = "Maaf anda perlu login terlebih dahulu".PHP_EOL.
+            // "silahkan kirimkan chat email dan password yang sudah anda daftarkan di ". PHP_EOL .$registerUrl. PHP_EOL .
+            // "dengan format : email-password". PHP_EOL .
+            // "contoh: asdf@gmail.com-1234 " . PHP_EOL .
+            // "Jika anda kesulitan, silahkan gunakan perintah 'help' ";
+            $this->setRead($userId);
+            $this->setTypingOn($userId);
+            $textSend = "Jika anda belum mendaftarkan diri, silahkan daftar terlebih dahulu";
+            $this->sendGetStartedMessage($userId, $textSend);
+            $textSend = "Jika anda sudah mendaftarkan diri, silahkan login dengan format :";
+            $this->sendMessage($userId, $textSend);
+            $textSend = "username-password";
+            $this->sendMessage($userId, $textSend);
+            $textSend = "contoh : asdf@gmail.com-1234";
+            $this->sendMessage($userId, $textSend);
+            $textSend = "untuk info lebih lanjut, kirim perintah 'help' ";
+            $this->sendMessage($userId, $textSend);
+            $this->setTypingOff($userId);
           }
-          $this->setSendCondition($userId, $textSend);
+          // $this->setSendCondition($userId, $textSend);
         }
       }
 
