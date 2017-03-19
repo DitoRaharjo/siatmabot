@@ -70,7 +70,8 @@ class FbBotController extends Controller
         $registerUrl = "http://www.ditoraharjo.co/siatmabot/register";
         $helpCommand = "Halo, berikut perintah-perintah yang dapat digunakan di SIATMA Bot : " . PHP_EOL .
         "makul : Untuk menampilkan semua jadwal kuliah" . PHP_EOL .
-        "(keyword) : Untuk menampilkan informasi jadwal kuliah sesuai dengan keyword yang sudah ditentukan";
+        "(keyword) : Untuk menampilkan informasi jadwal kuliah sesuai dengan keyword yang sudah ditentukan". PHP_EOL .
+        "logout : Untuk keluar dari akun yang sedang anda gunakan pada platform chat";
 
         $this->getUser($userId);
 

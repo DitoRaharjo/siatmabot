@@ -63,6 +63,7 @@ class LineBotController extends Controller
             $helpCommand = "Halo, berikut perintah-perintah yang dapat digunakan di SIATMA Bot : " . PHP_EOL .
             "makul : Untuk menampilkan semua jadwal kuliah" . PHP_EOL .
             "(keyword) : Untuk menampilkan informasi jadwal kuliah sesuai dengan keyword yang sudah ditentukan" . PHP_EOL .
+            "logout : Untuk keluar dari akun yang sedang anda gunakan pada platform chat". PHP_EOL .
             PHP_EOL . "Jika anda belum pernah melakukan login sebelumnya, maka anda perlu login terlebih dahulu di platform chat dengan mengetikkan email dan password anda dengan format :". PHP_EOL ."email-password". PHP_EOL ."contoh : asd@gmail.com-asdfghj";
 
             if($this->checkLogin($userId) == true) {
