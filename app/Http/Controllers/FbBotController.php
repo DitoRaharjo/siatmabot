@@ -52,9 +52,9 @@ class FbBotController extends Controller
       //
       // $this->getUser($userId);
 
-      $textSend = $responses;
-
-      $this->setSendCondition($userId, $textSend);
+      // $textSend = $responses;
+      //
+      // $this->setSendCondition($userId, $textSend);
 
       // if($this->checkLogin($userId) == true) {
       //   $checkMakulResult = $this->checkMakul($userId, $textReceived);
