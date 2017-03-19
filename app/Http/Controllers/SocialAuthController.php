@@ -19,7 +19,7 @@ class SocialAuthController extends Controller
   {
       $providerUser = \Socialite::driver('facebook')->user();
 
-      echo $providerUser . "</br>";
+      print_r($providerUser);
 
   }
 }
