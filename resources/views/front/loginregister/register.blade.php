@@ -93,6 +93,9 @@
               <div>
                 <button type="submit" class="btn btn-default submit" >Register</button>
               </div>
+              <a href="{{ route('fb.redirect') }}" class="btn btn-social btn-facebook">
+                <span class="fa fa-facebook"></span> Sign in with Facebook
+              </a>
 
               <div class="clearfix"></div>
 
