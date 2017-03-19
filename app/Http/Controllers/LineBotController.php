@@ -170,7 +170,7 @@ class LineBotController extends Controller
         $chatLog->user_id = 0;
         $chatLog->save();
 
-        $user->chat_log_fb_id = NULL;
+        $user->chat_log_line_id = NULL;
         $user->save();
 
         DB::commit();
