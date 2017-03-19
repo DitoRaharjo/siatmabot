@@ -130,6 +130,7 @@ class SocialAuthController extends Controller
     $fakultasId = Prodi::find($user_data['prodi_id'])->fakultas->id;
 
     $user_data['fakultas_id'] = $fakultasId;
+    $user_data['password'] = bcrypt($user_data['password']);
 
     DB::beginTransaction();
 
