@@ -23,5 +23,6 @@ class SocialAuthController extends Controller
       echo $providerUser->getNickname() . "</br>";
       echo $providerUser->getName() . "</br>";
       echo $providerUser->getEmail() . "</br>";
+
   }
 }
