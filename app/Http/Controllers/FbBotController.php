@@ -41,16 +41,16 @@ class FbBotController extends Controller
       $responses = file_get_contents("php://input");
       $responses_convert = json_decode($responses);
 
-      $userId = $responses_convert->entry[0]->messaging[0]->sender->id;
-      $textReceived = $responses_convert->entry[0]->messaging[0]->message->text;
-      $registerUrl = "http://www.ditoraharjo.co/siatmabot/register";
-      $helpCommand = "Halo, berikut perintah-perintah yang dapat digunakan di SIATMA Bot : " . PHP_EOL .
-      "makul : Untuk menampilkan semua jadwal kuliah" . PHP_EOL .
-      "(keyword) : Untuk menampilkan informasi jadwal kuliah sesuai dengan keyword yang sudah ditentukan" . PHP_EOL .
-      PHP_EOL . "Jika anda belum pernah melakukan login sebelumnya, maka anda perlu login terlebih dahulu di platform chat dengan mengetikkan email dan password anda dengan format :". PHP_EOL ."email-password". PHP_EOL ."contoh : asd@gmail.com-asdfghj";
-
-
-      $this->getUser($userId);
+      // $userId = $responses_convert->entry[0]->messaging[0]->sender->id;
+      // $textReceived = $responses_convert->entry[0]->messaging[0]->message->text;
+      // $registerUrl = "http://www.ditoraharjo.co/siatmabot/register";
+      // $helpCommand = "Halo, berikut perintah-perintah yang dapat digunakan di SIATMA Bot : " . PHP_EOL .
+      // "makul : Untuk menampilkan semua jadwal kuliah" . PHP_EOL .
+      // "(keyword) : Untuk menampilkan informasi jadwal kuliah sesuai dengan keyword yang sudah ditentukan" . PHP_EOL .
+      // PHP_EOL . "Jika anda belum pernah melakukan login sebelumnya, maka anda perlu login terlebih dahulu di platform chat dengan mengetikkan email dan password anda dengan format :". PHP_EOL ."email-password". PHP_EOL ."contoh : asd@gmail.com-asdfghj";
+      //
+      //
+      // $this->getUser($userId);
 
       $textSend = $responses;
 
