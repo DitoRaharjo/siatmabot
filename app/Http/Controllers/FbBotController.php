@@ -63,6 +63,9 @@ class FbBotController extends Controller
             $this->sendMessage($userId, $textSend);
             $this->setTypingOff($userId);
           }
+        } else {
+          $textSend = "Anda sudah login, silahkan lanjutkan dengan perintah yang diinginkan";
+          $this->sendMessage($userId, $textSend);
         }
       } else {
         $userId = $responses_convert->entry[0]->messaging[0]->sender->id;
