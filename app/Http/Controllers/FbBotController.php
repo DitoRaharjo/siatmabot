@@ -155,6 +155,7 @@ class FbBotController extends Controller
       try {
         $userId = $responses_convert->entry[0]->messaging[0]->sender->id;
         $textReceived = $responses_convert->entry[0]->messaging[0]->message->text;
+        $textSend = $textReceived;
         $this->setSendCondition($userId, $textSend);
       } catch(\Exception $e) {
         $chatId = 253128578;
