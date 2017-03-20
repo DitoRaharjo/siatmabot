@@ -89,6 +89,7 @@ class FbBotController extends Controller
               $textSend = "Salam kenal juga, ".$user_data->first_name." ".$user_data->last_name;
             } else if(strcasecmp($textReceived, "makul")==0) {
               $this->getJadwalKuliah($userId);
+              $textSend = "Jadwal berhasil ditampilkan";
             } else if(strcasecmp($textReceived, "logout")==0) {
               $this->chatLogout($userId);
               $textSend = "Logout berhasil";
