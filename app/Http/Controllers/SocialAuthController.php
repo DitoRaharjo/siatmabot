@@ -39,10 +39,6 @@ class SocialAuthController extends Controller
       $fbName = $providerUser->getName();
       $fbEmail = $providerUser->getEmail();
 
-      echo $fbId . "</br>";
-      echo $fbName . "</br>";
-      echo $fbEmail . "</br>";
-
       $user_data = array();
 
       $user_data['fullname'] = $fbName;
