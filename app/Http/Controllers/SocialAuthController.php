@@ -32,6 +32,7 @@ class SocialAuthController extends Controller
 
   public function callback()
   {
+    try{
       $providerUser = Socialite::driver('facebook')->user();
 
       $fbId = $providerUser->getId();
@@ -94,9 +95,8 @@ class SocialAuthController extends Controller
         $userCheck = User::select('id')->where('email', $user_data['email'])->get();
         $user = User::find($userCheck);
 
-        Auth::login($user);
-
         if($this->checkLoginFb() == true) {
+          Auth::login($user);
           if(strcasecmp($user->role, "admin")==0) {
             return redirect()->route('dashboard.admin');
           } else {
@@ -110,6 +110,11 @@ class SocialAuthController extends Controller
           return view('front.dashboard.updatePassFb', compact('emailUser', 'semuaProdi', 'semuaFakultas'));
         }
       }
+    } catch(\Exception $e) {
+      alert()->error('Login Facebook dibatalkan', 'Login Gagal!');
+      return redirect()->route('user.login');
+    }
+
   }
 
   public function login(Request $request) {
@@ -145,6 +150,7 @@ class SocialAuthController extends Controller
 
       DB::commit();
 
+      Auth::login($user);
       alert()->success('Data berhasil diperbaharui', 'Berhasil!');
       if(strcasecmp($user->role, "admin")==0) {
         return redirect()->route('dashboard.admin');
