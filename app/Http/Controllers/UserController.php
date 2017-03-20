@@ -13,6 +13,7 @@ use DB;
 use App\User;
 use App\Prodi;
 use App\Fakultas;
+use App\Sesi;
 use App\ChatLog;
 
 class UserController extends Controller
@@ -30,7 +31,26 @@ class UserController extends Controller
     public function dashboardAdmin() {
       if($this->checkLoginFb() == true) {
         if (strcasecmp(Auth::user()->role,'admin')==0) {
-          return view('front.dashboard.admin');
+          $totalUser = User::where([
+            ['deleted_at', NULL],
+            ['role', 'LIKE', 'Mahasiswa']
+            ])->count();
+          $totalFakultas = Fakultas::where([
+            ['deleted_at', NULL]
+            ])->count();
+          $totalProdi = Prodi::where([
+            ['deleted_at', NULL]
+            ])->count();
+          $totalSesi = Sesi::where([
+            ['deleted_at', NULL]
+            ])->count();
+
+          return view('front.dashboard.admin', compact(
+            'totalUser',
+            'totalFakultas',
+            'totalProdi',
+            'totalSesi'
+          ));
         } else {
           alert()->error('Akun anda tidak memiliki hak untuk melihat halaman ini', 'Pelanggaran Akun!');
           return redirect()->route('dashboard.mahasiswa');
@@ -38,7 +58,7 @@ class UserController extends Controller
       } else {
         $semuaProdi = Prodi::all();
         $semuaFakultas = Fakultas::all();
-        
+
         $emailUser = Auth::user()->email;
         return view('front.dashboard.updatePassFb', compact('emailUser', 'semuaProdi', 'semuaFakultas'));
       }
