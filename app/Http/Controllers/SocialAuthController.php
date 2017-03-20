@@ -32,93 +32,87 @@ class SocialAuthController extends Controller
 
   public function callback()
   {
-    try{
-      $providerUser = Socialite::driver('facebook')->user();
+    $providerUser = Socialite::driver('facebook')->user();
 
-      $fbId = $providerUser->getId();
-      $fbName = $providerUser->getName();
-      $fbEmail = $providerUser->getEmail();
+    $fbId = $providerUser->getId();
+    $fbName = $providerUser->getName();
+    $fbEmail = $providerUser->getEmail();
 
-      echo $fbId . "</br>";
-      echo $fbName . "</br>";
-      echo $fbEmail . "</br>";
+    echo $fbId . "</br>";
+    echo $fbName . "</br>";
+    echo $fbEmail . "</br>";
 
-      $user_data = array();
+    $user_data = array();
 
-      $user_data['fullname'] = $fbName;
-      $user_data['email'] = $fbEmail;
-      $user_data['npm'] = "0";
-      $user_data['prodi_id'] = 13;
-      $user_data['password'] = "123";
+    $user_data['fullname'] = $fbName;
+    $user_data['email'] = $fbEmail;
+    $user_data['npm'] = "0";
+    $user_data['prodi_id'] = 13;
+    $user_data['password'] = "123";
 
-      if(!isset($request['telegram_username']) ) {
-        $user_data['telegram_username'] = "";
-      }
-
-      if($this->checkEmailDuplicate($user_data['email']) == true ) {
-        $fakultasId = Prodi::find($user_data['prodi_id'])->fakultas->id;
-
-        $user_data['fakultas_id'] = $fakultasId;
-        $user_data['password'] = bcrypt($user_data['password']);
-        $user_data['role'] = "Mahasiswa";
-        $user_data['registerdate'] = Carbon::now();
-
-        $checkChatLog = ChatLog::select('id')->where('username', $user_data['telegram_username'])->get();
-        $checkCount = $checkChatLog->count();
-        if($checkCount != 0) {
-          $chatLogId = ChatLog::find($checkChatLog)->id;
-          $chatId = ChatLog::find($checkChatLog)->chat_id;
-          $user_data['chat_log_id'] = $chatLogId;
-          $user_data['chat_id'] = $chatId;
-        }
-
-        DB::beginTransaction();
-
-        try {
-          $user = User::create($user_data);
-          $userId = $user->id;
-
-          if($checkCount != 0) {
-            $chatLog = ChatLog::find($checkChatLog);
-            $chatLog->user_id = $userId;
-            $chatLog->save();
-          }
-
-          DB::commit();
-
-          Auth::login($user);
-
-          alert()->success('Akun anda berhasil di register', 'Berhasil!');
-          return redirect()->route('dashboard.mahasiswa');
-        } catch (\Exception $e) {
-          DB::rollback();
-
-          throw $e;
-        }
-      } else {
-        $userCheck = User::select('id')->where('email', $user_data['email'])->get();
-        $user = User::find($userCheck);
-
-        if($this->checkLoginFb() == true) {
-          Auth::login($user);
-          if(strcasecmp($user->role, "admin")==0) {
-            return redirect()->route('dashboard.admin');
-          } else {
-            return redirect()->route('dashboard.mahasiswa');
-          }
-        } else {
-          $semuaProdi = Prodi::all();
-          $semuaFakultas = Fakultas::all();
-          $emailUser = $user->email;
-
-          return view('front.dashboard.updatePassFb', compact('emailUser', 'semuaProdi', 'semuaFakultas'));
-        }
-      }
-    } catch(\Exception $e) {
-      alert()->error('Login Facebook dibatalkan', 'Login Gagal!');
-      return redirect()->route('user.login');
+    if(!isset($request['telegram_username']) ) {
+      $user_data['telegram_username'] = "";
     }
 
+    if($this->checkEmailDuplicate($user_data['email']) == true ) {
+      $fakultasId = Prodi::find($user_data['prodi_id'])->fakultas->id;
+
+      $user_data['fakultas_id'] = $fakultasId;
+      $user_data['password'] = bcrypt($user_data['password']);
+      $user_data['role'] = "Mahasiswa";
+      $user_data['registerdate'] = Carbon::now();
+
+      $checkChatLog = ChatLog::select('id')->where('username', $user_data['telegram_username'])->get();
+      $checkCount = $checkChatLog->count();
+      if($checkCount != 0) {
+        $chatLogId = ChatLog::find($checkChatLog)->id;
+        $chatId = ChatLog::find($checkChatLog)->chat_id;
+        $user_data['chat_log_id'] = $chatLogId;
+        $user_data['chat_id'] = $chatId;
+      }
+
+      DB::beginTransaction();
+
+      try {
+        $user = User::create($user_data);
+        $userId = $user->id;
+
+        if($checkCount != 0) {
+          $chatLog = ChatLog::find($checkChatLog);
+          $chatLog->user_id = $userId;
+          $chatLog->save();
+        }
+
+        DB::commit();
+
+        Auth::login($user);
+
+        alert()->success('Akun anda berhasil di register', 'Berhasil!');
+        return redirect()->route('dashboard.mahasiswa');
+      } catch (\Exception $e) {
+        DB::rollback();
+
+        throw $e;
+      }
+    } else {
+      $userCheck = User::select('id')->where('email', $user_data['email'])->get();
+      $user = User::find($userCheck);
+
+      if($this->checkLoginFb() == true) {
+        Auth::login($user);
+        if(strcasecmp($user->role, "admin")==0) {
+          return redirect()->route('dashboard.admin');
+        } else {
+          return redirect()->route('dashboard.mahasiswa');
+        }
+      } else {
+        $semuaProdi = Prodi::all();
+        $semuaFakultas = Fakultas::all();
+        $emailUser = $user->email;
+
+        return view('front.dashboard.updatePassFb', compact('emailUser', 'semuaProdi', 'semuaFakultas'));
+      }
+    }
   }
 
   public function login(Request $request) {
