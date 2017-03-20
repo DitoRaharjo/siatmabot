@@ -41,138 +41,124 @@ class FbBotController extends Controller
       $responses = file_get_contents("php://input");
       $responses_convert = json_decode($responses);
 
-      // if(isset($responses_convert->entry[0]->messaging[0]->postback->payload)) {
-      //   $postback = $responses_convert->entry[0]->messaging[0]->postback->payload;
-      //   $userId = $responses_convert->entry[0]->messaging[0]->sender->id;
-      //
-      //   $this->getUser($userId);
-      //
-      //   if($this->checkLogin($userId) == false) {
-      //     if(strcasecmp($postback, "GET_STARTED")==0) {
-      //       $this->setRead($userId);
-      //       $this->setTypingOn($userId);
-      //       $textSend = "Jika anda belum mendaftarkan diri, silahkan daftar terlebih dahulu";
-      //       $this->sendGetStartedMessage($userId, $textSend);
-      //       $textSend = "Jika anda sudah mendaftarkan diri, silahkan login dengan format :";
-      //       $this->sendMessage($userId, $textSend);
-      //       $textSend = "username-password";
-      //       $this->sendMessage($userId, $textSend);
-      //       $textSend = "contoh : asdf@gmail.com-1234";
-      //       $this->sendMessage($userId, $textSend);
-      //       $textSend = "untuk info lebih lanjut, kirim perintah 'help' ";
-      //       $this->sendMessage($userId, $textSend);
-      //       $this->setTypingOff($userId);
-      //     }
-      //   }
-      // } else {
-      //   $userId = $responses_convert->entry[0]->messaging[0]->sender->id;
-      //   $textReceived = $responses_convert->entry[0]->messaging[0]->message->text;
-      //   $registerUrl = "http://www.ditoraharjo.co/siatmabot/register";
-      //   $helpCommand = "Halo, berikut perintah-perintah yang dapat digunakan di SIATMA Bot : " . PHP_EOL .
-      //   "makul : Untuk menampilkan semua jadwal kuliah" . PHP_EOL .
-      //   "(keyword) : Untuk menampilkan informasi jadwal kuliah sesuai dengan keyword yang sudah ditentukan". PHP_EOL .
-      //   "logout : Untuk keluar dari akun yang sedang anda gunakan pada platform chat";
-      //
-      //   $this->getUser($userId);
-      //
-      //   if($this->checkLogin($userId) == true) {
-      //     $checkMakulResult = $this->checkMakul($userId, $textReceived);
-      //     if($checkMakulResult != false) {
-      //       $textSend = $checkMakulResult;
-      //     } else {
-      //       if(strcasecmp($textReceived, "hai")==0) {
-      //         $textSend = "Halo juga :D";
-      //       } else if(strcasecmp($textReceived, "help")==0) {
-      //         $textSend = $helpCommand;
-      //       } else if(strcasecmp($textReceived, "salam kenal")==0) {
-      //         $user_data = $this->getUserProfile($userId);
-      //         $textSend = "Salam kenal juga, ".$user_data->first_name." ".$user_data->last_name;
-      //       } else if(strcasecmp($textReceived, "makul")==0) {
-      //         $textSend = $this->getJadwalKuliah($userId);
-      //       } else if(strcasecmp($textReceived, "logout")==0) {
-      //         $this->chatLogout($userId);
-      //         $textSend = "Logout berhasil";
-      //       } else {
-      //         $textSend = "Maaf perintah tidak ditemukan";
-      //       }
-      //     }
-      //     $this->setSendCondition($userId, $textSend);
-      //   } else if(strcasecmp($textReceived, "help")==0) {
-      //     $textSend = $helpCommand;
-      //     $this->setSendCondition($userId, $textSend);
-      //     // $this->sendButtonMessage($userId, $textSend);
-      //   } else {
-      //     if (($check = strpos($textReceived, "-")) !== FALSE) {
-      //       $email = strtok($textReceived, '-');
-      //       $password = substr($textReceived, strpos($textReceived, "-") +1);
-      //
-      //       if($this->checkEmail($email) == true) {
-      //         if($this->checkPassword($userId, $email, $password)== true ) {
-      //           $textSend = "Selamat anda berhasil login, sekarang anda sudah bisa menggunakan fitur kuliah SIATMA Bot";
-      //           $this->sendMessage($userId, $textSend);
-      //         } else {
-      //           $this->setRead($userId);
-      //           $this->setTypingOn($userId);
-      //           $textSend = "Maaf email atau password anda salah";
-      //           $this->sendMessage($userId, $textSend);
-      //           $textSend = "Jika anda belum mendaftarkan diri, silahkan daftar terlebih dahulu";
-      //           $this->sendGetStartedMessage($userId, $textSend);
-      //           $this->setTypingOff($userId);
-      //         }
-      //       } else {
-      //         $this->setRead($userId);
-      //         $this->setTypingOn($userId);
-      //         $textSend = "Maaf email atau password anda salah";
-      //         $this->sendMessage($userId, $textSend);
-      //         $textSend = "Jika anda belum mendaftarkan diri, silahkan daftar terlebih dahulu";
-      //         $this->sendGetStartedMessage($userId, $textSend);
-      //         $this->setTypingOff($userId);
-      //       }
-      //     } else {
-      //       // $textSend = "Maaf anda perlu login terlebih dahulu".PHP_EOL.
-      //       // "silahkan kirimkan chat email dan password yang sudah anda daftarkan di ". PHP_EOL .$registerUrl. PHP_EOL .
-      //       // "dengan format : email-password". PHP_EOL .
-      //       // "contoh: asdf@gmail.com-1234 " . PHP_EOL .
-      //       // "Jika anda kesulitan, silahkan gunakan perintah 'help' ";
-      //       $this->setRead($userId);
-      //       $this->setTypingOn($userId);
-      //       $textSend = "Jika anda belum mendaftarkan diri, silahkan daftar terlebih dahulu";
-      //       $this->sendGetStartedMessage($userId, $textSend);
-      //       $textSend = "Jika anda sudah mendaftarkan diri, silahkan login dengan format :";
-      //       $this->sendMessage($userId, $textSend);
-      //       $textSend = "username-password";
-      //       $this->sendMessage($userId, $textSend);
-      //       $textSend = "contoh : asdf@gmail.com-1234";
-      //       $this->sendMessage($userId, $textSend);
-      //       $textSend = "untuk info lebih lanjut, kirim perintah 'help' ";
-      //       $this->sendMessage($userId, $textSend);
-      //       $this->setTypingOff($userId);
-      //     }
-      //     // $this->setSendCondition($userId, $textSend);
-      //   }
-      // }
+      if(isset($responses_convert->entry[0]->messaging[0]->postback->payload)) {
+        $postback = $responses_convert->entry[0]->messaging[0]->postback->payload;
+        $userId = $responses_convert->entry[0]->messaging[0]->sender->id;
 
-      try {
-        $userId = 1334082683305106;
-        $textSend = "Hublaaaa";
-        $this->setSendCondition($userId, $textSend);
-      } catch(\Exception $e) {
-        $chatId = 253128578;
-        $textTelegram = $e;
+        $this->getUser($userId);
 
-        Telegram::sendMessage([
-          'chat_id' => $chatId,
-          'text' => $textTelegram,
-        ]);
+        if($this->checkLogin($userId) == false) {
+          if(strcasecmp($postback, "GET_STARTED")==0) {
+            $this->setRead($userId);
+            $this->setTypingOn($userId);
+            $textSend = "Jika anda belum mendaftarkan diri, silahkan daftar terlebih dahulu";
+            $this->sendGetStartedMessage($userId, $textSend);
+            $textSend = "Jika anda sudah mendaftarkan diri, silahkan login dengan format :";
+            $this->sendMessage($userId, $textSend);
+            $textSend = "username-password";
+            $this->sendMessage($userId, $textSend);
+            $textSend = "contoh : asdf@gmail.com-1234";
+            $this->sendMessage($userId, $textSend);
+            $textSend = "untuk info lebih lanjut, kirim perintah 'help' ";
+            $this->sendMessage($userId, $textSend);
+            $this->setTypingOff($userId);
+          }
+        }
+      } else {
+        $userId = $responses_convert->entry[0]->messaging[0]->sender->id;
+        $textReceived = $responses_convert->entry[0]->messaging[0]->message->text;
+        $registerUrl = "http://www.ditoraharjo.co/siatmabot/register";
+        $helpCommand = "Halo, berikut perintah-perintah yang dapat digunakan di SIATMA Bot : " . PHP_EOL .
+        "makul : Untuk menampilkan semua jadwal kuliah" . PHP_EOL .
+        "(keyword) : Untuk menampilkan informasi jadwal kuliah sesuai dengan keyword yang sudah ditentukan". PHP_EOL .
+        "logout : Untuk keluar dari akun yang sedang anda gunakan pada platform chat";
+
+        $this->getUser($userId);
+
+        if($this->checkLogin($userId) == true) {
+          $checkMakulResult = $this->checkMakul($userId, $textReceived);
+          if($checkMakulResult != false) {
+            $textSend = $checkMakulResult;
+          } else {
+            if(strcasecmp($textReceived, "hai")==0) {
+              $textSend = "Halo juga :D";
+            } else if(strcasecmp($textReceived, "help")==0) {
+              $textSend = $helpCommand;
+            } else if(strcasecmp($textReceived, "salam kenal")==0) {
+              $user_data = $this->getUserProfile($userId);
+              $textSend = "Salam kenal juga, ".$user_data->first_name." ".$user_data->last_name;
+            } else if(strcasecmp($textReceived, "makul")==0) {
+              $textSend = $this->getJadwalKuliah($userId);
+            } else if(strcasecmp($textReceived, "logout")==0) {
+              $this->chatLogout($userId);
+              $textSend = "Logout berhasil";
+            } else {
+              $textSend = "Maaf perintah tidak ditemukan";
+            }
+          }
+          $this->setSendCondition($userId, $textSend);
+        } else if(strcasecmp($textReceived, "help")==0) {
+          $textSend = $helpCommand;
+          $this->setSendCondition($userId, $textSend);
+          // $this->sendButtonMessage($userId, $textSend);
+        } else {
+          if (($check = strpos($textReceived, "-")) !== FALSE) {
+            $email = strtok($textReceived, '-');
+            $password = substr($textReceived, strpos($textReceived, "-") +1);
+
+            if($this->checkEmail($email) == true) {
+              if($this->checkPassword($userId, $email, $password)== true ) {
+                $textSend = "Selamat anda berhasil login, sekarang anda sudah bisa menggunakan fitur kuliah SIATMA Bot";
+                $this->sendMessage($userId, $textSend);
+              } else {
+                $this->setRead($userId);
+                $this->setTypingOn($userId);
+                $textSend = "Maaf email atau password anda salah";
+                $this->sendMessage($userId, $textSend);
+                $textSend = "Jika anda belum mendaftarkan diri, silahkan daftar terlebih dahulu";
+                $this->sendGetStartedMessage($userId, $textSend);
+                $this->setTypingOff($userId);
+              }
+            } else {
+              $this->setRead($userId);
+              $this->setTypingOn($userId);
+              $textSend = "Maaf email atau password anda salah";
+              $this->sendMessage($userId, $textSend);
+              $textSend = "Jika anda belum mendaftarkan diri, silahkan daftar terlebih dahulu";
+              $this->sendGetStartedMessage($userId, $textSend);
+              $this->setTypingOff($userId);
+            }
+          } else {
+            // $textSend = "Maaf anda perlu login terlebih dahulu".PHP_EOL.
+            // "silahkan kirimkan chat email dan password yang sudah anda daftarkan di ". PHP_EOL .$registerUrl. PHP_EOL .
+            // "dengan format : email-password". PHP_EOL .
+            // "contoh: asdf@gmail.com-1234 " . PHP_EOL .
+            // "Jika anda kesulitan, silahkan gunakan perintah 'help' ";
+            $this->setRead($userId);
+            $this->setTypingOn($userId);
+            $textSend = "Jika anda belum mendaftarkan diri, silahkan daftar terlebih dahulu";
+            $this->sendGetStartedMessage($userId, $textSend);
+            $textSend = "Jika anda sudah mendaftarkan diri, silahkan login dengan format :";
+            $this->sendMessage($userId, $textSend);
+            $textSend = "username-password";
+            $this->sendMessage($userId, $textSend);
+            $textSend = "contoh : asdf@gmail.com-1234";
+            $this->sendMessage($userId, $textSend);
+            $textSend = "untuk info lebih lanjut, kirim perintah 'help' ";
+            $this->sendMessage($userId, $textSend);
+            $this->setTypingOff($userId);
+          }
+          // $this->setSendCondition($userId, $textSend);
+        }
       }
 
-      $chatId = 253128578;
-      $textTelegram = $responses;
-
-      Telegram::sendMessage([
-        'chat_id' => $chatId,
-        'text' => $textTelegram,
-      ]);
+      // $chatId = 253128578;
+      // $textTelegram = $responses;
+      //
+      // Telegram::sendMessage([
+      //   'chat_id' => $chatId,
+      //   'text' => $textTelegram,
+      // ]);
 
       return response()->json("OK");
     }
