@@ -32,7 +32,7 @@ class SocialAuthController extends Controller
 
   public function callback()
   {
-    try{
+    // try{
       $providerUser = Socialite::driver('facebook')->user();
 
       $fbId = $providerUser->getId();
@@ -110,10 +110,10 @@ class SocialAuthController extends Controller
           return view('front.dashboard.updatePassFb', compact('emailUser', 'semuaProdi', 'semuaFakultas'));
         }
       }
-    } catch(\Exception $e) {
-      alert()->error('Login Facebook dibatalkan', 'Login Gagal!');
-      return redirect()->route('user.login');
-    }
+    // } catch(\Exception $e) {
+    //   alert()->error('Login Facebook dibatalkan', 'Login Gagal!');
+    //   return redirect()->route('user.login');
+    // }
 
   }
 
