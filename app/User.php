@@ -48,10 +48,6 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
-    public function jadwal() {
-      
-    }
-
     public function chatlog()
     {
         return $this->hasOne('App\ChatLog');
