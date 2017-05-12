@@ -36,7 +36,7 @@ class SesiProdiController extends Controller
       $semuaFakultas = Fakultas::all();
       $semuaProdi = Prodi::all();
 
-      return view('front.sesiProdi.create', compact('semuaSesi', 'semuaFakultas', 'semuaProdi'));
+      return view('front.sesiprodi.create', compact('semuaSesi', 'semuaFakultas', 'semuaProdi'));
     }
 
     public function checkDuplicate($sesi_id, $prodi_id) {
@@ -120,7 +120,7 @@ class SesiProdiController extends Controller
       }
 
 
-      return view('front.sesiProdi.edit', compact('semuaSesi', 'semuaFakultas', 'semuaProdi', 'sesiProdi', 'jam', 'menit', 'fakultasId'));
+      return view('front.sesiprodi.edit', compact('semuaSesi', 'semuaFakultas', 'semuaProdi', 'sesiProdi', 'jam', 'menit', 'fakultasId'));
     }
 
     public function update(Request $request, $id)
