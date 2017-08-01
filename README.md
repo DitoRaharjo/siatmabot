@@ -4,7 +4,7 @@
 
 SIATMA Bot is a web application for Universitas Atma Jaya Yogyakarta's students classes reminder that integrated with <a href="https://core.telegram.org/bots">Telegram Bot API</a>, <a href="https://developers.line.me/messaging-api/overview">LINE Messaging API</a>, and <a href="https://developers.facebook.com/products/messenger/">Facebook Messenger API</a> make with <a href="https://laravel.com">Laravel 5.4</a>. SIATMA Bot attempts to take the complicacy for students to checking their college routine with the help chatbot that using 3 major instant messenger usually used by students.
 
-## Sample web
+## Demo
 
 Please take a look in <a href="http://ditoraharjo.co/siatmabot/register">this</a> website and register to test the extent of the project functionality.
 
