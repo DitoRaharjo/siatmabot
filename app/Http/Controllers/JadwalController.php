@@ -21,6 +21,18 @@ use App\Jadwal;
 
 class JadwalController extends Controller
 {
+  public function indexUjian() {
+    return view('front.ujian.index');
+  }
+
+  public function indexKuis() {
+    return view('front.kuis.index');
+  }
+
+  public function indexTugas() {
+    return view('front.tugas.index');
+  }
+
   public function index() {
     $userId = Auth::user()->id;
     $user = User::find($userId);

@@ -110,7 +110,7 @@ Route::group(['middleware'=>'checkUser', 'auth'], function() {
   Route::get('sesiProdiTerhapus-destroy/{id}', 'SesiProdiController@terhapusDestroy')->name('sesiProdiTerhapus.destroy');
 });
 
-//Jadwal
+//Jadwal Kuliah
 Route::group(['middleware'=>'checkUser', 'auth'], function() {
   Route::get('jadwal-index', 'JadwalController@index')->name('jadwal.index');
   Route::get('jadwal-create/{id}', 'JadwalController@create')->name('jadwal.create');
@@ -118,5 +118,12 @@ Route::group(['middleware'=>'checkUser', 'auth'], function() {
   Route::get('jadwal-edit/{id}', 'JadwalController@edit')->name('jadwal.edit');
   Route::patch('jadwal-update/{id}', 'JadwalController@update')->name('jadwal.update');
   Route::get('jadwal-delete/{id}', 'JadwalController@destroy')->name('jadwal.destroy');
+});
+
+//Jadwal Mockup
+Route::group(['middleware'=>'checkUser', 'auth'], function() {
+  Route::get('jadwalUjian-index', 'JadwalController@indexUjian')->name('jadwalUjian.index');
+  Route::get('jadwalKuis-index', 'JadwalController@indexKuis')->name('jadwalKuis.index');
+  Route::get('jadwalTugas-index', 'JadwalController@indexTugas')->name('jadwalTugas.index');
 });
 /* ----------- End of Front End Routes -------------  */
