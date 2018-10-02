@@ -6,7 +6,7 @@ SIATMA Bot is a web application for Universitas Atma Jaya Yogyakarta's students 
 
 ## Demo
 
-Please take a look in <a href="http://ditoraharjo.co/siatmabot/register">this</a> website and register to test the extent of the project functionality.
+Sorry for the demo site is already shutdown
 
 ## Installation
 
